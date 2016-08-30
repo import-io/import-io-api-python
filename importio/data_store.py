@@ -24,7 +24,7 @@ class Schema(object):
 
     def __init__(self, guid=None):
         if guid is None:
-            except ValueError()
+            raise ValueError()
         self._guid = guid
 
     @property

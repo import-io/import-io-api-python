@@ -21,7 +21,7 @@ from importio import Schema
 class TestSchema(TestCase):
 
     def test_constructor(self):
-        schema = Schema()
+        schema = Schema(guid='')
         self.assertIsNotNone(schema)
 
 

@@ -148,7 +148,7 @@ class ApiCall(object):
             logger.debug(self.get_url_parameters())
 
         # Dispatch to the appropriate HTTP request method
-        result = self._methods[self.method]()
+        self.api_result = self._methods[self.method]()
 
         # Check for acceptable response, log error if
         # results not acceptable and raise exception
@@ -158,9 +158,8 @@ class ApiCall(object):
             logger.error(self.headers)
             if self.data is not None:
                 logger.error(self.data)
-            logger.error(result)
-            raise HTTPResponseError(result.status_code, result.text)
-        self.api_result = result
+            logger.error(self.api_result)
+            raise HTTPResponseError(self.api_result.status_code, self.api_result.text)
 
     def api_call(self):
         """
