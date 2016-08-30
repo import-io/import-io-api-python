@@ -17,24 +17,17 @@
 import json
 import requests
 import logging
-import sys
 from importio import HTTPResponseError
 import six.moves.urllib.parse as urllib
 
 logger = logging.getLogger(__name__)
 
 
-
-
-def _handle_api_results(api_result, context=None):
-    result = None
-    # Only process if we get HTTP result of 200
-    if api_result.status_code == requests.codes.ok:
-        result = json.loads(api_result.text)
-        return result
-
-
 class ApiCall(object):
+    """
+    Implements the handling of HTTP(S) calls
+    """
+
     def __init__(self, api_host=None, api_key=None):
         """
         :param api_host: api end point host
@@ -54,94 +47,127 @@ class ApiCall(object):
                          "POST": self._do_post,
                          "PUT": self._do_put}
 
-        self._api_host = api_host
-        self._api_key = api_key
+        self.api_host = api_host
+        self.api_key = api_key
 
         # All member variables related to REST CALL
-        self._scheme = "https"
-        self._method = "GET"
-        self._headers = None
-        self._data = None
-        self._url = None
-        self._path = None
-        self._url_parameters = None
+        self.scheme = "https"
+        self.method = "GET"
+        self.headers = None
+        self.auth = None
+        self.data = None
+        self.url = None
+        self.path = None
+        self.url_parameters = None
+        self.fragment = None
 
-        self._api_result = None
+        self.api_result = None
 
-    def _get_url_parameters(self):
+    def get_url_parameters(self):
         """
-        Encode URL parameters
+        Encode URL parameters from dictionary of name/value pairs
         """
         url_parameters = ''
-        if self._url_parameters is not None:
-            url_parameters = '?' + urllib.urlencode(self._url_parameters)
+        if self.url_parameters is not None:
+            url_parameters = '?' + urllib.urlencode(self.url_parameters)
         return url_parameters
 
     def _do_get(self):
         """
         HTTP Get Request
         """
-        return requests.get(self._url, data=self._data, headers=self._headers)
+        return requests.get(self.url, data=self.data, headers=self.headers, auth=self.auth)
 
     def _do_delete(self):
         """
         HTTP Delete Request
         """
-        return requests.delete(self._url, data=self._data, headers=self._headers)
+        return requests.delete(self.url, data=self.data, headers=self.headers, auth=self.auth)
 
     def _do_patch(self):
         """
         HTTP Patch Request
         """
-        return requests.patch(self._url, data=self._data, headers=self._headers)
+        return requests.patch(self.url, data=self.data, headers=self.headers, auth=self.auth)
 
     def _do_post(self):
         """
         HTTP Post Request
         """
-        return requests.post(self._url, data=self._data, headers=self._headers)
+        return requests.post(self.url, data=self.data, headers=self.headers, auth=self.auth)
 
     def _do_put(self):
         """
         HTTP Put Request
         """
-        return requests.put(self._url, data=self._data, headers=self._headers)
+        return requests.put(self.url, data=self.data, headers=self.headers, auth=self.auth)
 
-    def _good_response(status_code):
+    def good_response(self):
         """
         Determines what status codes represent a good response from an API call.
         """
-        return status_code == requests.codes.ok
+        return self.api_result.status_code == requests.codes.ok
 
-    def _form_url(self):
-        return "{0}://{1}/{2}{3}".format(self._scheme, self._api_host, self._path, self._get_url_parameters())
-
-    def _call_api(self, good_response):
+    def get_url(self):
         """
-        Make an API call to get the metric definition
+        Generate URL specific for this API call
+        :return:
+        """
+        self.url = "{0}://{1}/{2}{3}".format(self.scheme, self.api_host, self.path, self.get_url_parameters())
+
+    def handle_api_results(self):
+        """
+        Translate the requests library result object to domain objects
+
+        Classes that override this method are responsible for translating
+        the requests library response object to Python objects
+        :return:
+        """
+        result = None
+
+        # Only process if we get HTTP result of 200
+        if self.api_result.status_code == requests.codes.ok:
+            result = json.loads(self.api_result.text)
+            return result
+
+    def api_request(self):
+        """
+        Low-level API for making a REST calls, callers are responsible for translating
+        the request library request object
         """
 
-        self._url = self._form_url()
-        if self._headers is not None:
-            logger.debug(self._headers)
-        if self._data is not None:
-            logger.debug(self._data)
-        if len(self._get_url_parameters()) > 0:
-            logger.debug(self._get_url_parameters())
+        # Generate the URL
+        self.get_url()
 
-        result = self._methods[self._method]()
+        # Log input parameters
+        if self.headers is not None:
+            logger.debug(self.headers)
+        if self.data is not None:
+            logger.debug(self.data)
+        if len(self.get_url_parameters()) > 0:
+            logger.debug(self.get_url_parameters())
 
-        if not good_response(result.status_code):
-            logger.error(self._url)
-            logger.error(self._method)
-            logger.error(self._headers)
-            if self._data is not None:
-                logger.error(self._data)
+        # Dispatch to the appropriate HTTP request method
+        result = self._methods[self.method]()
+
+        # Check for acceptable response, log error if
+        # results not acceptable and raise exception
+        if not self.good_response():
+            logger.error(self.url)
+            logger.error(self.method)
+            logger.error(self.headers)
+            if self.data is not None:
+                logger.error(self.data)
             logger.error(result)
             raise HTTPResponseError(result.status_code, result.text)
-        self._api_result = result
+        self.api_result = result
 
-    def _api_call(self, handle_results=_handle_api_results, good_response=_good_response, context=None):
-        self._call_api(good_response=good_response)
-        return handle_results(self._api_result, context)
+    def api_call(self):
+        """
+        1) Issues the specific REST API call from the provide inputs
+        2) Calls method to translate in the Python objects
+        :return: Nore or objects generated by handle_api_results()
+        """
+        self.api_request()
+        return self.handle_api_results()
 

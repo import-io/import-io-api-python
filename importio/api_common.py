@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import logging
+import os
 from importio import ApiCall
 
 
@@ -25,5 +26,19 @@ class ApiCommon(ApiCall):
     Base class to implement common features of Import.io API
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, api_host=None, api_key=None):
+        super(ApiCommon, self).__init__(api_host, api_key)
+        self.get_environment_variables()
+
+    def get_environment_variables(self):
+        """
+        Get API Host and API key from environment variables
+        if available
+        :return: None
+        """
+
+        if 'IMPORT_IO_API_KEY' in os.environ:
+            self.api_key = os.environ['IMPORT_IO_API_KEY']
+
+        if 'IMPORT_IO_API_HOST' in os.environ:
+            self.api_key = os.environ['IMPORT_IO_API_HOST']

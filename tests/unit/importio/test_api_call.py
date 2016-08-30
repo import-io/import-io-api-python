@@ -16,9 +16,36 @@
 
 from unittest import TestCase
 from importio import ApiCall
+import json
 
 
 class TestApiCall(TestCase):
 
+    def setUp(self):
+        self.api = ApiCall()
+
     def test_constructor(self):
         api = ApiCall()
+
+    def test_http_delete(self):
+        self.api.api_host = 'httbin.org'
+        self.api.path = '/delete'
+        self.api.api_request()
+
+        self.assertFalse(True)
+
+    def test_http_get(self):
+
+        self.api.api_host = "httbin.org"
+
+        self.api.api_request()
+
+        self.assertEqual(self.api.api_result.status_code, 200)
+
+        result = json.loads(self.api.api_result.txt)
+
+    def test_http_patch(self):
+        self.assertFalse(True)
+
+    def test_http_post(self):
+        self.assertFalse(True)

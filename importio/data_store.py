@@ -22,8 +22,16 @@ logger = logging.getLogger(__name__)
 
 class Schema(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, guid=None):
+        if guid is None:
+            except ValueError()
+        self._guid = guid
+
+    @property
+    def guid(self):
+        return self._guid
+
+    # TBD other properties
 
 
 class DataStore(ApiCommon):
@@ -34,9 +42,16 @@ class DataStore(ApiCommon):
     def __init__(self):
         pass
 
-    def get_schema(self):
+    def get_schema(self, cls):
         """
         Fetches the schema associated with an account in Import.io
         :return:
         """
-        pass
+        self.api_host = 'store.api.import.io'
+        self.path = "/store/{0}".format(cls)
+        return self.api_call()
+
+    def get_object(self, cls=None, guid=None):
+        self.api_host = 'store.api.import.io'
+        self.path = "/store/{0}/{1}".format(cls, guid)
+        return self.api_call()

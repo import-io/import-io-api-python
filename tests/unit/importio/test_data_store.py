@@ -14,9 +14,17 @@
 # limitations under the License.
 #
 
-from importio.api_exception import HTTPResponseError
-from importio.api_call import ApiCall
-from importio.api_common import ApiCommon
-from importio.data_store import Schema
-from importio.data_store import DataStore
-from importio.api import API
+from importio import API
+from unittest import TestCase
+
+
+class TestDataStore(TestCase):
+
+    def test_data_store(self):
+        api = API()
+        self.assertIsNotNone(api.data_store)
+
+    def test_get_schema(self):
+        api = API()
+        self.api.data_store.get_schema('Extractor')
+
