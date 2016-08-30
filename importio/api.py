@@ -13,8 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from importio import DataStore
 
-from importio.api_exception import HTTPResponseError
-from importio.api_call import ApiCall
-from importio.api_common import ApiCommon
-from importio.data_store import DataStore
+
+class API(object):
+    """
+    Provides access to Import.io API
+    """
+
+    def __init__(self):
+        self._data_store = DataStore()
+
+    @property
+    def data_store(self):
+        return self._data_store

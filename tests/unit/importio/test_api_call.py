@@ -14,7 +14,11 @@
 # limitations under the License.
 #
 
-from importio.api_exception import HTTPResponseError
-from importio.api_call import ApiCall
-from importio.api_common import ApiCommon
-from importio.data_store import DataStore
+from unittest import TestCase
+from importio import ApiCall
+
+
+class TestApiCall(TestCase):
+
+    def test_constructor(self):
+        api = ApiCall()

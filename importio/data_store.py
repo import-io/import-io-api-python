@@ -14,7 +14,29 @@
 # limitations under the License.
 #
 
-from importio.api_exception import HTTPResponseError
-from importio.api_call import ApiCall
-from importio.api_common import ApiCommon
-from importio.data_store import DataStore
+import logging
+from importio import ApiCommon
+
+logger = logging.getLogger(__name__)
+
+
+class Schema(object):
+
+    def __init__(self):
+        pass
+
+
+class DataStore(ApiCommon):
+    """
+    Import.io APIs related to the data store
+    """
+
+    def __init__(self):
+        pass
+
+    def get_schema(self):
+        """
+        Fetches the schema associated with an account in Import.io
+        :return:
+        """
+        pass

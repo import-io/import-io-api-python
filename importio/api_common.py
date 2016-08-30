@@ -13,8 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+from importio import ApiCall
 
-from importio.api_exception import HTTPResponseError
-from importio.api_call import ApiCall
-from importio.api_common import ApiCommon
-from importio.data_store import DataStore
+
+logger = logging.getLogger(__name__)
+
+
+class ApiCommon(ApiCall):
+    """
+    Base class to implement common features of Import.io API
+    """
+
+    def __init__(self):
+        pass
