@@ -20,9 +20,10 @@ from unittest import TestCase
 
 class TestAPI(TestCase):
 
-    def test_constructor(self):
+    def test_good_json_payload(self):
         api = API()
+        self.assertIsNotNone(api.data_store)
 
-    def test_data_store(self):
+    def test_bad_json_payload(self):
         api = API()
         self.assertIsNotNone(api.data_store)
