@@ -14,16 +14,21 @@
 # limitations under the License.
 #
 
-from unittest import TestCase
-from importio import Schema
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-class TestSchema(TestCase):
+class Extractor(object):
 
-    def test_constructor(self):
-        schema = Schema(guid='')
-        self.assertIsNotNone(schema)
+    def __init__(self, guid=None):
+        if guid is None:
+            raise ValueError()
+        self._guid = guid
 
-
+    @property
+    def urls(self):
+        urls = None
+        return urls
 
 

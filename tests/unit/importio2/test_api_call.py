@@ -15,7 +15,7 @@
 #
 import logging
 from unittest import TestCase
-from importio import ApiCall
+from importio2 import ApiCall
 import json
 
 logger = logging.getLogger(__name__)

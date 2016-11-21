@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from importio import API
+from importio2 import API
 from unittest import TestCase
 
 

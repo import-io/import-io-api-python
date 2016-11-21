@@ -14,17 +14,16 @@
 # limitations under the License.
 #
 
-from importio import API
 from unittest import TestCase
+from importio2 import Extractor
 
 
-class TestDataStore(TestCase):
+class TestExtractor(TestCase):
 
-    def test_data_store(self):
-        api = API()
-        self.assertIsNotNone(api.data_store)
+    def test_constructor(self):
+        extractor = Extractor(guid='')
+        self.assertIsNotNone(extractor)
 
-    # def test_get_schema(self):
-    #     api = API()
-    #     api.data_store.get_schema('Extractor')
+
+
 
