@@ -24,6 +24,17 @@ class TestExtractor(TestCase):
         extractor = Extractor(guid='')
         self.assertIsNotNone(extractor)
 
+    def test_empty_guid(self):
+
+        try:
+            extractor = Extractor()
+            self.assertTrue(True)
+        except ValueError:
+            pass
+
+    def test_add_URL(self):
+        extractor = Extractor
+
 
 
 

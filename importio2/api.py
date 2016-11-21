@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from importio import DataStore
+from importio2 import DataStore
 
 
 class API(object):

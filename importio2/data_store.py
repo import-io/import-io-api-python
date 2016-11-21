@@ -15,7 +15,7 @@
 #
 
 import logging
-from importio import ApiCommon
+from importio2 import ApiCommon
 
 logger = logging.getLogger(__name__)
 

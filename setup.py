@@ -1,22 +1,25 @@
-from distutils.core import setup
-from importio.version import __version__
+"""
+Handles the building of python package
+"""
+from setuptools import setup
+from importio2.version import __version__
 
 setup(
-    name='importio',
+    name='importio2',
     version=__version__,
     url='http://github.io/import.io/import-io-api-python',
     author='Andrew Fogg, David Gwartney',
-    author_email='andrew.fogg@import.io, david.gwartney@import.io',
-    packages=['importio', ],
+    author_email='david.gwartney@import.io',
+    packages=['importio2', ],
     license='LICENSE',
     entry_points={
         'console_scripts': [
-            'tsp-etl = tspetl.etl_cli:main',
-         ],
+            'extractor = importio2.exractor_cli:main',
+        ],
     },
     description='Import.io API for Python',
     long_description=open('README.txt').read(),
     install_requires=[
-       'requests >= 2.11.1',
+        'requests >= 2.11.1',
     ],
 )

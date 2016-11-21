@@ -20,4 +20,4 @@ from importio2.api_common import ApiCommon
 from importio2.data_store import Schema
 from importio2.data_store import DataStore
 from importio2.api import API
-from importio2.extractor import
+from importio2.extractor import Extractor

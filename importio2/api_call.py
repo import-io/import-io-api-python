@@ -17,7 +17,7 @@
 import json
 import requests
 import logging
-from importio import HTTPResponseError
+from importio2 import HTTPResponseError
 import six.moves.urllib.parse as urllib
 
 logger = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ class ApiCall(object):
 
         :Example:
 
-        from importio import API
+        from importio2 import API
 
         api = API(api_key='api.xxxxxxxxxx-yyyy')
         """
