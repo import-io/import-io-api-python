@@ -13,28 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from unittest import TestCase
-from importio2 import Extractor
-
-
-class TestExtractor(TestCase):
-
-    def test_constructor(self):
-        extractor = Extractor(guid='')
-        self.assertIsNotNone(extractor)
-
-    def test_empty_guid(self):
-
-        try:
-            extractor = Extractor()
-            self.assertTrue(True)
-        except ValueError:
-            pass
-
-    def test_get_URL(self):
-        extractor = Extractor
+import os
+import json
 
 
+class Configuration(object):
 
+    def __init__(self):
+        path = os.path.dirname(__file__)
+        self._file_path = os.path.join(path, "test-data.json")
+        self._config = None
 
+    def load(self):
+        with open(self._file_path) as f:
+            config = f.read()
+            self._config = json.loads(config)
+
+    def get(self, key):
+        return self._config[key]

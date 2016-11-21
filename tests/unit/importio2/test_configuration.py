@@ -15,25 +15,22 @@
 #
 
 from unittest import TestCase
-from importio2 import Extractor
+from config import Configuration
 
 
-class TestExtractor(TestCase):
+class TestConfiguration(TestCase):
 
     def test_constructor(self):
-        extractor = Extractor(guid='')
+        extractor = Configuration()
         self.assertIsNotNone(extractor)
 
-    def test_empty_guid(self):
+    def test_load_config(self):
+        configuration = Configuration()
+        configuration.load()
+        extractor_id = configuration.get("extractor_id")
+        self.assertIsNotNone(extractor_id)
 
-        try:
-            extractor = Extractor()
-            self.assertTrue(True)
-        except ValueError:
-            pass
 
-    def test_get_URL(self):
-        extractor = Extractor
 
 
 
