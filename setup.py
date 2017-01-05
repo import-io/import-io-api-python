@@ -21,5 +21,6 @@ setup(
     long_description=open('README.txt').read(),
     install_requires=[
         'requests >= 2.11.1',
+        'six>=1.10.0',
     ],
 )
