@@ -2,6 +2,7 @@
 MANIFEST
 README.txt
 python
+python3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
