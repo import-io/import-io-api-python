@@ -19,11 +19,5 @@ from unittest import TestCase
 
 
 class TestAPI(TestCase):
+    pass
 
-    def test_good_json_payload(self):
-        api = API()
-        self.assertIsNotNone(api.data_store)
-
-    def test_bad_json_payload(self):
-        api = API()
-        self.assertIsNotNone(api.data_store)

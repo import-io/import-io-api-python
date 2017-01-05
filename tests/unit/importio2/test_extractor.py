@@ -14,27 +14,42 @@
 # limitations under the License.
 #
 
+from __future__ import absolute_import
+
 from unittest import TestCase
 from importio2 import Extractor
+from importio2 import ExtractorAPI
+
+
+class TestExtractorAPI(TestCase):
+
+    def test_constructor(self):
+        """
+        Ensure default constructor runs
+        :return:
+        """
+        extractor_api = ExtractorAPI()
+        self.assertIsNotNone(extractor_api)
 
 
 class TestExtractor(TestCase):
 
-    def test_constructor(self):
+    def test_constructor_by_guid(self):
         extractor = Extractor(guid='')
         self.assertIsNotNone(extractor)
 
-    def test_empty_guid(self):
+    def test_constructor_by_name(self):
+        extractor = Extractor(name='')
+        self.assertIsNotNone(extractor)
 
+    def test_fields(self):
+        pass
+
+    def test_empty_guid(self):
         try:
             extractor = Extractor()
             self.assertTrue(True)
         except ValueError:
             pass
-
-    def test_get_URL(self):
-        extractor = Extractor
-
-
 
 

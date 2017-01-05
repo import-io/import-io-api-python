@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from importio2 import DataStore
+from importio2 import ExtractorAPI
 
 
 class API(object):
@@ -22,8 +22,12 @@ class API(object):
     """
 
     def __init__(self):
-        self._data_store = DataStore()
+        self._extractor = ExtractorAPI()
 
     @property
     def data_store(self):
         return self._data_store
+
+    @property
+    def extractor(self):
+        return self._extractor

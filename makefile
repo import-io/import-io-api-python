@@ -1,5 +1,5 @@
 PACKAGE=importio2
-VERSION=$(shell python -c "from importio.version import __version__ ; print(__version__)")
+VERSION=$(shell python -c "from $(PACKAGE).version import __version__ ; print(__version__)")
 TAR_FILE=dist/$(PACKAGE)-$(VERSION).tar.gz
 
 install: build
