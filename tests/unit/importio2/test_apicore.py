@@ -21,7 +21,8 @@ from importio2.apicore import extractor_get
 import requests
 import json
 
-EXTRACTOR_ID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
+# Todo: Refactor standard location for test data
+EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
 EXTRACTOR_NAME = 'API_TEST-example.com'
 
 
@@ -29,17 +30,17 @@ class TestApiCore(TestCase):
 
     def setUp(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
-        self._response = extractor_get(self._api_key, EXTRACTOR_ID)
+        self._response = extractor_get(self._api_key, EXTRACTOR_GUID)
         self._extractor = json.loads(self._response.text)
 
     def test_extractor_get(self):
-        response = extractor_get(self._api_key, EXTRACTOR_ID)
+        response = extractor_get(self._api_key, EXTRACTOR_GUID)
         self.assertEquals(response.status_code, requests.codes.ok)
 
     def test_extractor_id(self):
-        self.assertEquals(self._extractor['guid'], EXTRACTOR_ID)
+        self.assertEquals(self._extractor['guid'], EXTRACTOR_GUID)
 
-    def test_extractor_id(self):
+    def test_extractor_name(self):
         self.assertEquals(self._extractor['name'], EXTRACTOR_NAME)
 
 

@@ -17,47 +17,56 @@
 import logging
 import requests
 import os
+import importio2.apicore as apicore
+import json
 
 logger = logging.getLogger(__name__)
 
 
 class ExtractorAPI(object):
+    """
+    API level abstraction, handles the authentication via environment variables
+    """
     def __init__(self):
-        pass
-
-    @staticmethod
-    def json_to_extractor(document):
-        guid = document['guid']
-        name = document['name']
-        return Extractor(guid=guid, name=name)
+        self._api_key = os.environ['IMPORT_IO_API_KEY']
 
     def get(self, guid):
         """
-        Returns a surrogate instance to manipulate an Extractor
+        Returns a dictionary of the contents of extractor
         :param guid: Identifier of the extractor
-        :return: instance of Extractor
+        :return: dictionary of values representing the extractor
         """
+        extractor = None
+        try:
+            # TODO: What are the failure conditions we need to handle
+            # TODO: What exceptions should we throw based on Network available, etc
+            response = apicore.extractor_get(self._api_key, guid)
 
-        url = "https://store.import.io/store/extractor/{0}".format(guid)
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                extractor = json.loads(response.text)
+            else:
+                raise Exception()
+            return extractor
+        except Exception as e:
+            print(e)
 
-        querystring = {
-            "_apikey": os.environ['IMPORT_IO_API_KEY']
-        }
+    def get_by_name(self, name):
+        # Todo: Exception if you cannot find the Extractor in the account then throw an exception
+        return {}
 
-        headers = {
-            'cache-control': "no-cache",
-            'postman-token': "e550717b-851f-0951-2471-9578b2b86e97"
-        }
+    def list(self):
+        return []
 
-        response = requests.request("GET", url, headers=headers, params=querystring)
+    def get_url_list(self, guid):
+        return []
 
-        print(response.text)
+    def put_url_list(self, guid, url_list):
+        pass
 
-        def list(self):
-            return []
-
-        def get_url_list(self, extractor):
-            pass
+    def query(self, guid, url):
+        pass
 
 
 class ExtractorUrl(object):
@@ -71,48 +80,49 @@ class Extractor(object):
             raise ValueError()
         self._guid = guid
         self._name = name
-        self._last_editor_guid = None
-        self._timestamp = None
-        self._owner_guid = None
-        self._creator_guid = None
-        self._creation_timestamp = None
-        self._fields = None
+        self._extractor = None
+
+        self.refresh()
 
     @property
     def guid(self):
-        return self._guid
+        return self._extractor['guid']
 
     @property
     def name(self):
-        return self._name
+        return self._extractor['name']
 
     @property
     def timestamp(self):
-        return self._timestamp
+        return self._extractor['_meta']['timestamp']
 
     @property
     def last_editor_guid(self):
-        return self._last_editor_guid
+        return self._extractor['_meta']['lastEditorGuid']
 
     @property
     def owner_guid(self):
-        pass
+        return self._extractor['_meta']['ownerGuid']
 
     @property
     def creator_guid(self):
-        return self._creator_guid
+        return self._extractor['_meta']['creatorGuid']
 
     @property
     def creation_timestamp(self):
-        return self._creation_timestamp
+        return self._extractor['_meta']['creationTimestamp']
 
     @property
     def fields(self):
-        return self._fields
+        return self._extractor['fields']
 
     @property
     def url_list(self):
-        return []
+        return self._extractor['urlList']
 
     def refresh(self):
-        pass
+        api = ExtractorAPI()
+        if self._name is not None:
+            self._extractor = api.get_by_name(self._name)
+        else:
+            self._extractor = api.get(self._guid)

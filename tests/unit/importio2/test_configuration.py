@@ -14,16 +14,8 @@
 # limitations under the License.
 #
 
-from unittest import TestCase
-
-
-class TestConfiguration(TestCase):
-
-    def test_constructor(self):
-        pass
-
-    def test_load_config(self):
-        pass
+EXTRACTOR_ID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
+EXTRACTOR_NAME = 'API_TEST-example.com'
 
 
 

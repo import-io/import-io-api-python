@@ -13,11 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import absolute_import
 
 from importio2 import API
 from unittest import TestCase
 
 
 class TestAPI(TestCase):
-    pass
+
+    def test_get_extractor_api_instance(self):
+        api = API()
+        self.assertIsNotNone(api.extractor, "api.extractor returned None instance")
+
+    def test_get_crawl_run_api_instance(self):
+        api = API()
+        self.assertIsNone(api.crawl_run, "api.crawl_run returned not None instance")
+
+
 

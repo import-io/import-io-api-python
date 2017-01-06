@@ -23,10 +23,11 @@ class API(object):
 
     def __init__(self):
         self._extractor = ExtractorAPI()
+        self._crawl_run = None
 
     @property
-    def data_store(self):
-        return self._data_store
+    def crawl_run(self):
+        return self._crawl_run
 
     @property
     def extractor(self):
