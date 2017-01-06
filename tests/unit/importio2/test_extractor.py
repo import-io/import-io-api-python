@@ -32,6 +32,16 @@ EXTRACTOR_LATEST_CONFIG_ID = 'b8debacc-b50d-46ce-a666-a1fb20420792'
 EXTRACTOR_TRAINING = '77d32ed7-7e76-4860-b594-7c60d78ef1b9'
 EXTRACTOR_URL_LIST = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
 
+EXTRACTOR_FIELD_0_ID = 'd5f64119-ec0f-4915-bb4d-83f28f83c622'
+EXTRACTOR_FIELD_0_NAME = 'Description'
+EXTRACTOR_FIELD_0_CAPTURE_LINK = False
+EXTRACTOR_FIELD_0_TYPE = 'TEXT'
+
+EXTRACTOR_FIELD_1_ID = 'db8ab2f7-465f-42bd-80ed-95701e99bb98'
+EXTRACTOR_FIELD_1_NAME = 'Link'
+EXTRACTOR_FIELD_1_CAPTURE_LINK = True
+EXTRACTOR_FIELD_1_TYPE = 'TEXT'
+
 
 class TestExtractorAPI(TestCase):
 
@@ -48,15 +58,15 @@ class TestExtractorAPI(TestCase):
         self.assertEqual(extractor['_meta']['creationTimestamp'], EXTRACTOR_CREATION_TIMESTAMP)
         self.assertEqual(len(extractor['fields']), 2)
 
-        self.assertEqual(extractor['fields'][0]['id'], 'd5f64119-ec0f-4915-bb4d-83f28f83c622')
-        self.assertEqual(extractor['fields'][0]['name'], 'Description')
-        self.assertEqual(extractor['fields'][0]['captureLink'], False)
-        self.assertEqual(extractor['fields'][0]['type'], 'TEXT')
+        self.assertEqual(extractor['fields'][0]['id'], EXTRACTOR_FIELD_0_ID)
+        self.assertEqual(extractor['fields'][0]['name'], EXTRACTOR_FIELD_0_NAME)
+        self.assertEqual(extractor['fields'][0]['captureLink'], EXTRACTOR_FIELD_0_CAPTURE_LINK)
+        self.assertEqual(extractor['fields'][0]['type'], EXTRACTOR_FIELD_0_TYPE)
 
-        self.assertEqual(extractor['fields'][1]['id'], 'db8ab2f7-465f-42bd-80ed-95701e99bb98')
-        self.assertEqual(extractor['fields'][1]['name'], 'Link')
-        self.assertEqual(extractor['fields'][1]['captureLink'], True)
-        self.assertEqual(extractor['fields'][1]['type'], 'TEXT')
+        self.assertEqual(extractor['fields'][1]['id'], EXTRACTOR_FIELD_1_ID)
+        self.assertEqual(extractor['fields'][1]['name'], EXTRACTOR_FIELD_1_NAME)
+        self.assertEqual(extractor['fields'][1]['captureLink'], EXTRACTOR_FIELD_1_CAPTURE_LINK)
+        self.assertEqual(extractor['fields'][1]['type'], EXTRACTOR_FIELD_1_TYPE)
 
         self.assertEqual(extractor['latestConfigId'], EXTRACTOR_LATEST_CONFIG_ID)
         self.assertEqual(extractor['training'], EXTRACTOR_TRAINING)
@@ -74,7 +84,8 @@ class TestExtractor(TestCase):
         # self.assertIsNotNone(extractor.name, EXTRACTOR_NAME)
 
     def test_fields(self):
-        pass
+        extractor = Extractor(guid=EXTRACTOR_GUID)
+        self.assertEqual(2, len(extractor.fields))
 
     def test_empty(self):
         try:
