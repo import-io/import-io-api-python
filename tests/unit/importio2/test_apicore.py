@@ -18,6 +18,7 @@ from __future__ import absolute_import
 import os
 from unittest import TestCase
 from importio2.apicore import extractor_get
+from importio2.apicore import extractor_start
 import requests
 import json
 
@@ -42,5 +43,9 @@ class TestApiCore(TestCase):
 
     def test_extractor_name(self):
         self.assertEquals(self._extractor['name'], EXTRACTOR_NAME)
+
+    def test_extractor_start(self):
+        extractor_start(self._api_key, EXTRACTOR_GUID)
+
 
 

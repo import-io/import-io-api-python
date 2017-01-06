@@ -56,10 +56,10 @@ class ExtractorAPI(object):
         # Todo: Exception if you cannot find the Extractor in the account then throw an exception
         return {}
 
-    def list(self):
+    def get_url_list(self, guid):
         return []
 
-    def get_url_list(self, guid):
+    def list(self):
         return []
 
     def put_url_list(self, guid, url_list):
@@ -68,10 +68,47 @@ class ExtractorAPI(object):
     def query(self, guid, url):
         pass
 
+    def start(self, guid):
+        pass
+
 
 class ExtractorUrl(object):
     def __init__(self, url):
         self._url = None
+
+
+class ExtractorField(object):
+
+    def __init__(self, field):
+        self._field = field
+
+    @property
+    def id(self):
+        return self._field['id']
+
+    @property
+    def name(self):
+        return self._field['name']
+
+    @property
+    def capture_link(self):
+        return self._field['captureLink']
+
+    @property
+    def type(self):
+        return self._field['type']
+
+
+class ExtractorFields(object):
+
+    def __init__(self, fields):
+        self._fields = fields
+
+    def __getitem__(self, key):
+        return ExtractorField(self._fields[key])
+
+    def __len__(self):
+        return len(self._fields)
 
 
 class Extractor(object):
@@ -80,49 +117,52 @@ class Extractor(object):
             raise ValueError()
         self._guid = guid
         self._name = name
-        self._extractor = None
+        self.extractor = None
 
         self.refresh()
 
     @property
     def guid(self):
-        return self._extractor['guid']
+        return self.extractor['guid']
 
     @property
     def name(self):
-        return self._extractor['name']
+        return self.extractor['name']
 
     @property
     def timestamp(self):
-        return self._extractor['_meta']['timestamp']
+        return self.extractor['_meta']['timestamp']
 
     @property
     def last_editor_guid(self):
-        return self._extractor['_meta']['lastEditorGuid']
+        return self.extractor['_meta']['lastEditorGuid']
 
     @property
     def owner_guid(self):
-        return self._extractor['_meta']['ownerGuid']
+        return self.extractor['_meta']['ownerGuid']
 
     @property
     def creator_guid(self):
-        return self._extractor['_meta']['creatorGuid']
+        return self.extractor['_meta']['creatorGuid']
 
     @property
     def creation_timestamp(self):
-        return self._extractor['_meta']['creationTimestamp']
+        return self.extractor['_meta']['creationTimestamp']
 
     @property
     def fields(self):
-        return self._extractor['fields']
+        return ExtractorFields(self.extractor['fields'])
 
     @property
     def url_list(self):
-        return self._extractor['urlList']
+        return self.extractor['urlList']
 
     def refresh(self):
         api = ExtractorAPI()
         if self._name is not None:
-            self._extractor = api.get_by_name(self._name)
+            self.extractor = api.get_by_name(self._name)
         else:
-            self._extractor = api.get(self._guid)
+            self.extractor = api.get(self._guid)
+
+
+

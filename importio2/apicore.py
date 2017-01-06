@@ -16,14 +16,23 @@
 
 import requests
 
-#
-# Extractor
-#
+"""
+Low-level REST API calls that specify the inputs and invoke a REST call. Callers
+have the responsibility of handling the Requests libraries response object which can be None
+
+"""
 
 
-def extractor_get(api_key, extractor_id):
+def extractor_get(api_key, guid):
+    """
+    Fetches the contents of an Extractor object from an account
 
-    url = "https://store.import.io/store/extractor/{0}".format(extractor_id)
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :return: returns response object from requests library
+    """
+
+    url = "https://store.import.io/store/extractor/{0}".format(guid)
 
     querystring = {
         "_apikey": api_key
@@ -37,6 +46,14 @@ def extractor_get(api_key, extractor_id):
 
 
 def extractor_list(api_key, page):
+    """
+    Fetches the list of Extractors associated to an account
+
+    :param api_key: Import.io user API key
+    :param page: which page of the list to display
+    :return: returns response object from requests library
+
+    """
 
     url = "https://store.import.io/store/extractor/_search"
 
@@ -54,14 +71,22 @@ def extractor_list(api_key, page):
     return requests.request("GET", url, headers=headers, params=querystring)
 
 
-def extractor_get_crawl_runs(api_key, extractor_id, page, per_page):
+def extractor_get_crawl_runs(api_key, guid, page, per_page):
+    """
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :param page: Specific crawl run page to display
+    :param per_page: Number of crawl runs per page
+    :return: returns response object from requests library
+    """
 
     url = "https://store.import.io/store/crawlrun/_search"
 
     querystring = {"_sort": "_meta.creationTimestamp",
                    "_page": page,
                    "_perPage": per_page,
-                   "extractorId": extractor_id,
+                   "extractorId": guid,
                    "_apikey": api_key
                    }
     headers = {
@@ -69,3 +94,26 @@ def extractor_get_crawl_runs(api_key, extractor_id, page, per_page):
     }
 
     return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def extractor_start(api_key, guid):
+    """
+    Initiates an crawl run of an extractor
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :return: Response object from requests REST call
+    """
+
+    url = "https://run.import.io/{0}/start".format(guid)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    headers = {
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("POST", url, headers=headers, params=querystring)
+
