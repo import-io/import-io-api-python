@@ -44,7 +44,6 @@ EXTRACTOR_FIELD_1_TYPE = 'TEXT'
 
 
 class TestExtractorAPI(TestCase):
-
     def test_get_extractor(self):
         api = ExtractorAPI()
         extractor = api.get(EXTRACTOR_GUID)
@@ -55,7 +54,7 @@ class TestExtractorAPI(TestCase):
         self.assertEqual(extractor['_meta']['ownerGuid'], EXTRACTOR_OWNER_GUID)
         self.assertEqual(extractor['_meta']['creatorGuid'], EXTRACTOR_CREATOR_GUID)
         # Todo: Test to handle timestamp updating everytime the object is accessed
-        #self.assertEqual(extractor['_meta']['timestamp'], EXTRACTOR_TIMESTAMP)
+        # self.assertEqual(extractor['_meta']['timestamp'], EXTRACTOR_TIMESTAMP)
         self.assertEqual(extractor['_meta']['creationTimestamp'], EXTRACTOR_CREATION_TIMESTAMP)
         self.assertEqual(len(extractor['fields']), 2)
 
@@ -75,7 +74,6 @@ class TestExtractorAPI(TestCase):
 
 
 class TestExtractor(TestCase):
-
     def test_constructor_by_guid(self):
         extractor = Extractor(guid=EXTRACTOR_GUID)
         self.assertIsNotNone(extractor.guid, EXTRACTOR_GUID)
@@ -105,4 +103,7 @@ class TestExtractor(TestCase):
         except ValueError:
             pass
 
+    def test_extractor_start(self):
+        extractor = Extractor(guid=EXTRACTOR_GUID)
 
+        extractor.start()

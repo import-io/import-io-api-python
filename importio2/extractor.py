@@ -69,7 +69,30 @@ class ExtractorAPI(object):
         pass
 
     def start(self, guid):
-        pass
+        """
+        Starts a crawl run of an extractor
+
+        :param guid: Extractor identifier
+        :return: Crawl run identifier
+        """
+        try:
+            crawl_run_guid = None
+            # TODO: What are the failure conditions we need to handle
+            # TODO: What exceptions should we throw based on Network available, etc
+            # TODO: What if a crawl run is already underway?
+            response = apicore.extractor_start(self._api_key, guid)
+
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                crawl_run = json.loads(response.text)
+                crawl_run_id = crawl_run['crawlRunId']
+            else:
+                raise Exception()
+
+            return crawl_run_guid
+        except Exception as e:
+            print(e)
 
 
 class ExtractorUrl(object):
@@ -158,11 +181,19 @@ class Extractor(object):
         return self.extractor['urlList']
 
     def refresh(self):
+        """
+        Fetch the fields from the data store for this extractor given the name or guid
+        :return:
+        """
         api = ExtractorAPI()
         if self._name is not None:
             self.extractor = api.get_by_name(self._name)
         else:
             self.extractor = api.get(self._guid)
+
+    def start(self):
+        api = ExtractorAPI()
+        api.start(self._guid)
 
 
 
