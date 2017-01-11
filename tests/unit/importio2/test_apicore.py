@@ -17,14 +17,29 @@ from __future__ import absolute_import
 
 import os
 from unittest import TestCase
+from importio2.apicore import extractor_cancel
 from importio2.apicore import extractor_get
+from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
+from importio2.apicore import extractor_url_list_get
 import requests
 import json
+import logging
+
+# logging.basicConfig(level=logging.DEBUG)
+
+
 
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
+EXTRACTOR_URL_LIST_GUID = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
+EXTRACTOR_QUERY_URL = 'http://www.example.com'
 EXTRACTOR_NAME = 'API_TEST-example.com'
+EXTRACTOR_RUNTIME_CONFIG = 'b8debacc-b50d-46ce-a666-a1fb20420792'
+
+API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
+API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
+
 
 
 class TestApiCore(TestCase):
@@ -44,8 +59,53 @@ class TestApiCore(TestCase):
     def test_extractor_name(self):
         self.assertEquals(self._extractor['name'], EXTRACTOR_NAME)
 
+    def test_extractor_url_list_get(self):
+        response = extractor_url_list_get(self._api_key, EXTRACTOR_GUID, EXTRACTOR_URL_LIST_GUID)
+
+    def test_extractor_url_list_get_long(self):
+        response = extractor_url_list_get(self._api_key, API_TEST_GET_URL_LIST, API_TEST_GET_URL_LIST_GUID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        content = """http://www.ikea.com/us/en/search/?query=chairs&pageNumber=1
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=2
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=3
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=4
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=5
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=6
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=7
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=8
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=9
+http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
+        self.assertEqual(content, response.text)
+
+    def test_extractor_query(self):
+        response = extractor_query(self._api_key, EXTRACTOR_GUID, EXTRACTOR_QUERY_URL)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        result = response.json()
+        extractor_data = result['extractorData']
+        data = extractor_data['data']
+        page_data = result['pageData']
+
+        self.assertEqual(-1, result['sequenceNumber'])
+        self.assertEqual(EXTRACTOR_QUERY_URL, result['url'])
+        self.assertEqual(requests.codes.OK, page_data['statusCode'])
+        self.assertEqual(EXTRACTOR_QUERY_URL, result['url'])
+        self.assertEqual(EXTRACTOR_RUNTIME_CONFIG, result['runtimeConfigId'])
+
+    def test_extractor_cancel(self):
+        response = extractor_cancel(self._api_key, EXTRACTOR_GUID)
+        self.assertEqual(requests.codes.BAD_REQUEST, response.status_code)
+
     def test_extractor_start(self):
-        extractor_start(self._api_key, EXTRACTOR_GUID)
+        response = extractor_start(self._api_key, EXTRACTOR_GUID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        extractor_cancel(self._api_key, EXTRACTOR_GUID)
+
+    def test_extractor_start_cancel(self):
+        response = extractor_start(self._api_key, EXTRACTOR_GUID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        response = extractor_cancel(self._api_key, EXTRACTOR_GUID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+
 
 
 

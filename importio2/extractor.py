@@ -30,6 +30,14 @@ class ExtractorAPI(object):
     def __init__(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
 
+    def cancel(self, guid):
+        """
+        Cancel a crawl run in progress
+
+        :param guid: Identifier of the extractor
+        :return: dictionary of values representing the extractor
+        """
+
     def get(self, guid):
         """
         Returns a dictionary of the contents of extractor
@@ -57,15 +65,43 @@ class ExtractorAPI(object):
         return {}
 
     def get_url_list(self, guid):
-        return []
+        """
+        Returns the URLs associated with an Extractor
+
+        :param guid: Identifier of the extractor
+        :return: List of URL strings
+        """
+        extractor = self.get(guid)
+        url_list_guid = extractor['urlList']
+        response = apicore.extractor_url_list_get(self._api_key, guid, url_list_guid)
+        url_list = response.text.split('\n')
+        return url_list
 
     def list(self):
+        """
+        Returns as list of Extractor GUIDs in an account
+
+        :return: List of GUIDs
+        """
         return []
 
     def put_url_list(self, guid, url_list):
+        """
+        Replaces the URL list on an Extractor
+        :param guid:
+        :param url_list:
+        :return:
+        """
         pass
 
     def query(self, guid, url):
+        """
+        Runs a live query with the Extractor
+
+        :param guid: Identifier of the extractor
+        :param url: URL to run the Extractor against
+        :return: A dictionary of the results of the query
+        """
         pass
 
     def start(self, guid):
@@ -93,6 +129,7 @@ class ExtractorAPI(object):
             return crawl_run_guid
         except Exception as e:
             print(e)
+            return None
 
 
 class ExtractorUrl(object):
@@ -178,7 +215,12 @@ class Extractor(object):
 
     @property
     def url_list(self):
-        return self.extractor['urlList']
+        api = ExtractorAPI()
+        return api.get_url_list(self._guid)
+
+    @property
+    def status(self):
+        pass
 
     def refresh(self):
         """
@@ -191,9 +233,31 @@ class Extractor(object):
         else:
             self.extractor = api.get(self._guid)
 
+    def cancel(self):
+        """
+        Cancel a running extractor crawl run
+
+        :return:
+        """
+        api = ExtractorAPI()
+        api.cancel()
+
     def start(self):
+        """
+        Start an Extractor crawl run
+
+        :return: GUID of the crawl run
+        """
         api = ExtractorAPI()
         api.start(self._guid)
+
+    def csv(self):
+        """
+        Returns the CSV output from the most recent crawl run
+
+        :return:
+        """
+        return None
 
 
 

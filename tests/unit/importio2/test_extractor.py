@@ -20,6 +20,9 @@ from unittest import TestCase
 from importio2 import Extractor
 from importio2 import ExtractorAPI
 
+API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
+API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
+
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
 EXTRACTOR_NAME = 'API_TEST-example.com'
 
@@ -70,7 +73,12 @@ class TestExtractorAPI(TestCase):
 
         self.assertEqual(extractor['latestConfigId'], EXTRACTOR_LATEST_CONFIG_ID)
         self.assertEqual(extractor['training'], EXTRACTOR_TRAINING)
-        self.assertEqual(extractor['urlList'], EXTRACTOR_URL_LIST)
+        # self.assertEqual(extractor['urlList'], EXTRACTOR_URL_LIST)
+
+    def test_url_list_get(self):
+        api = ExtractorAPI()
+        url_list = api.get_url_list(API_TEST_GET_URL_LIST)
+        self.assertEqual(10, len(url_list))
 
 
 class TestExtractor(TestCase):
@@ -95,6 +103,10 @@ class TestExtractor(TestCase):
         self.assertEqual(EXTRACTOR_FIELD_1_NAME, fields[1].name)
         self.assertEqual(EXTRACTOR_FIELD_1_CAPTURE_LINK, fields[1].capture_link)
         self.assertEqual(EXTRACTOR_FIELD_1_TYPE, fields[1].type)
+
+    def test_url_list_get(self):
+        extractor = Extractor(guid=API_TEST_GET_URL_LIST)
+        self.assertEqual(10, len(extractor.url_list))
 
     def test_empty(self):
         try:

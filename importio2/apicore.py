@@ -16,6 +16,11 @@
 
 import requests
 
+try:
+    from urllib import quote_plus
+except ImportError:
+    from urllib.parse import quote_plus
+
 """
 Low-level REST API calls that specify the inputs and invoke a REST call. Callers
 have the responsibility of handling the Requests libraries response object which can be None
@@ -94,6 +99,75 @@ def extractor_get_crawl_runs(api_key, guid, page, per_page):
     }
 
     return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def extractor_query(api_key, guid, target_url):
+    """
+    Perform a live query with the extractor
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :param target_url: URL to run the extractor against
+    :return: Requests response object
+    """
+
+    url = "https://extraction.import.io/query/extractor/{0}".format(guid)
+
+    querystring = {
+        "_apikey": api_key,
+        "url": target_url
+    }
+
+    headers = {
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def extractor_url_list_get(api_key, guid, url_guid):
+    """
+    Gets the URL list associated with an extractor
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :param url_guid: URL List identifier
+    :return: Requests response object
+    """
+
+    url = "https://store.import.io/store/extractor/{0}/_attachment/urlList/{1}".format(guid, url_guid)
+
+    querystring = {"_apikey": api_key}
+
+    headers = {
+        'accept-encoding': "gzip",
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def extractor_cancel(api_key, guid):
+    """
+    Cancels a crawl run of an extractor
+
+    :param api_key:
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :return: Response object from requests REST call
+    """
+
+    url = "https://run.import.io/{0}/cancel".format(guid)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    headers = {
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("POST", url, headers=headers, params=querystring)
 
 
 def extractor_start(api_key, guid):
