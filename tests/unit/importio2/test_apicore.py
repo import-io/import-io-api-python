@@ -28,8 +28,6 @@ import logging
 
 # logging.basicConfig(level=logging.DEBUG)
 
-
-
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
 EXTRACTOR_URL_LIST_GUID = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
@@ -40,6 +38,7 @@ EXTRACTOR_RUNTIME_CONFIG = 'b8debacc-b50d-46ce-a666-a1fb20420792'
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
 
+API_TEST_START_CANCEL = 'df761a66-c218-46ab-9655-01250e9c7214'
 
 
 class TestApiCore(TestCase):
@@ -101,9 +100,9 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         extractor_cancel(self._api_key, EXTRACTOR_GUID)
 
     def test_extractor_start_cancel(self):
-        response = extractor_start(self._api_key, EXTRACTOR_GUID)
+        response = extractor_start(self._api_key, API_TEST_START_CANCEL)
         self.assertEqual(requests.codes.OK, response.status_code)
-        response = extractor_cancel(self._api_key, EXTRACTOR_GUID)
+        response = extractor_cancel(self._api_key, API_TEST_START_CANCEL)
         self.assertEqual(requests.codes.OK, response.status_code)
 
 
