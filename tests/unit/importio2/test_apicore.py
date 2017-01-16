@@ -18,20 +18,25 @@ from __future__ import absolute_import
 import os
 from unittest import TestCase
 from importio2.apicore import extractor_cancel
+from importio2.apicore import extractor_csv
+from importio2.apicore import extractor_json
 from importio2.apicore import extractor_get
 from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
 from importio2.apicore import extractor_url_list_get
+
+from tests.unit.importio2.test_data import ExtractorCSVTestData
+from tests.unit.importio2.test_data import ExtractorJSONTestData
 import requests
 import json
 import logging
 
-# logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
 EXTRACTOR_URL_LIST_GUID = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
-EXTRACTOR_QUERY_URL = 'http://www.example.com'
+EXTRACTOR_QUERY_URL = u'http://www.example.com/'
 EXTRACTOR_NAME = 'API_TEST-example.com'
 EXTRACTOR_RUNTIME_CONFIG = 'b8debacc-b50d-46ce-a666-a1fb20420792'
 
@@ -104,6 +109,18 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         self.assertEqual(requests.codes.OK, response.status_code)
         response = extractor_cancel(self._api_key, API_TEST_START_CANCEL)
         self.assertEqual(requests.codes.OK, response.status_code)
+
+    def test_extractor_csv(self):
+        response = extractor_csv(self._api_key, ExtractorCSVTestData.EXTRACTOR_ID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        results = response.text.split('\n')
+        self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(results))
+
+    def test_extractor_json(self):
+        response = extractor_json(self._api_key, ExtractorJSONTestData.EXTRACTOR_ID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        results = response.text.split('\n')
+        self.assertEqual(ExtractorJSONTestData.JSON_LEN, len(results))
 
 
 

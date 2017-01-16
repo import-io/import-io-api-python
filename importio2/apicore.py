@@ -15,6 +15,7 @@
 #
 
 import requests
+import logging
 
 try:
     from urllib import quote_plus
@@ -26,6 +27,8 @@ Low-level REST API calls that specify the inputs and invoke a REST call. Callers
 have the responsibility of handling the Requests libraries response object which can be None
 
 """
+
+logger = logging.getLogger(__name__)
 
 
 def extractor_get(api_key, guid):
@@ -190,4 +193,38 @@ def extractor_start(api_key, guid):
     }
 
     return requests.request("POST", url, headers=headers, params=querystring)
+
+
+def extractor_csv(api_key, guid):
+    url = "https://data.import.io/extractor/{0}/csv/latest".format(guid)
+
+    querystring = {
+        '_apikey': api_key
+    }
+
+    headers = {
+        'accept-encoding': "gzip",
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def extractor_json(api_key, guid):
+
+    url = "https://data.import.io/extractor/{0}/json/latest".format(guid)
+    logger.debug("url: {0}".format(url))
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    headers = {
+        'accept-encoding': "gzip",
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
 
