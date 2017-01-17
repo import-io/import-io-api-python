@@ -20,6 +20,9 @@ from unittest import TestCase
 from importio2 import Extractor
 from importio2 import ExtractorAPI
 
+from tests.unit.importio2.test_data import ExtractorCSVTestData
+import csv
+
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
 
@@ -119,3 +122,9 @@ class TestExtractor(TestCase):
         extractor = Extractor(guid=EXTRACTOR_GUID)
 
         extractor.start()
+
+    def test_extractor_csv(self):
+        extractor = Extractor(guid=ExtractorCSVTestData.EXTRACTOR_ID)
+        csv = extractor.csv()
+        for r in csv:
+            print(r)

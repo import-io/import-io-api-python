@@ -14,12 +14,17 @@
 # limitations under the License.
 #
 
-from importio2.extractor_data import CSVData
-from importio2.api_exception import HTTPResponseError
-from importio2.api_call import ApiCall
-from importio2.api_common import ApiCommon
-from importio2.extractor import Extractor
-from importio2.extractor import ExtractorAPI
-from importio2.api import API
+
+class ExtractorData(object):
+
+    pass
 
 
+class CSVData(ExtractorData):
+
+    def __init__(self, header=None, data=None):
+        self._header = header
+        self._data = data
+
+    def __getitem__(self, item):
+        return self._data[item]

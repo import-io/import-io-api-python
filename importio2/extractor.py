@@ -19,6 +19,7 @@ import requests
 import os
 import importio2.apicore as apicore
 import json
+from importio2 import CSVData
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,34 @@ class ExtractorAPI(object):
         :param guid: Identifier of the extractor
         :return: dictionary of values representing the extractor
         """
+        try:
+            crawl_run_guid = None
+            response = apicore.extractor_cancel(self._api_key, guid)
+
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                crawl_run = json.loads(response.text)
+                crawl_run_id = crawl_run['crawlRunId']
+            else:
+                raise Exception()
+
+            return crawl_run_guid
+        except Exception as e:
+            print(e)
+            return None
+
+    def csv(self, guid):
+        results = None
+        try:
+            response = apicore.extractor_csv(self._api_key, guid)
+            lines = response.text.split('\n')
+            results = []
+            for l in lines:
+                results.append(l.replace('\r', '').replace('"', '').split(','))
+        except Exception as e:
+            print(e)
+        return results
 
     def get(self, guid):
         """
@@ -240,7 +269,7 @@ class Extractor(object):
         :return:
         """
         api = ExtractorAPI()
-        api.cancel()
+        api.cancel(self._guid)
 
     def start(self):
         """
@@ -257,7 +286,10 @@ class Extractor(object):
 
         :return:
         """
-        return None
+        api = ExtractorAPI()
+        result = api.csv(self._guid)
+        csv = CSVData(header=result[1], data=result[2:])
+        return csv
 
 
 

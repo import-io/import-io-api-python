@@ -114,6 +114,8 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         response = extractor_csv(self._api_key, ExtractorCSVTestData.EXTRACTOR_ID)
         self.assertEqual(requests.codes.OK, response.status_code)
         results = response.text.split('\n')
+        for r in results:
+            print(r)
         self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(results))
 
     def test_extractor_json(self):
