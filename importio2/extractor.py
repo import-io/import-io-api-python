@@ -56,13 +56,23 @@ class ExtractorAPI(object):
             return None
 
     def csv(self, guid):
+        """
+        Returns the contents of the CSV file as list of lists from the most recent crawl run.
+        The header appears in the first row
+
+        :param guid:
+        :param guid: Identifier of the extractor
+        :return: List of lists containing the contents of the CSV
+        """
         results = None
         try:
             response = apicore.extractor_csv(self._api_key, guid)
-            lines = response.text.split('\n')
-            results = []
-            for l in lines:
-                results.append(l.replace('\r', '').replace('"', '').split(','))
+            if response.status_code == requests.codes.ok:
+                lines = response.text.split('\n')
+                results = []
+                for l in lines:
+                    results.append(l.replace('\r', '').replace('"', '').split(','))
+                results = results[:-1]
         except Exception as e:
             print(e)
         return results
@@ -313,7 +323,7 @@ class Extractor(object):
         """
         api = ExtractorAPI()
         result = api.csv(self._guid)
-        csv = CSVData(header=result[1], data=result[2:])
+        csv = CSVData(header=result[0], data=result[1:])
         return csv
 
 

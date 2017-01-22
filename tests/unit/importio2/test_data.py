@@ -23,7 +23,7 @@ class ExtractorCSVTestData(object):
 
     EXTRACTOR_ID = '366a3b3b-926c-4b58-88a0-445526b87f93'
 
-    CSV_LEN = 5362
+    CSV_LEN = 5361
 
 
 class ExtractorJSONTestData(object):

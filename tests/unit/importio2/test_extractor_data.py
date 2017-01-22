@@ -37,6 +37,5 @@ class TestCSVData(TestCase):
 
     def test_iterator(self):
         csv = CSVData(header=self.header, data=self.data)
-
         for c in csv:
-            print(c)
+            self.assertIsNotNone(c)

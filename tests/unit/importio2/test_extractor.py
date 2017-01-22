@@ -27,7 +27,7 @@ import csv
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
@@ -110,6 +110,11 @@ class TestExtractorAPI(TestCase):
         crawl_run_id = api.start(ExtractorCrawlRunStartTestData.EXTRACTOR_ID)
         self.assertIsNotNone(crawl_run_id)
 
+    def test_csv(self):
+        api = ExtractorAPI()
+        csv = api.csv(ExtractorCSVTestData.EXTRACTOR_ID)
+        self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv))
+
 
 class TestExtractor(TestCase):
     def test_constructor_by_guid(self):
@@ -152,5 +157,5 @@ class TestExtractor(TestCase):
     def test_extractor_csv(self):
         extractor = Extractor(guid=ExtractorCSVTestData.EXTRACTOR_ID)
         csv = extractor.csv()
-        for r in csv:
-            print(r)
+        # Add one to account for the header which is stored separately in the CSVData instance
+        self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv) + 1)

@@ -196,6 +196,13 @@ def extractor_start(api_key, guid):
 
 
 def extractor_csv(api_key, guid):
+    """
+    Returns the CSV file from the most recent extractor crawl run
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :return: Response object from requests REST call
+    """
     url = "https://data.import.io/extractor/{0}/csv/latest".format(guid)
 
     querystring = {
