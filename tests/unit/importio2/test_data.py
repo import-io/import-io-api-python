@@ -32,3 +32,20 @@ class ExtractorJSONTestData(object):
 
     JSON_LEN = 7
 
+
+class ExtractorCrawlRunsTestData(object):
+
+    EXTRACTOR_ID = 'a4727192-804f-47b1-b562-3f7d5fc89c78'
+
+    GUID = 'bbbbebf7-900a-4de0-82bb-eb2a745a9455'
+
+    CRAWL_RUNS_LEN = 3
+
+    TOTAL_URL_COUNT = 1
+    SUCCESS_URL_COUNT = 1
+    FAILED_URL_COUNT = 0
+
+    STATE = 'FINISHED'
+
+    TYPE = 'CrawlRun'
+

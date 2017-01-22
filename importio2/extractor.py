@@ -89,6 +89,29 @@ class ExtractorAPI(object):
         except Exception as e:
             print(e)
 
+    def get_crawl_runs(self, guid):
+        """
+        Returns a list of crawl runs associated with an extractor
+
+        :param guid: Identifier of the extractor
+        :return: List containing extractor dictionaries
+        """
+        crawl_runs = []
+        try:
+            response = apicore.extractor_get_crawl_runs(self._api_key, guid, 1, 30)
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                runs = json.loads(response.text)
+                for run in runs['hits']['hits']:
+                    crawl_runs.append(run)
+            else:
+                raise Exception()
+            return crawl_runs
+
+        except Exception as e:
+            print(e)
+
     def get_by_name(self, name):
         # Todo: Exception if you cannot find the Extractor in the account then throw an exception
         return {}

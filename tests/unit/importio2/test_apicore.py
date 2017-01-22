@@ -24,9 +24,11 @@ from importio2.apicore import extractor_get
 from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
 from importio2.apicore import extractor_url_list_get
+from importio2.apicore import extractor_get_crawl_runs
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
+from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 import requests
 import json
 import logging
@@ -94,6 +96,25 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         self.assertEqual(requests.codes.OK, page_data['statusCode'])
         self.assertEqual(EXTRACTOR_QUERY_URL, result['url'])
         self.assertEqual(EXTRACTOR_RUNTIME_CONFIG, result['runtimeConfigId'])
+
+    def test_extractor_get_crawl_runs(self):
+        response = extractor_get_crawl_runs(self._api_key, ExtractorCrawlRunsTestData.EXTRACTOR_ID, 1, 30)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        result = response.json()
+
+        hits = result['hits']['hits']
+        self.assertEqual(ExtractorCrawlRunsTestData.CRAWL_RUNS_LEN, len(hits))
+        crawl_run = hits[0]
+        crawl_run_fields = crawl_run['fields']
+
+        self.assertEqual(ExtractorCrawlRunsTestData.GUID, crawl_run_fields['guid'])
+        self.assertEqual(ExtractorCrawlRunsTestData.TYPE, crawl_run['_type'])
+        self.assertEqual(ExtractorCrawlRunsTestData.GUID, crawl_run['_id'])
+        self.assertEqual(ExtractorCrawlRunsTestData.EXTRACTOR_ID, crawl_run_fields['extractorId'])
+        self.assertEqual(ExtractorCrawlRunsTestData.STATE, crawl_run_fields['state'])
+        self.assertEqual(ExtractorCrawlRunsTestData.TOTAL_URL_COUNT, crawl_run_fields['totalUrlCount'])
+        self.assertEqual(ExtractorCrawlRunsTestData.SUCCESS_URL_COUNT, crawl_run_fields['successUrlCount'])
+        self.assertEqual(ExtractorCrawlRunsTestData.FAILED_URL_COUNT, crawl_run_fields['failedUrlCount'])
 
     def test_extractor_cancel(self):
         response = extractor_cancel(self._api_key, EXTRACTOR_GUID)

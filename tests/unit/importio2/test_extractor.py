@@ -21,6 +21,7 @@ from importio2 import Extractor
 from importio2 import ExtractorAPI
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
+from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 import csv
 
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
@@ -82,6 +83,22 @@ class TestExtractorAPI(TestCase):
         api = ExtractorAPI()
         url_list = api.get_url_list(API_TEST_GET_URL_LIST)
         self.assertEqual(10, len(url_list))
+
+    def test_get_crawl_runs(self):
+        api = ExtractorAPI()
+        crawl_runs = api.get_crawl_runs(ExtractorCrawlRunsTestData.EXTRACTOR_ID)
+        self.assertEqual(ExtractorCrawlRunsTestData.CRAWL_RUNS_LEN, len(crawl_runs))
+
+        run = crawl_runs[0]
+        run_fields = run['fields']
+        self.assertEqual(ExtractorCrawlRunsTestData.GUID, run_fields['guid'])
+        self.assertEqual(ExtractorCrawlRunsTestData.TYPE, run['_type'])
+        self.assertEqual(ExtractorCrawlRunsTestData.GUID, run['_id'])
+        self.assertEqual(ExtractorCrawlRunsTestData.EXTRACTOR_ID, run_fields['extractorId'])
+        self.assertEqual(ExtractorCrawlRunsTestData.STATE, run_fields['state'])
+        self.assertEqual(ExtractorCrawlRunsTestData.TOTAL_URL_COUNT, run_fields['totalUrlCount'])
+        self.assertEqual(ExtractorCrawlRunsTestData.SUCCESS_URL_COUNT, run_fields['successUrlCount'])
+        self.assertEqual(ExtractorCrawlRunsTestData.FAILED_URL_COUNT, run_fields['failedUrlCount'])
 
 
 class TestExtractor(TestCase):
