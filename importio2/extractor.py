@@ -110,6 +110,7 @@ class ExtractorAPI(object):
             return crawl_runs
 
         except Exception as e:
+            logger.error(e)
             print(e)
 
     def get_by_name(self, name):
@@ -164,7 +165,7 @@ class ExtractorAPI(object):
         :return: Crawl run identifier
         """
         try:
-            crawl_run_guid = None
+            crawl_run_id = None
             # TODO: What are the failure conditions we need to handle
             # TODO: What exceptions should we throw based on Network available, etc
             # TODO: What if a crawl run is already underway?
@@ -176,9 +177,10 @@ class ExtractorAPI(object):
                 crawl_run = json.loads(response.text)
                 crawl_run_id = crawl_run['crawlRunId']
             else:
+                logger.error("Unable to start crawl run for exractor: {0}".format(guid))
                 raise Exception()
 
-            return crawl_run_guid
+            return crawl_run_id
         except Exception as e:
             print(e)
             return None

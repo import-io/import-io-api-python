@@ -23,6 +23,10 @@ from importio2 import ExtractorAPI
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 import csv
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
@@ -99,6 +103,11 @@ class TestExtractorAPI(TestCase):
         self.assertEqual(ExtractorCrawlRunsTestData.TOTAL_URL_COUNT, run_fields['totalUrlCount'])
         self.assertEqual(ExtractorCrawlRunsTestData.SUCCESS_URL_COUNT, run_fields['successUrlCount'])
         self.assertEqual(ExtractorCrawlRunsTestData.FAILED_URL_COUNT, run_fields['failedUrlCount'])
+
+    def test_start(self):
+        api = ExtractorAPI()
+        crawl_run_id = api.start(ExtractorCrawlRunsTestData.EXTRACTOR_ID)
+        self.assertIsNotNone(crawl_run_id)
 
 
 class TestExtractor(TestCase):
