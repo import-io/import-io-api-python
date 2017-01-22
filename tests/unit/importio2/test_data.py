@@ -37,9 +37,9 @@ class ExtractorCrawlRunsTestData(object):
 
     EXTRACTOR_ID = 'a4727192-804f-47b1-b562-3f7d5fc89c78'
 
-    GUID = 'bbbbebf7-900a-4de0-82bb-eb2a745a9455'
+    GUID = 'a7b72673-78e0-4bdc-b100-b2d65b423199'
 
-    CRAWL_RUNS_LEN = 3
+    CRAWL_RUNS_LEN = 12
 
     TOTAL_URL_COUNT = 1
     SUCCESS_URL_COUNT = 1
@@ -48,4 +48,12 @@ class ExtractorCrawlRunsTestData(object):
     STATE = 'FINISHED'
 
     TYPE = 'CrawlRun'
+
+
+class ExtractorCrawlRunStartTestData(object):
+
+
+    EXTRACTOR_ID = 'bcbb4893-e914-485b-bf82-90874c51fe3b'
+
+
 

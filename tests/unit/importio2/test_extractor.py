@@ -22,6 +22,7 @@ from importio2 import ExtractorAPI
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
+from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
 import csv
 import logging
 
@@ -106,7 +107,7 @@ class TestExtractorAPI(TestCase):
 
     def test_start(self):
         api = ExtractorAPI()
-        crawl_run_id = api.start(ExtractorCrawlRunsTestData.EXTRACTOR_ID)
+        crawl_run_id = api.start(ExtractorCrawlRunStartTestData.EXTRACTOR_ID)
         self.assertIsNotNone(crawl_run_id)
 
 
@@ -146,7 +147,6 @@ class TestExtractor(TestCase):
 
     def test_extractor_start(self):
         extractor = Extractor(guid=EXTRACTOR_GUID)
-
         extractor.start()
 
     def test_extractor_csv(self):
