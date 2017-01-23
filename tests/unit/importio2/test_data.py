@@ -35,7 +35,8 @@ class ExtractorJSONTestData(object):
 
     EXTRACTOR_ID = '366a3b3b-926c-4b58-88a0-445526b87f93'
 
-    JSON_LEN = 7
+    JSON_LEN_API = 6
+    JSON_LEN_RAW = 7
 
 
 class ExtractorCrawlRunsTestData(object):

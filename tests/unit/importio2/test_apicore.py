@@ -142,7 +142,7 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         response = extractor_json(self._api_key, ExtractorJSONTestData.EXTRACTOR_ID)
         self.assertEqual(requests.codes.OK, response.status_code)
         results = response.text.split('\n')
-        self.assertEqual(ExtractorJSONTestData.JSON_LEN, len(results))
+        self.assertEqual(ExtractorJSONTestData.JSON_LEN_RAW, len(results))
 
 
 

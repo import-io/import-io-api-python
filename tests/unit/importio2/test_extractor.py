@@ -21,13 +21,14 @@ from importio2 import Extractor
 from importio2 import ExtractorAPI
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
+from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
 import csv
 import logging
 
 logger = logging.getLogger(__name__)
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
@@ -115,6 +116,11 @@ class TestExtractorAPI(TestCase):
         csv = api.csv(ExtractorCSVTestData.EXTRACTOR_ID)
         self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv))
 
+    def test_json(self):
+        api = ExtractorAPI()
+        result = api.json(ExtractorJSONTestData.EXTRACTOR_ID)
+        self.assertEqual(ExtractorJSONTestData.JSON_LEN_API, len(result))
+
 
 class TestExtractor(TestCase):
     def test_constructor_by_guid(self):
@@ -159,3 +165,4 @@ class TestExtractor(TestCase):
         csv = extractor.csv()
         # Add one to account for the header which is stored separately in the CSVData instance
         self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv) + 1)
+

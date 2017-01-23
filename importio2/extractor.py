@@ -77,6 +77,22 @@ class ExtractorAPI(object):
             print(e)
         return results
 
+    def json(self, guid):
+        results = None
+        try:
+            for i in range(1, 6):
+                response = apicore.extractor_json(self._api_key, guid)
+                if response.status_code == requests.codes.ok:
+                    results = []
+                    lines = response.text.split('\n')
+                    for l in lines:
+                        if len(l) > 0:
+                            results.append(json.loads(l))
+                    break
+        except Exception as e:
+            print(e)
+        return results
+
     def get(self, guid):
         """
         Returns a dictionary of the contents of extractor
