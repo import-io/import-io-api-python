@@ -24,6 +24,7 @@ from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
+from tests.unit.importio2.test_data import ExtractorQueryTestData
 import csv
 import logging
 
@@ -120,6 +121,16 @@ class TestExtractorAPI(TestCase):
         api = ExtractorAPI()
         result = api.json(ExtractorJSONTestData.EXTRACTOR_ID)
         self.assertEqual(ExtractorJSONTestData.JSON_LEN_API, len(result))
+
+    def test_query(self):
+        api = ExtractorAPI()
+        result = api.query(ExtractorQueryTestData.EXTRACTOR_ID, ExtractorQueryTestData.PAGE_2_QUERY_URL)
+        self.assertIsNotNone(result)
+        self.assertEqual(ExtractorQueryTestData.PAGE_2_QUERY_URL, result['url'])
+        group = result['extractorData']['data'][0]['group']
+        self.assertEqual(group[0]['product'][0]['text'], 'YDDINGEN')
+        self.assertEqual(group[0]['description'][0]['text'], 'Sink cabinet with 2 drawers/1 door')
+        self.assertEqual(group[0]['price'][0]['text'], '$299.00')
 
 
 class TestExtractor(TestCase):

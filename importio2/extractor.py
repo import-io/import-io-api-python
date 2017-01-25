@@ -181,7 +181,17 @@ class ExtractorAPI(object):
         :param url: URL to run the Extractor against
         :return: A dictionary of the results of the query
         """
-        pass
+        result = None
+        try:
+            response = apicore.extractor_query(self._api_key, guid, url)
+            if response.status_code == requests.codes.ok:
+                result = json.loads(response.text)
+            else:
+                logger.error("Unable to run query: {0} extractor: {1}".format(url, guid))
+                raise Exception()
+        except Exception as e:
+            print(e)
+        return result
 
     def start(self, guid):
         """
@@ -203,7 +213,7 @@ class ExtractorAPI(object):
                 crawl_run = json.loads(response.text)
                 crawl_run_id = crawl_run['crawlRunId']
             else:
-                logger.error("Unable to start crawl run for exractor: {0}".format(guid))
+                logger.error("Unable to start crawl run for extractor: {0}".format(guid))
                 raise Exception()
 
             return crawl_run_id
