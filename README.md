@@ -3,7 +3,7 @@ Import.io API for Python
 
 Python bindings and other tools for interacting with the Import.io service.
 
-© 2016 Import.io
+© 2016-2017 Import.io
 
 Prerequistes
 ------------
