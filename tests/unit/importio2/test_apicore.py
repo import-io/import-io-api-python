@@ -24,11 +24,13 @@ from importio2.apicore import extractor_get
 from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
 from importio2.apicore import extractor_url_list_get
+from importio2.apicore import extractor_url_list_put
 from importio2.apicore import extractor_get_crawl_runs
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
+from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
 import requests
 import json
 import logging
@@ -82,6 +84,12 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=8
 http://www.ikea.com/us/en/search/?query=chairs&pageNumber=9
 http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         self.assertEqual(content, response.text)
+
+    def test_extractor_url_list_put(self):
+        response = extractor_url_list_put(
+            self._api_key, ExtractorUrlListPutTestData.EXTRACTOR_ID, ExtractorUrlListPutTestData.URL_LIST)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        print(response.text)
 
     def test_extractor_query(self):
         response = extractor_query(self._api_key, EXTRACTOR_GUID, EXTRACTOR_QUERY_URL)

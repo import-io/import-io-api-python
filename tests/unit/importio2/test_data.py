@@ -70,4 +70,11 @@ class ExtractorQueryTestData(object):
     PAGE_2_QUERY_URL = 'http://www.ikea.com/us/en/search/?query=Towels&pageNumber=2'
 
 
+class ExtractorUrlListPutTestData(object):
+
+    EXTRACTOR_ID = '8fd833ca-6b6b-4ecb-abf4-a7223251a97e'
+
+    URL_LIST = "http://www.ikea.com/us/en/search/?query=chairs&pageNumber=1\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=2\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=3\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=4\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=5\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=6\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=7\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=8\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=9\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"
+
+
 

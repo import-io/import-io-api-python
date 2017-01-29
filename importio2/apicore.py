@@ -150,6 +150,22 @@ def extractor_url_list_get(api_key, guid, url_guid):
     return requests.request("GET", url, headers=headers, params=querystring)
 
 
+def extractor_url_list_put(api_key, guid, url_list):
+
+    url = "https://store.import.io/store/extractor/{0}/_attachment/urlList".format(guid)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    payload = url_list
+    headers = {
+        'content-type': "text/plain",
+    }
+
+    return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
+
+
 def extractor_cancel(api_key, guid):
     """
     Cancels a crawl run of an extractor

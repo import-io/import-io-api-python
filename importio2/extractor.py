@@ -52,7 +52,7 @@ class ExtractorAPI(object):
 
             return crawl_run_guid
         except Exception as e:
-            print(e)
+            logger.exception(e)
             return None
 
     def csv(self, guid):
@@ -74,7 +74,7 @@ class ExtractorAPI(object):
                     results.append(l.replace('\r', '').replace('"', '').split(','))
                 results = results[:-1]
         except Exception as e:
-            print(e)
+            logger.exception(e)
         return results
 
     def json(self, guid):
@@ -90,7 +90,7 @@ class ExtractorAPI(object):
                             results.append(json.loads(l))
                     break
         except Exception as e:
-            print(e)
+            logger.exception(e)
         return results
 
     def get(self, guid):
@@ -113,7 +113,7 @@ class ExtractorAPI(object):
                 raise Exception()
             return extractor
         except Exception as e:
-            print(e)
+            logger.exception(e)
 
     def get_crawl_runs(self, guid):
         """
@@ -136,8 +136,7 @@ class ExtractorAPI(object):
             return crawl_runs
 
         except Exception as e:
-            logger.error(e)
-            print(e)
+            logger.exception(e)
 
     def get_by_name(self, name):
         # Todo: Exception if you cannot find the Extractor in the account then throw an exception
@@ -156,6 +155,21 @@ class ExtractorAPI(object):
         url_list = response.text.split('\n')
         return url_list
 
+    def put_url_list(self, guid, urls):
+        """
+        Set the URLs associated with an Extractor
+
+        :param guid: Identifier of the extractor
+        :param urls: List of strings containing URLs
+        :return: Url List Id
+        """
+        print('put_url_list')
+        url_list = '\n'.join(urls)
+        print(url_list)
+        response = apicore.extractor_url_list_put(self._api_key, guid, url_list)
+        print(response)
+        return response.text
+
     def list(self):
         """
         Returns as list of Extractor GUIDs in an account
@@ -164,14 +178,26 @@ class ExtractorAPI(object):
         """
         return []
 
-    def put_url_list(self, guid, url_list):
+    def put_url_list(self, guid, urls):
         """
         Replaces the URL list on an Extractor
-        :param guid:
-        :param url_list:
-        :return:
+        :param guid: Identifier of the extractor
+        :param url_list: List of string containing URLs
+        :return: None
         """
-        pass
+        url_list_id = None
+        try:
+            url_list = '\n'.join(urls)
+            response = apicore.extractor_url_list_put(self._api_key, guid, url_list)
+            if response.status_code == requests.codes.ok:
+                result = json.loads(response.text)
+                url_list_id = result['guid']
+            else:
+                logger.error("Unable set url list for extractor: {0}".format(guid))
+                raise Exception()
+        except Exception as e:
+            logger.exception(e)
+        return url_list_id
 
     def query(self, guid, url):
         """
@@ -190,7 +216,7 @@ class ExtractorAPI(object):
                 logger.error("Unable to run query: {0} extractor: {1}".format(url, guid))
                 raise Exception()
         except Exception as e:
-            print(e)
+            logger.exception(e)
         return result
 
     def start(self, guid):
@@ -200,8 +226,8 @@ class ExtractorAPI(object):
         :param guid: Extractor identifier
         :return: Crawl run identifier
         """
+        crawl_run_id = None
         try:
-            crawl_run_id = None
             # TODO: What are the failure conditions we need to handle
             # TODO: What exceptions should we throw based on Network available, etc
             # TODO: What if a crawl run is already underway?
@@ -215,11 +241,10 @@ class ExtractorAPI(object):
             else:
                 logger.error("Unable to start crawl run for extractor: {0}".format(guid))
                 raise Exception()
-
             return crawl_run_id
         except Exception as e:
-            print(e)
-            return None
+            logger.exception(e)
+        return crawl_run_id
 
 
 class ExtractorUrl(object):

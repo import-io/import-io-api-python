@@ -16,6 +16,8 @@
 
 from __future__ import absolute_import
 
+import re
+
 from unittest import TestCase
 from importio2 import Extractor
 from importio2 import ExtractorAPI
@@ -25,6 +27,7 @@ from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
 from tests.unit.importio2.test_data import ExtractorQueryTestData
+from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
 import csv
 import logging
 
@@ -91,6 +94,12 @@ class TestExtractorAPI(TestCase):
         url_list = api.get_url_list(API_TEST_GET_URL_LIST)
         self.assertEqual(10, len(url_list))
 
+    def test_url_list_put(self):
+        api = ExtractorAPI()
+        url_list = ExtractorUrlListPutTestData.EXTRACTOR_ID.split('\n')
+        url_id = api.put_url_list(ExtractorUrlListPutTestData.EXTRACTOR_ID, url_list)
+        self.assertIsNotNone(re.match(r'[0-9,a-f]{8}-[0-9,a-f]{4}-[0-9,a-f]{4}-[0-9,a-f]{4}-[0-9,a-f]{12}', url_id))
+
     def test_get_crawl_runs(self):
         api = ExtractorAPI()
         crawl_runs = api.get_crawl_runs(ExtractorCrawlRunsTestData.EXTRACTOR_ID)
@@ -128,9 +137,9 @@ class TestExtractorAPI(TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(ExtractorQueryTestData.PAGE_2_QUERY_URL, result['url'])
         group = result['extractorData']['data'][0]['group']
-        self.assertEqual(group[0]['product'][0]['text'], 'YDDINGEN')
-        self.assertEqual(group[0]['description'][0]['text'], 'Sink cabinet with 2 drawers/1 door')
-        self.assertEqual(group[0]['price'][0]['text'], '$299.00')
+        self.assertIsNotNone(re.match(r'[A-Z]+', group[0]['product'][0]['text']))
+        self.assertGreater(len(group[0]['description'][0]['text']), 0)
+        self.assertIsNotNone(re.match(r'\$\d+\.\d{2}', group[0]['price'][0]['text']))
 
 
 class TestExtractor(TestCase):
