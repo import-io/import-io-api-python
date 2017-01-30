@@ -89,6 +89,9 @@ class ExtractorAPI(object):
                         if len(l) > 0:
                             results.append(json.loads(l))
                     break
+                else:
+                    logger.error("Getting JSON attachment from: {0}, return {1}, retrying".format(
+                        guid, response.status.code))
         except Exception as e:
             logger.exception(e)
         return results
@@ -209,11 +212,20 @@ class ExtractorAPI(object):
         """
         result = None
         try:
-            response = apicore.extractor_query(self._api_key, guid, url)
-            if response.status_code == requests.codes.ok:
-                result = json.loads(response.text)
-            else:
-                logger.error("Unable to run query: {0} extractor: {1}".format(url, guid))
+            # Make 5 attempts
+            response = None
+            success = True
+            for i in range(1, 6):
+                response = apicore.extractor_query(self._api_key, guid, url)
+                if response.status_code == requests.codes.ok:
+                    result = json.loads(response.text)
+                    success = True
+                    break
+                else:
+                    logger.error('Query failed for extractor: \"{0}\" with url: \"{1}\", http code:\"{2}\"'.format(
+                        guid, url, response.status_code))
+            if not success:
+                logger.error("Unable to run query: {0} extractor: {1}, HTTP Code".format(url, guid, response.status_code))
                 raise Exception()
         except Exception as e:
             logger.exception(e)
