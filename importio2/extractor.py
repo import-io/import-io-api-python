@@ -78,6 +78,12 @@ class ExtractorAPI(object):
         return results
 
     def json(self, guid):
+        """
+        Return a list of JSON documents from an Extractor by converting JSON into dictionaries
+        and adding to a python list
+        :param guid: Identifier of the extractor
+        :return: List of JSON documents
+        """
         results = None
         try:
             for i in range(1, 6):
@@ -157,21 +163,6 @@ class ExtractorAPI(object):
         response = apicore.extractor_url_list_get(self._api_key, guid, url_list_guid)
         url_list = response.text.split('\n')
         return url_list
-
-    def put_url_list(self, guid, urls):
-        """
-        Set the URLs associated with an Extractor
-
-        :param guid: Identifier of the extractor
-        :param urls: List of strings containing URLs
-        :return: Url List Id
-        """
-        print('put_url_list')
-        url_list = '\n'.join(urls)
-        print(url_list)
-        response = apicore.extractor_url_list_put(self._api_key, guid, url_list)
-        print(response)
-        return response.text
 
     def list(self):
         """

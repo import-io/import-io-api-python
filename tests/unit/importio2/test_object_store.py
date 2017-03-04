@@ -1,5 +1,5 @@
 #
-# Copyright 2016 Import.io
+# Copyright 2017 Import.io
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,23 @@
 # limitations under the License.
 #
 
-from importio2.extractor_data import CSVData
-from importio2.api_exception import HTTPResponseError
-from importio2.api_call import ApiCall
-from importio2.api_common import ApiCommon
-from importio2.extractor import Extractor
-from importio2.extractor import ExtractorAPI
-from importio2.object_store import ObjectStoreAPI
-from importio2.object_store import CrawlRun
-from importio2.api import API
+from unittest import TestCase
 
+from importio2 import ObjectStoreAPI
+from importio2 import CrawlRun
+
+#logging.basicConfig(level=logging.DEBUG)
+
+
+class TestObjectStore(TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_constructor(self):
+        object_store = ObjectStoreAPI()
+        self.assertIsNotNone(object_store)
+
+    def test_create(self):
+        pass
 

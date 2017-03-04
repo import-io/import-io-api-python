@@ -21,21 +21,28 @@ from importio2.apicore import extractor_cancel
 from importio2.apicore import extractor_csv
 from importio2.apicore import extractor_json
 from importio2.apicore import extractor_get
+
 from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
 from importio2.apicore import extractor_url_list_get
 from importio2.apicore import extractor_url_list_put
 from importio2.apicore import extractor_get_crawl_runs
 
+from importio2.apicore import object_store_create
+from importio2.apicore import object_store_put_attachment
+
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
+from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
+from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
+from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
 import requests
 import json
 import logging
 
-#logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
@@ -51,7 +58,6 @@ API_TEST_START_CANCEL = 'df761a66-c218-46ab-9655-01250e9c7214'
 
 
 class TestApiCore(TestCase):
-
     def setUp(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
         self._response = extractor_get(self._api_key, EXTRACTOR_GUID)
@@ -153,5 +159,38 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         self.assertEqual(ExtractorJSONTestData.JSON_LEN_RAW, len(results))
 
 
+class TestObjectStoreApiCore(TestCase):
+    def setUp(self):
+        self._api_key = os.environ['IMPORT_IO_API_KEY']
 
+    def test_create_crawl_run(self):
+        data = {
+            'extractorId': ObjectStoreCrawlRunTestData.EXTRACTOR_ID,
+            'failedUrlCount': 0,
+            'successUrlCount': 100,
+            'totalUrlCount': 100,
+            'rowCount': 100,
+            'startedAt': ObjectStoreCrawlRunTestData.STARTED_AT,
+            'stoppedAt': ObjectStoreCrawlRunTestData.STOPPED_AT,
+            'state': 'FINISHED'
+        }
+        response = object_store_create(self._api_key, 'crawlrun', data)
+        self.assertIsNotNone(response)
 
+    def test_extractor_put_attachment(self):
+        response = object_store_put_attachment(self._api_key,
+                                               ObjectStoreExtractorPutUrlListAttachment.OBJECT_TYPE,
+                                               ObjectStoreExtractorPutUrlListAttachment.EXTRACTOR_ID,
+                                               ObjectStoreExtractorPutUrlListAttachment.ATTACHMENT_FIELD,
+                                               ObjectStoreExtractorPutUrlListAttachment.ATTACHMENT_CONTENTS,
+                                               ObjectStoreExtractorPutUrlListAttachment.ATTACHMENT_TYPE)
+        self.assertIsNotNone(response)
+
+    def test_crawl_run_put_csv_attachment(self):
+        response = object_store_put_attachment(self._api_key,
+                                               ObjectStoreExtractorPutCsvAttachment.OBJECT_TYPE,
+                                               ObjectStoreExtractorPutCsvAttachment.EXTRACTOR_ID,
+                                               ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_FIELD,
+                                               ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_CONTENTS,
+                                               ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_TYPE)
+        self.assertIsNotNone(response)

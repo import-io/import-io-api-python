@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from importio2 import ExtractorAPI
+import os
 
 
 class API(object):
@@ -32,3 +33,9 @@ class API(object):
     @property
     def extractor(self):
         return self._extractor
+
+
+class ImportioAPI(object):
+
+    def __init__(self):
+        self._api_key = os.environ['IMPORT_IO_API_KEY']

@@ -15,6 +15,7 @@
 #
 
 from __future__ import absolute_import
+from datetime import datetime
 
 EXTRACTOR_CSV_ID = 'b8debacc-b50d-46ce-a666-a1fb20420792'
 
@@ -75,6 +76,36 @@ class ExtractorUrlListPutTestData(object):
     EXTRACTOR_ID = '8fd833ca-6b6b-4ecb-abf4-a7223251a97e'
 
     URL_LIST = "http://www.ikea.com/us/en/search/?query=chairs&pageNumber=1\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=2\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=3\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=4\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=5\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=6\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=7\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=8\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=9\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"
+
+
+class ObjectStoreCrawlRunTestData(object):
+
+    EXTRACTOR_ID = '8fd833ca-6b6b-4ecb-abf4-a7223251a97e'
+    STARTED_AT = int(datetime(2017, 1, 1, 9, 0, 0).strftime('%s')) * 1000
+    STOPPED_AT = int(datetime(2017, 2, 15, 18, 0, 0).strftime('%s')) * 1000
+
+
+class ObjectStoreExtractorPutUrlListAttachment(object):
+
+    EXTRACTOR_ID = '0d1c19f0-399a-4310-b48b-e76131e9ee4c'
+    OBJECT_TYPE = 'extractor'
+    ATTACHMENT_FIELD = 'urlList'
+    ATTACHMENT_CONTENTS = """http://www.example.com?foo=bar
+http://www.example.com/?red=green
+"""
+    ATTACHMENT_TYPE = 'text/plain'
+
+
+class ObjectStoreExtractorPutCsvAttachment(object):
+
+    EXTRACTOR_ID = '0d1c19f0-399a-4310-b48b-e76131e9ee4c'
+    OBJECT_TYPE = 'crawlrun'
+    ATTACHMENT_FIELD = 'csv'
+    ATTACHMENT_CONTENTS = """http://www.example.com?foo=bar
+http://www.example.com/?red=green
+"""
+    ATTACHMENT_TYPE = 'text/csv'
+
 
 
 

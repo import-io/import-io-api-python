@@ -29,6 +29,7 @@ have the responsibility of handling the Requests libraries response object which
 """
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def extractor_get(api_key, guid):
@@ -249,5 +250,40 @@ def extractor_json(api_key, guid):
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
+
+def object_store_create(api_key, object_type, object):
+
+
+    url = "https://store.import.io/{0}".format(object_type)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    payload = object
+    headers = {
+        'accept': "application/json",
+        'content-type': "application/json",
+        'cache-control': "no-cache",
+    }
+
+    return requests.request("POST", url, data=payload, headers=headers, params=querystring)
+
+
+def object_store_put_attachment(api_key, object_type, object_id, attachment_field, attachment_contents,
+                                attachment_type):
+
+    url = "https://store.import.io/{0}/{1}/_attachment/{2}".format(object_type, object_id, attachment_field)
+
+    querystring = {
+        "_apikey": api_key
+    }
+    payload = attachment_contents
+    headers = {
+        'accept': "application/json",
+        'content-type': attachment_type,
+        'cache-control': "no-cache",
+    }
+    return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
 
 
