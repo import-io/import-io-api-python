@@ -2,10 +2,12 @@ PACKAGE=importio2
 VERSION=$(shell python -c "from $(PACKAGE).version import __version__ ; print(__version__)")
 TAR_FILE=dist/$(PACKAGE)-$(VERSION).tar.gz
 
-install: build
-	pip install $(TAR_FILE)
+all: clean install 
 
-build: doc
+install: build
+	python setup.py install
+
+build:
 	python setup.py sdist
 
 doc:

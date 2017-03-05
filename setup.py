@@ -2,11 +2,18 @@
 Handles the building of python package
 """
 from setuptools import setup
-from importio2.version import __version__
+from distutils.util import convert_path
+
+PACKAGE_NAME = 'importio2'
+
+main_ns = {}
+version_path = convert_path(PACKAGE_NAME + '/version.py')
+with open(version_path) as version_file:
+        exec(version_file.read(), main_ns)
 
 setup(
-    name='importio2',
-    version=__version__,
+    name=PACKAGE_NAME,
+    version=main_ns['__version__'],
     url='http://github.io/import.io/import-io-api-python',
     author='Andrew Fogg, David Gwartney',
     author_email='david.gwartney@import.io',
