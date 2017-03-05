@@ -16,6 +16,7 @@
 
 import requests
 import logging
+import json
 
 try:
     from urllib import quote_plus
@@ -253,14 +254,13 @@ def extractor_json(api_key, guid):
 
 def object_store_create(api_key, object_type, object):
 
-
     url = "https://store.import.io/{0}".format(object_type)
 
     querystring = {
         "_apikey": api_key
     }
 
-    payload = object
+    payload = json.dumps(object)
     headers = {
         'accept': "application/json",
         'content-type': "application/json",

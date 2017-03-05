@@ -83,6 +83,11 @@ class ObjectStoreCrawlRunTestData(object):
     EXTRACTOR_ID = '8fd833ca-6b6b-4ecb-abf4-a7223251a97e'
     STARTED_AT = int(datetime(2017, 1, 1, 9, 0, 0).strftime('%s')) * 1000
     STOPPED_AT = int(datetime(2017, 2, 15, 18, 0, 0).strftime('%s')) * 1000
+    ROW_COUNT = 1000
+    TOTAL_URL_COUNT = 100
+    SUCCESS_URL_COUNT = 100
+    FAILED_URL_COUNT = 0
+    STATE = 'FINISHED'
 
 
 class ObjectStoreExtractorPutUrlListAttachment(object):
@@ -98,13 +103,24 @@ http://www.example.com/?red=green
 
 class ObjectStoreExtractorPutCsvAttachment(object):
 
-    EXTRACTOR_ID = '0d1c19f0-399a-4310-b48b-e76131e9ee4c'
+    CRAWL_RUN_ID = '4cabd98f-72c3-4b99-9fc6-85ebc1dc6e60'
     OBJECT_TYPE = 'crawlrun'
     ATTACHMENT_FIELD = 'csv'
     ATTACHMENT_CONTENTS = """http://www.example.com?foo=bar
 http://www.example.com/?red=green
 """
     ATTACHMENT_TYPE = 'text/csv'
+
+
+class ObjectStoreExtractorPutJsonAttachment(object):
+
+    CRAWL_RUN_ID = '3e9a9971-618e-4dc1-aea1-c4b8323cbb7d'
+    OBJECT_TYPE = 'crawlrun'
+    ATTACHMENT_FIELD = 'json'
+    ATTACHMENT_CONTENTS = """{"url":"http://www.example.com/?foo=bar","result":{"extractorData":{"url":"http://www.example.com/?foo=bar","resourceId":"8eac9d40c7b312e36c3518821bd7256c","data":[{"group":[{"header":[{"text":"Example Domain"}],"description":[{"text":"This domain is established to be used for illustrative examples in documents. You may use this domain in examples without prior coordination or asking for permission."}],"link":[{"text":"More information...","href":"http://www.iana.org/domains/example"}]}]}]},"pageData":{"resourceId":"8eac9d40c7b312e36c3518821bd7256c","statusCode":200,"timestamp":1488670639095},"timestamp":1488670639860,"sequenceNumber":0}}
+{"url":"http://www.example.com/?red=green","result":{"extractorData":{"url":"http://www.example.com/?red=green","resourceId":"c5355c6a9536e87d978a4417d01206ff","data":[{"group":[{"header":[{"text":"Example Domain"}],"description":[{"text":"This domain is established to be used for illustrative examples in documents. You may use this domain in examples without prior coordination or asking for permission."}],"link":[{"text":"More information...","href":"http://www.iana.org/domains/example"}]}]}]},"pageData":{"resourceId":"c5355c6a9536e87d978a4417d01206ff","statusCode":200,"timestamp":1488670639954},"timestamp":1488670640902,"sequenceNumber":1}}
+"""
+    ATTACHMENT_TYPE = 'application/x-ldjson'
 
 
 

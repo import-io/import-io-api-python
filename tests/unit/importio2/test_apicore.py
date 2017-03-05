@@ -38,11 +38,12 @@ from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
 from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
+from tests.unit.importio2.test_data import ObjectStoreExtractorPutJsonAttachment
 import requests
 import json
 import logging
 
-# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
@@ -166,16 +167,40 @@ class TestObjectStoreApiCore(TestCase):
     def test_create_crawl_run(self):
         data = {
             'extractorId': ObjectStoreCrawlRunTestData.EXTRACTOR_ID,
-            'failedUrlCount': 0,
-            'successUrlCount': 100,
-            'totalUrlCount': 100,
-            'rowCount': 100,
+            'failedUrlCount': ObjectStoreCrawlRunTestData.FAILED_URL_COUNT,
+            'successUrlCount': ObjectStoreCrawlRunTestData.SUCCESS_URL_COUNT,
+            'totalUrlCount': ObjectStoreCrawlRunTestData.TOTAL_URL_COUNT,
+            'rowCount': ObjectStoreCrawlRunTestData.ROW_COUNT,
             'startedAt': ObjectStoreCrawlRunTestData.STARTED_AT,
             'stoppedAt': ObjectStoreCrawlRunTestData.STOPPED_AT,
-            'state': 'FINISHED'
+            'state': ObjectStoreCrawlRunTestData.STATE
         }
         response = object_store_create(self._api_key, 'crawlrun', data)
-        self.assertIsNotNone(response)
+        result = response.json()
+
+        self.assertTrue('_meta' in result)
+        meta = result['_meta']
+        self.assertTrue('timestamp' in meta)
+        self.assertTrue('lastEditorGuid' in meta)
+        self.assertTrue('ownerGuid' in meta)
+        self.assertTrue('guid' in result)
+        self.assertTrue('successUrlCount' in result)
+        self.assertTrue('extractorId' in result)
+        self.assertTrue('stoppedAt' in result)
+        self.assertTrue('startedAt' in result)
+        self.assertTrue('failedUrlCount' in result)
+        self.assertTrue('totalUrlCount' in result)
+        self.assertTrue('state' in result)
+        self.assertTrue('rowCount' in result)
+
+        self.assertEqual(ObjectStoreCrawlRunTestData.EXTRACTOR_ID, result['extractorId'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.STARTED_AT, result['startedAt'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.STOPPED_AT, result['stoppedAt'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.FAILED_URL_COUNT, result['failedUrlCount'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.TOTAL_URL_COUNT, result['totalUrlCount'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.SUCCESS_URL_COUNT, result['successUrlCount'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.ROW_COUNT, result['rowCount'])
+        self.assertEqual(ObjectStoreCrawlRunTestData.STATE, result['state'])
 
     def test_extractor_put_attachment(self):
         response = object_store_put_attachment(self._api_key,
@@ -185,12 +210,39 @@ class TestObjectStoreApiCore(TestCase):
                                                ObjectStoreExtractorPutUrlListAttachment.ATTACHMENT_CONTENTS,
                                                ObjectStoreExtractorPutUrlListAttachment.ATTACHMENT_TYPE)
         self.assertIsNotNone(response)
+        result = response.json()
+        self.assertTrue('guid' in result)
+        self.assertTrue('bucketGuid' in result)
+        self.assertTrue('objectGuid' in result)
+        self.assertEqual('urlList', result['field'])
+        self.assertEqual(66, int(result['size']))
 
     def test_crawl_run_put_csv_attachment(self):
         response = object_store_put_attachment(self._api_key,
                                                ObjectStoreExtractorPutCsvAttachment.OBJECT_TYPE,
-                                               ObjectStoreExtractorPutCsvAttachment.EXTRACTOR_ID,
+                                               ObjectStoreExtractorPutCsvAttachment.CRAWL_RUN_ID,
                                                ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_FIELD,
                                                ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_CONTENTS,
                                                ObjectStoreExtractorPutCsvAttachment.ATTACHMENT_TYPE)
         self.assertIsNotNone(response)
+        result = response.json()
+        self.assertTrue('guid' in result)
+        self.assertTrue('bucketGuid' in result)
+        self.assertTrue('objectGuid' in result)
+        self.assertEqual('csv', result['field'])
+        self.assertEqual(66, int(result['size']))
+
+    def test_crawl_run_put_json_attachment(self):
+        response = object_store_put_attachment(self._api_key,
+                                               ObjectStoreExtractorPutJsonAttachment.OBJECT_TYPE,
+                                               ObjectStoreExtractorPutJsonAttachment.CRAWL_RUN_ID,
+                                               ObjectStoreExtractorPutJsonAttachment.ATTACHMENT_FIELD,
+                                               ObjectStoreExtractorPutJsonAttachment.ATTACHMENT_CONTENTS,
+                                               ObjectStoreExtractorPutJsonAttachment.ATTACHMENT_TYPE)
+        self.assertIsNotNone(response)
+        result = response.json()
+        self.assertIsNotNone(response)
+        self.assertTrue('guid' in result)
+        self.assertTrue('bucketGuid' in result)
+        self.assertTrue('objectGuid' in result)
+        self.assertEqual('json', result['field'])
