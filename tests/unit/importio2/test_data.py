@@ -188,5 +188,21 @@ class CrawlRunCsvJsonAttachment(object):
     JSON_FILENAME = 'json_attachment.json'
 
 
+class CrawlRunCsvJsonAttachmentNew(object):
+    EXTRACTOR_ID = 'c6ca928e-1dae-4860-b19a-b195f22e7a78'
+    FAILED_URL_COUNT = 0
+    SUCCESS_URL_COUNT = 3
+    TOTAL_URL_COUNT = 3
+    ROW_COUNT = 6
+    STARTED_AT = 1488768583669
+    STOPPED_AT = 1488768587368
+    STATE = 'FINISHED'
+
+    CSV_FILENAME = 'csv_attachment.csv'
+    JSON_FILENAME = 'json_attachment.json'
+
+
+
+
 
 

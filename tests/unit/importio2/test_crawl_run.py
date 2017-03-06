@@ -25,6 +25,7 @@ from tests.unit.importio2.test_data import CrawlRunJsonAttachment
 from tests.unit.importio2.test_data import CrawlRunJsonAttachmentNew
 from tests.unit.importio2.test_data import CrawlRunCsvAttachmentNew
 from tests.unit.importio2.test_data import CrawlRunCsvJsonAttachment
+from tests.unit.importio2.test_data import CrawlRunCsvJsonAttachmentNew
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -99,13 +100,13 @@ class TestExtractorAPI(TestCase):
             started_at=CrawlRunJsonAttachmentNew.STARTED_AT,
             stopped_at=CrawlRunJsonAttachmentNew.STOPPED_AT)
         self.assertIsNotNone(crawl_run_id)
-        logger.info("crawl_run_id: {0}".format(crawl_run_id))
+        logger.debug("crawl_run_id: {0}".format(crawl_run_id))
 
         attachment_id = crawl_run_api.json_attachment(crawl_run_id=crawl_run_id, contents=json_path)
         extractor_api = ExtractorAPI()
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunJsonAttachmentNew.EXTRACTOR_ID)
         run = crawl_runs[0]
-        logger.info(run)
+        logger.debug(run)
         fields = run['fields']
         self.assertIsNotNone(run)
         self.assertEqual(crawl_run_id, run['_id'])
@@ -126,7 +127,7 @@ class TestExtractorAPI(TestCase):
             started_at=CrawlRunCsvAttachmentNew.STARTED_AT,
             stopped_at=CrawlRunCsvAttachmentNew.STOPPED_AT)
         self.assertIsNotNone(crawl_run_id)
-        logger.info("crawl_run_id: {0}".format(crawl_run_id))
+        logger.debug("crawl_run_id: {0}".format(crawl_run_id))
 
         attachment_id = crawl_run_api.csv_attachment(crawl_run_id=crawl_run_id, contents=csv_path)
 
@@ -160,5 +161,39 @@ class TestExtractorAPI(TestCase):
         self.assertEqual(CrawlRunCsvJsonAttachment.FAILED_URL_COUNT, fields['failedUrlCount'])
         self.assertEqual(CrawlRunCsvJsonAttachment.STATE, fields['state'])
         self.assertEqual(CrawlRunCsvJsonAttachment.ROW_COUNT, fields['rowCount'])
+        self.assertEqual(csv_attachment_id, fields['csv'])
+        self.assertEqual(json_attachment_id, fields['json'])
+
+    def test_csv_json_attachment_new(self):
+        csv_path = path.abspath(path.join(path.dirname(__file__), CrawlRunCsvJsonAttachmentNew.CSV_FILENAME))
+        json_path = path.abspath(path.join(path.dirname(__file__), CrawlRunCsvJsonAttachmentNew.JSON_FILENAME))
+        crawl_run_api = CrawlRunAPI()
+        crawl_run_id = crawl_run_api.create(
+            extractor_id=CrawlRunCsvJsonAttachmentNew.EXTRACTOR_ID,
+            failed_url_count=CrawlRunCsvJsonAttachmentNew.FAILED_URL_COUNT,
+            success_url_count=CrawlRunCsvJsonAttachmentNew.SUCCESS_URL_COUNT,
+            total_url_count=CrawlRunCsvJsonAttachmentNew.TOTAL_URL_COUNT,
+            row_count=CrawlRunCsvJsonAttachmentNew.ROW_COUNT,
+            started_at=CrawlRunCsvJsonAttachmentNew.STARTED_AT,
+            stopped_at=CrawlRunCsvJsonAttachmentNew.STOPPED_AT)
+        self.assertIsNotNone(crawl_run_id)
+        logger.debug("crawl_run_id: {0}".format(crawl_run_id))
+
+        csv_attachment_id = crawl_run_api.csv_attachment(
+            crawl_run_id=crawl_run_id, contents=csv_path)
+        json_attachment_id = crawl_run_api.json_attachment(
+            crawl_run_id=crawl_run_id, contents=json_path)
+
+        extractor_api = ExtractorAPI()
+        crawl_runs = extractor_api.get_crawl_runs(CrawlRunCsvJsonAttachmentNew.EXTRACTOR_ID)
+        run = crawl_runs[0]
+        fields = run['fields']
+        self.assertIsNotNone(run)
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.EXTRACTOR_ID, fields['extractorId'])
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.TOTAL_URL_COUNT, fields['totalUrlCount'])
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.SUCCESS_URL_COUNT, fields['successUrlCount'])
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.FAILED_URL_COUNT, fields['failedUrlCount'])
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.STATE, fields['state'])
+        self.assertEqual(CrawlRunCsvJsonAttachmentNew.ROW_COUNT, fields['rowCount'])
         self.assertEqual(csv_attachment_id, fields['csv'])
         self.assertEqual(json_attachment_id, fields['json'])

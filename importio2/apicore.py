@@ -30,7 +30,7 @@ have the responsibility of handling the Requests libraries response object which
 """
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 
 def extractor_get(api_key, guid):

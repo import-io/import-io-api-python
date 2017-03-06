@@ -16,10 +16,13 @@
 import os
 import importio2.apicore as apicore
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class CrawlRunAPI(object):
-
     def __init__(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
 
@@ -59,10 +62,38 @@ class CrawlRunAPI(object):
         crawl_run_id = None
         if response.status_code == requests.codes.created:
             result = response.json()
+            logger.info(result)
             crawl_run_id = result['guid']
 
         return crawl_run_id
 
+    def _attachment(self, crawl_run_id, object_type, contents, field, mime):
+            if os.path.exists(contents):
+                with open(contents) as f:
+                    logger.info("Reading contents of: {0}".format(contents))
+                    attachment_contents = f.read()
+            else:
+                attachment_contents = contents
+            logger.info("attachment_contents: {0}".format(attachment_contents))
+            response = apicore.object_store_put_attachment(self._api_key,
+                                                           object_type,
+                                                           crawl_run_id,
+                                                           field,
+                                                           attachment_contents.encode('utf-8'),
+                                                           mime)
 
+            attachment_id = None
+            if response.status_code == requests.codes.ok:
+                result = response.json()
+                attachment_id = result['guid']
 
+            return attachment_id
 
+    def json_attachment(self, crawl_run_id, contents):
+
+        return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
+                                field='json', mime='application/x-ldjson')
+
+    def csv_attachment(self, crawl_run_id, contents):
+        return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
+                                field='csv', mime='text/csv')
