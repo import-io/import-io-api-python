@@ -136,5 +136,57 @@ class CrawlRunCreateCrawlRun(object):
     STATE = 'FINISHED'
 
 
+class CrawlRunJsonAttachment(object):
+    EXTRACTOR_ID = '8279069a-7a85-4905-8ffd-bf47faa28859'
+    CRAWL_RUN_ID = 'e2d66cc2-e09a-4784-8576-8c88857624bf'
+    FAILED_URL_COUNT = 0
+    SUCCESS_URL_COUNT = 1
+    TOTAL_URL_COUNT = 1
+    ROW_COUNT = 2
+    STARTED_AT = int(datetime(2016, 6, 4, 6, 0, 0).strftime('%s')) * 1000
+    STOPPED_AT = int(datetime(2016, 6, 4, 18, 0, 0).strftime('%s')) * 1000
+    STATE = 'FINISHED'
+
+
+class CrawlRunJsonAttachmentNew(object):
+    EXTRACTOR_ID = '26ccf0ae-3d13-47d0-8939-4567c17e06fe'
+    FAILED_URL_COUNT = 1
+    SUCCESS_URL_COUNT = 999
+    TOTAL_URL_COUNT = 1000
+    ROW_COUNT = 12345
+    STARTED_AT = int(datetime(2016, 6, 4, 6, 0, 0).strftime('%s')) * 1000
+    STOPPED_AT = int(datetime(2016, 6, 4, 18, 0, 0).strftime('%s')) * 1000
+    STATE = 'FINISHED'
+
+    FILE_NAME = 'crawl_run.json'
+
+
+class CrawlRunCsvAttachmentNew(object):
+    EXTRACTOR_ID = 'c08e937c-3d40-4c41-a313-ac232d70da77'
+    FAILED_URL_COUNT = 1
+    SUCCESS_URL_COUNT = 999
+    TOTAL_URL_COUNT = 1000
+    ROW_COUNT = 12345
+    STARTED_AT = int(datetime(2016, 6, 4, 6, 0, 0).strftime('%s')) * 1000
+    STOPPED_AT = int(datetime(2016, 6, 4, 18, 0, 0).strftime('%s')) * 1000
+    STATE = 'FINISHED'
+    FILE_NAME = 'crawl_run.csv'
+
+
+class CrawlRunCsvJsonAttachment(object):
+    EXTRACTOR_ID = '49f10801-3593-47f1-b704-a757480cb36a'
+    CRAWL_RUN_ID = 'f273af4c-599b-4dce-8023-ca6c78875953'
+    FAILED_URL_COUNT = 0
+    SUCCESS_URL_COUNT = 1
+    TOTAL_URL_COUNT = 1
+    ROW_COUNT = 2
+    STARTED_AT = 1488768583669
+    STOPPED_AT = 1488768587368
+    STATE = 'FINISHED'
+
+    CSV_FILENAME = 'csv_attachment.csv'
+    JSON_FILENAME = 'json_attachment.json'
+
+
 
 
