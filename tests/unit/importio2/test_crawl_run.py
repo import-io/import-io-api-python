@@ -132,7 +132,7 @@ class TestExtractorAPI(TestCase):
         attachment_id = crawl_run_api.csv_attachment(crawl_run_id=crawl_run_id, contents=csv_path)
 
         extractor_api = ExtractorAPI()
-        crawl_runs = extractor_api.get_crawl_runs(CrawlRunJsonAttachmentNew.EXTRACTOR_ID)
+        crawl_runs = extractor_api.get_crawl_runs(CrawlRunCsvAttachmentNew.EXTRACTOR_ID)
         run = crawl_runs[0]
         fields = run['fields']
         self.assertIsNotNone(run)
