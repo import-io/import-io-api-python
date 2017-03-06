@@ -1,5 +1,5 @@
 #
-# Copyright 2016 Import.io
+# Copyright 2017 Import.io
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -252,7 +252,7 @@ def extractor_json(api_key, guid):
     return requests.request("GET", url, headers=headers, params=querystring)
 
 
-def object_store_create(api_key, object_type, object):
+def object_store_create(api_key, object_type, obj):
 
     url = "https://store.import.io/{0}".format(object_type)
 
@@ -260,7 +260,7 @@ def object_store_create(api_key, object_type, object):
         "_apikey": api_key
     }
 
-    payload = json.dumps(object)
+    payload = json.dumps(obj)
     headers = {
         'accept': "application/json",
         'content-type': "application/json",

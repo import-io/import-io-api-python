@@ -123,5 +123,18 @@ class ObjectStoreExtractorPutJsonAttachment(object):
     ATTACHMENT_TYPE = 'application/x-ldjson'
 
 
+class CrawlRunCreateCrawlRun(object):
+
+    EXTRACTOR_ID = 'e9afda7b-2f5c-4c33-a7c3-8068c2d65fa8'
+
+    FAILED_URL_COUNT = 1
+    SUCCESS_URL_COUNT = 999
+    TOTAL_URL_COUNT = 1000
+    ROW_COUNT = 12345
+    STARTED_AT = int(datetime(2016, 6, 4, 6, 0, 0).strftime('%s')) * 1000
+    STOPPED_AT = int(datetime(2016, 6, 4, 18, 0, 0).strftime('%s')) * 1000
+    STATE = 'FINISHED'
+
+
 
 

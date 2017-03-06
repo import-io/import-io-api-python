@@ -22,6 +22,7 @@ from importio2.extractor import Extractor
 from importio2.extractor import ExtractorAPI
 from importio2.object_store import ObjectStoreAPI
 from importio2.object_store import CrawlRun
+from importio2.crawl_run import CrawlRunAPI
 from importio2.api import API
 
 
