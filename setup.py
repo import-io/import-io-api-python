@@ -29,5 +29,6 @@ setup(
     install_requires=[
         'requests >= 2.11.1',
         'six>=1.10.0',
+        'python-dateutil>=2.6.0',
     ],
 )
