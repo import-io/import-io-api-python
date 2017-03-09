@@ -33,7 +33,8 @@ class CrawlRunAPI(object):
         if isinstance(dt, datetime):
             ts = int(dt.strftime('%s')) * 1000
         elif isinstance(dt, str):
-            ts = parser.parse(dt)
+            parsed = parser.parse(dt)
+            ts = int(parsed.strftime('%s')) * 1000
         else:
             ts = dt
         return ts
@@ -71,14 +72,14 @@ class CrawlRunAPI(object):
         }
         logger.info(
             "extractor_id: {0}, failed: {1}, success: {2}, total: {3}, row: {4}, state: {5}, start: {6}, stop: {7}".format(
-                extractor_id,
-                failed_url_count,
-                success_url_count,
-                total_url_count,
-                row_count,
-                state,
-                started_at,
-                stopped_at
+                data['extractorId'],
+                data['failedUrlCount'],
+                data['successUrlCount'],
+                data['totalUrlCount'],
+                data['rowCount'],
+                data['state'],
+                data['startedAt'],
+                data['stoppedAt']
             ))
         response = apicore.object_store_create(self._api_key, 'crawlRun', data)
         response.raise_for_status()

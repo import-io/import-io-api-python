@@ -266,6 +266,7 @@ def object_store_create(api_key, object_type, obj):
         'content-type': "application/json",
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring{2}, payload{3}".format(url, headers, querystring, payload))
 
     return requests.request("POST", url, data=payload, headers=headers, params=querystring)
 
