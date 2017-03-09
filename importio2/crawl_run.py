@@ -21,7 +21,7 @@ from datetime import datetime
 from dateutil import parser
 
 logger = logging.getLogger(__name__)
-#logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 
 class CrawlRunAPI(object):
@@ -69,6 +69,17 @@ class CrawlRunAPI(object):
             'stoppedAt': CrawlRunAPI._parse_datetime(stopped_at),
             'state': state
         }
+        logger.info(
+            "extractor_id: {0}, failed: {1}, success: {2}, total: {3}, row: {4}, state: {5}, start: {6}, stop: {7}".format(
+                extractor_id,
+                failed_url_count,
+                success_url_count,
+                total_url_count,
+                row_count,
+                state,
+                started_at,
+                stopped_at
+            ))
         response = apicore.object_store_create(self._api_key, 'crawlRun', data)
         response.raise_for_status()
         crawl_run_id = None
