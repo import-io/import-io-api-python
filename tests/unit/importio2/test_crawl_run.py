@@ -21,6 +21,7 @@ import os.path as path
 import logging
 
 from tests.unit.importio2.test_data import CrawlRunCreateCrawlRun
+from tests.unit.importio2.test_data import CrawlRunCreateCrawlRunDateTime
 from tests.unit.importio2.test_data import CrawlRunJsonAttachment
 from tests.unit.importio2.test_data import CrawlRunJsonAttachmentNew
 from tests.unit.importio2.test_data import CrawlRunCsvAttachmentNew
@@ -29,8 +30,6 @@ from tests.unit.importio2.test_data import CrawlRunCsvJsonAttachmentNew
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
-
-EXTRACTOR_ID = ''
 
 JSON_ATTACHMENT = """{"url":"http://www.example.com","result":{"extractorData":{"url":"http://www.example.com","resourceId":"f28ffcf17e9135b5fcd0913651304216","data":[{"group":[{"Description":[{"text":"This domain is established to be used for illustrative examples in documents. You may use this domain in examples without prior coordination or asking for permission."}]},{"Description":[{"text":"More information..."}],"Link":[{"text":"More information...","href":"http://www.iana.org/domains/example"}]}]}]},"pageData":{"resourceId":"f28ffcf17e9135b5fcd0913651304216","statusCode":200,"timestamp":1488760472551},"timestamp":1488761151967,"sequenceNumber":0}}"""
 
@@ -68,6 +67,37 @@ class TestExtractorAPI(TestCase):
         self.assertEqual(CrawlRunCreateCrawlRun.ROW_COUNT, fields['rowCount'])
         self.assertEqual(CrawlRunCreateCrawlRun.STOPPED_AT, fields['stoppedAt'])
         self.assertEqual(CrawlRunCreateCrawlRun.STARTED_AT, fields['startedAt'])
+
+    def test_create_crawl_run_datetime(self):
+        crawl_run_api = CrawlRunAPI()
+        crawl_run_id = crawl_run_api.create(
+            extractor_id=CrawlRunCreateCrawlRunDateTime.EXTRACTOR_ID,
+            failed_url_count=CrawlRunCreateCrawlRunDateTime.FAILED_URL_COUNT,
+            success_url_count=CrawlRunCreateCrawlRunDateTime.SUCCESS_URL_COUNT,
+            total_url_count=CrawlRunCreateCrawlRunDateTime.TOTAL_URL_COUNT,
+            row_count=CrawlRunCreateCrawlRunDateTime.ROW_COUNT,
+            started_at=CrawlRunCreateCrawlRunDateTime.STARTED_AT,
+            stopped_at=CrawlRunCreateCrawlRunDateTime.STOPPED_AT)
+
+        self.assertIsNotNone(crawl_run_id)
+
+        extractor_api = ExtractorAPI()
+        crawl_run = extractor_api.get_crawl_runs(CrawlRunCreateCrawlRunDateTime.EXTRACTOR_ID)
+        run = crawl_run[0]
+        self.assertIsNotNone(run)
+        self.assertEqual(crawl_run_id, run['_id'])
+        self.assertEqual('CrawlRun', run['_type'])
+        fields = run['fields']
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.EXTRACTOR_ID, fields['extractorId'])
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.STATE, fields['state'])
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.SUCCESS_URL_COUNT, fields['successUrlCount'])
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.TOTAL_URL_COUNT, fields['totalUrlCount'])
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.FAILED_URL_COUNT, fields['failedUrlCount'])
+        self.assertEqual(CrawlRunCreateCrawlRunDateTime.ROW_COUNT, fields['rowCount'])
+        started_at = int(CrawlRunCreateCrawlRunDateTime.STARTED_AT.strftime('%s')) * 1000
+        self.assertEqual(started_at, fields['startedAt'])
+        stopped_at = int(CrawlRunCreateCrawlRunDateTime.STOPPED_AT.strftime('%s')) * 1000
+        self.assertEqual(stopped_at, fields['stoppedAt'])
 
     def test_json_attachment_existing(self):
         crawl_run_api = CrawlRunAPI()

@@ -17,14 +17,26 @@ import os
 import importio2.apicore as apicore
 import requests
 import logging
+from datetime import datetime
+from dateutil import parser
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 
 class CrawlRunAPI(object):
     def __init__(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
+
+    @staticmethod
+    def _parse_datetime(dt):
+        if isinstance(dt, datetime):
+            ts = int(dt.strftime('%s')) * 1000
+        elif isinstance(dt, str):
+            ts = parser.parse(dt)
+        else:
+            ts = dt
+        return ts
 
     def create(self,
                extractor_id,
@@ -53,8 +65,8 @@ class CrawlRunAPI(object):
             'successUrlCount': success_url_count,
             'totalUrlCount': total_url_count,
             'rowCount': row_count,
-            'startedAt': started_at,
-            'stoppedAt': stopped_at,
+            'startedAt': CrawlRunAPI._parse_datetime(started_at),
+            'stoppedAt': CrawlRunAPI._parse_datetime(stopped_at),
             'state': state
         }
         response = apicore.object_store_create(self._api_key, 'crawlRun', data)
