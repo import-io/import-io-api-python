@@ -30,7 +30,6 @@ have the responsibility of handling the Requests libraries response object which
 """
 
 logger = logging.getLogger(__name__)
-# logging.basicConfig(level=logging.DEBUG)
 
 
 def extractor_get(api_key, guid):
@@ -51,6 +50,7 @@ def extractor_get(api_key, guid):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -77,6 +77,7 @@ def extractor_list(api_key, page):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -102,6 +103,7 @@ def extractor_get_crawl_runs(api_key, guid, page, per_page):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -126,6 +128,7 @@ def extractor_query(api_key, guid, target_url):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -148,6 +151,7 @@ def extractor_url_list_get(api_key, guid, url_guid):
         'accept-encoding': "gzip",
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -164,6 +168,7 @@ def extractor_url_list_put(api_key, guid, url_list):
     headers = {
         'content-type': "text/plain",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
 
@@ -187,6 +192,7 @@ def extractor_cancel(api_key, guid):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("POST", url, headers=headers, params=querystring)
 
@@ -209,6 +215,7 @@ def extractor_start(api_key, guid):
     headers = {
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("POST", url, headers=headers, params=querystring)
 
@@ -231,6 +238,7 @@ def extractor_csv(api_key, guid):
         'accept-encoding': "gzip",
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -248,6 +256,7 @@ def extractor_json(api_key, guid):
         'accept-encoding': "gzip",
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
     return requests.request("GET", url, headers=headers, params=querystring)
 
@@ -266,7 +275,7 @@ def object_store_create(api_key, object_type, obj):
         'content-type': "application/json",
         'cache-control': "no-cache",
     }
-    logger.debug("url: {0}, headers: {1}, querystring{2}, payload{3}".format(url, headers, querystring, payload))
+    logger.debug("url: {0}, headers: {1}, querystring: {2}, payload: {3}".format(url, headers, querystring, payload))
 
     return requests.request("POST", url, data=payload, headers=headers, params=querystring)
 
@@ -285,6 +294,8 @@ def object_store_put_attachment(api_key, object_type, object_id, attachment_fiel
         'content-type': attachment_type,
         'cache-control': "no-cache",
     }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}, payload: {3}".format(url, headers, querystring, payload))
+
     return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
 
 

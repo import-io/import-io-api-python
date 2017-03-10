@@ -23,6 +23,8 @@ from dateutil import parser
 logger = logging.getLogger(__name__)
 # logging.basicConfig(level=logging.DEBUG)
 
+CRAWL_RUN_OBJECT_TYPE = 'crawlrun'
+
 
 class CrawlRunAPI(object):
     def __init__(self):
@@ -81,7 +83,7 @@ class CrawlRunAPI(object):
                 data['startedAt'],
                 data['stoppedAt']
             ))
-        response = apicore.object_store_create(self._api_key, 'crawlRun', data)
+        response = apicore.object_store_create(self._api_key, CRAWL_RUN_OBJECT_TYPE, data)
         response.raise_for_status()
         crawl_run_id = None
         if response.status_code == requests.codes.created:
