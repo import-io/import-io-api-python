@@ -29,6 +29,7 @@ from importio2.apicore import extractor_url_list_put
 from importio2.apicore import extractor_get_crawl_runs
 
 from importio2.apicore import object_store_create
+from importio2.apicore import object_store_get
 from importio2.apicore import object_store_put_attachment
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
@@ -39,9 +40,12 @@ from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutJsonAttachment
+from tests.unit.importio2.test_data import CrawlRunGet
 import requests
 import json
 import logging
+
+logger = logging.getLogger(__name__)
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -201,6 +205,12 @@ class TestObjectStoreApiCore(TestCase):
         self.assertEqual(ObjectStoreCrawlRunTestData.SUCCESS_URL_COUNT, result['successUrlCount'])
         self.assertEqual(ObjectStoreCrawlRunTestData.ROW_COUNT, result['rowCount'])
         self.assertEqual(ObjectStoreCrawlRunTestData.STATE, result['state'])
+
+    def test_crawl_run_get(self):
+        response = object_store_get(self._api_key, 'crawlrun', CrawlRunGet.CRAWL_RUN_ID)
+        self.assertIsNotNone(response)
+        crawl_run = response.json()
+        self.assertEqual(CrawlRunGet.EXTRACTOR_ID, crawl_run['extractorId'])
 
     def test_extractor_put_attachment(self):
         response = object_store_put_attachment(self._api_key,

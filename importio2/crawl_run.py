@@ -93,6 +93,19 @@ class CrawlRunAPI(object):
 
         return crawl_run_id
 
+    def get(self, crawl_run_id):
+        """
+        Retrieves a crawl run object from the Object Store
+        :param crawl_run_id:
+        :return: Dictionary representing a Crawl Run
+        """
+        response = apicore.object_store_get(api_key=self._api_key, object_type='crawlrun', object_id=crawl_run_id)
+        result = None
+        # Fetch the results only if a 200 codes returned
+        if response.status_code == requests.codes.ok:
+            result = response.json()
+        return result
+
     def _attachment(self, crawl_run_id, object_type, contents, field, mime):
             if os.path.exists(contents):
                 with open(contents) as f:

@@ -18,11 +18,6 @@ import requests
 import logging
 import json
 
-try:
-    from urllib import quote_plus
-except ImportError:
-    from urllib.parse import quote_plus
-
 """
 Low-level REST API calls that specify the inputs and invoke a REST call. Callers
 have the responsibility of handling the Requests libraries response object which can be None
@@ -157,7 +152,6 @@ def extractor_url_list_get(api_key, guid, url_guid):
 
 
 def extractor_url_list_put(api_key, guid, url_list):
-
     url = "https://store.import.io/store/extractor/{0}/_attachment/urlList".format(guid)
 
     querystring = {
@@ -244,7 +238,6 @@ def extractor_csv(api_key, guid):
 
 
 def extractor_json(api_key, guid):
-
     url = "https://data.import.io/extractor/{0}/json/latest".format(guid)
     logger.debug("url: {0}".format(url))
 
@@ -262,7 +255,6 @@ def extractor_json(api_key, guid):
 
 
 def object_store_create(api_key, object_type, obj):
-
     url = "https://store.import.io/{0}".format(object_type)
 
     querystring = {
@@ -280,9 +272,29 @@ def object_store_create(api_key, object_type, obj):
     return requests.request("POST", url, data=payload, headers=headers, params=querystring)
 
 
+def object_store_get(api_key, object_type, object_id):
+    """
+    Fetches an object of specific type from the Object Store
+    :param api_key: Import.io API Key
+    :param object_type: Type of object: crawlrun, extractor, etc
+    :param object_id: Unique identifier of an object
+    :return: response
+    """
+    url = "https://store.import.io/store/{0}/{1}".format(object_type, object_id)
+    querystring = {
+        "_apikey": api_key
+    }
+    headers = {
+        'accept': "application/json",
+        'cache-control': "no-cache",
+    }
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    print(response.text)
+    return response
+
+
 def object_store_put_attachment(api_key, object_type, object_id, attachment_field, attachment_contents,
                                 attachment_type):
-
     url = "https://store.import.io/{0}/{1}/_attachment/{2}".format(object_type, object_id, attachment_field)
 
     querystring = {
@@ -297,5 +309,3 @@ def object_store_put_attachment(api_key, object_type, object_id, attachment_fiel
     logger.debug("url: {0}, headers: {1}, querystring: {2}, payload: {3}".format(url, headers, querystring, payload))
 
     return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
-
-

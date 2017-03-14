@@ -215,6 +215,10 @@ class CrawlRunCsvJsonAttachmentNew(object):
     JSON_FILENAME = 'json_attachment.json'
 
 
+class CrawlRunGet(object):
+
+    EXTRACTOR_ID = 'bde7ae70-f25e-4bdd-a8e3-cf837dbf14a2'
+    CRAWL_RUN_ID = 'f8af4c7e-da15-4184-9842-79b6dda6bcf2'
 
 
 
