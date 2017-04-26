@@ -59,7 +59,6 @@ class ExtractorCrawlRunsTestData(object):
 
 class ExtractorCrawlRunStartTestData(object):
 
-
     EXTRACTOR_ID = 'bcbb4893-e914-485b-bf82-90874c51fe3b'
 
 
@@ -121,6 +120,18 @@ class ObjectStoreExtractorPutJsonAttachment(object):
 {"url":"http://www.example.com/?red=green","result":{"extractorData":{"url":"http://www.example.com/?red=green","resourceId":"c5355c6a9536e87d978a4417d01206ff","data":[{"group":[{"header":[{"text":"Example Domain"}],"description":[{"text":"This domain is established to be used for illustrative examples in documents. You may use this domain in examples without prior coordination or asking for permission."}],"link":[{"text":"More information...","href":"http://www.iana.org/domains/example"}]}]}]},"pageData":{"resourceId":"c5355c6a9536e87d978a4417d01206ff","statusCode":200,"timestamp":1488670639954},"timestamp":1488670640902,"sequenceNumber":1}}
 """
     ATTACHMENT_TYPE = 'application/x-ldjson'
+
+
+class ObjectStoreCrawlRunOwnership(object):
+
+    CRAWL_RUN_ID = ''
+
+
+class ObjectStoreExtractorOwnership(object):
+
+    EXTRACTOR_ID = '44f67cf1-15ad-4b40-b429-acb98aea3877'
+    OWNER_ID = '00a451ae-c38d-4752-a329-389b37cfc0aa'
+    NEW_OWNER_ID = '40823ab0-b070-4e9e-92ae-a513ccefb267'
 
 
 class CrawlRunCreateCrawlRun(object):
@@ -219,6 +230,10 @@ class CrawlRunGet(object):
 
     EXTRACTOR_ID = 'bde7ae70-f25e-4bdd-a8e3-cf837dbf14a2'
     CRAWL_RUN_ID = 'f8af4c7e-da15-4184-9842-79b6dda6bcf2'
+
+
+class ExtractorRunAndWait(object):
+    EXTRACTOR_ID = '6076ee74-6dbc-44fc-9d3e-53634057449b'
 
 
 
