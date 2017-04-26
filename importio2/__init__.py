@@ -20,6 +20,7 @@ from importio2.api_call import ApiCall
 from importio2.api_common import ApiCommon
 from importio2.extractor import Extractor
 from importio2.extractor import ExtractorAPI
+from importio2.extractor_util import ExtractorUtilities
 from importio2.object_store import ObjectStoreAPI
 from importio2.object_store import CrawlRun
 from importio2.crawl_run import CrawlRunAPI
