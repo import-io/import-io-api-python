@@ -3,12 +3,14 @@ Import.io API for Python
 
 Python bindings and other tools for interacting with the Import.io service.
 
+[![Build Status](https://travis-ci.org/dgwartney-io/import-io-api-python.svg?branch=master)](https://travis-ci.org/dgwartney-io/import-io-api-python)
+
 © 2016-2017 Import.io
 
 Prerequistes
 ------------
 
-- Python 2.7.10 or later
+- Python 3.4 or later
 
 Installation
 ------------
