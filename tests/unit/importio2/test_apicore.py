@@ -31,6 +31,7 @@ from importio2.apicore import extractor_get_crawl_runs
 from importio2.apicore import object_store_create
 from importio2.apicore import object_store_get
 from importio2.apicore import object_store_put_attachment
+from importio2.apicore import object_store_change_ownership
 
 from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
@@ -40,6 +41,7 @@ from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutJsonAttachment
+from tests.unit.importio2.test_data import ObjectStoreExtractorOwnership
 from tests.unit.importio2.test_data import CrawlRunGet
 import requests
 import json
@@ -256,3 +258,12 @@ class TestObjectStoreApiCore(TestCase):
         self.assertTrue('bucketGuid' in result)
         self.assertTrue('objectGuid' in result)
         self.assertEqual('json', result['field'])
+
+    def test_extractor_ownership_change(self):
+        response = object_store_change_ownership(api_key=self._api_key,
+                                                 object_type='extractor',
+                                                 object_id=ObjectStoreExtractorOwnership.EXTRACTOR_ID,
+                                                 owner_id=ObjectStoreExtractorOwnership.NEW_OWNER_ID)
+
+        result = response.json()
+        print(result)

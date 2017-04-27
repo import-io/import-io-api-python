@@ -309,3 +309,29 @@ def object_store_put_attachment(api_key, object_type, object_id, attachment_fiel
     logger.debug("url: {0}, headers: {1}, querystring: {2}, payload: {3}".format(url, headers, querystring, payload))
 
     return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
+
+
+def object_store_change_ownership(api_key, object_type, object_id, owner_id):
+    """
+    Changes the ownership of an object (Extractor or Crawl Run) in the object store.
+    NOTE: The API KEY must be from an account that has SUPPORT role
+    :param api_key: Import.io API Key
+    :param object_type: Specific object type
+    :param object_id: Object Id of the Extractor or Crawl Run to change ownershipt
+    :param owner_id: Owner GUID to set the objects ownership to.
+    :return: response
+    """
+
+    url = "https://store.import.io/{0}/{1}".format(object_type, object_id)
+
+    querystring = {"newOwner": owner_id,
+                   "_apikey": api_key
+                   }
+
+    headers = {
+        'cache-control': "no-cache",
+    }
+
+    response = requests.request("PATCH", url, headers=headers, params=querystring)
+
+    return response

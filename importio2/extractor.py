@@ -31,6 +31,21 @@ class ExtractorAPI(object):
     def __init__(self):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
 
+    def change_ownership(self, extractor_id, owner_id):
+        result = None
+        try:
+            response = apicore.object_store_change_ownership(
+                api_key=self._api_key, object_type='extractor',  object_id=extractor_id)
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                result = response.json()
+            else:
+                raise Exception()
+        except Exception as e:
+            logger.exception(e)
+        return result
+
     def cancel(self, guid):
         """
         Cancel a crawl run in progress

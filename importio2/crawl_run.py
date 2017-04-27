@@ -41,6 +41,9 @@ class CrawlRunAPI(object):
             ts = dt
         return ts
 
+    def change_ownership(self, crawl_run_id, owner_id):
+        pass
+
     def create(self,
                extractor_id,
                failed_url_count,
