@@ -166,6 +166,26 @@ class ExtractorAPI(object):
         # Todo: Exception if you cannot find the Extractor in the account then throw an exception
         return {}
 
+    def log(self, guid):
+        """
+        Returns a list of log dictionaries
+        :param guid: 
+        :return: List containing log records
+        """
+        log_records = []
+        try:
+            response = apicore.extractor_log(self._api_key, guid)
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            logger.debug(response.status_code)
+            if response.status_code == requests.codes.ok:
+                log_records = response.text.split('\n')
+            else:
+                raise Exception()
+        except Exception as e:
+            logger.exception(e)
+        return log_records[:-1]
+
     def get_url_list(self, guid):
         """
         Returns the URLs associated with an Extractor
@@ -181,7 +201,7 @@ class ExtractorAPI(object):
 
     def list(self):
         """
-        Returns as list of Extractor GUIDs in an account
+        Returns a list of Extractor GUIDs in an account
 
         :return: List of GUIDs
         """

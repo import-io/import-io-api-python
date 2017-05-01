@@ -28,7 +28,7 @@ from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
 from tests.unit.importio2.test_data import ExtractorQueryTestData
 from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
-import csv
+from tests.unit.importio2.test_data import ExtractorLogTestData
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,7 +45,7 @@ EXTRACTOR_OWNER_GUID = '00a451ae-c38d-4752-a329-389b37cfc0aa'
 EXTRACTOR_CREATOR_GUID = '00a451ae-c38d-4752-a329-389b37cfc0aa'
 EXTRACTOR_LAST_EDITOR_GUID = 'd1100850-863b-4e0f-9fa0-5fbcd44db427'
 EXTRACTOR_CREATION_TIMESTAMP = 1483576990715
-EXTRACTOR_LATEST_CONFIG_ID = 'b8debacc-b50d-46ce-a666-a1fb20420792'
+EXTRACTOR_LATEST_CONFIG_ID = 'c7c4f78b-4b21-4d85-8e07-e0dbde9e517c'
 EXTRACTOR_TRAINING = '77d32ed7-7e76-4860-b594-7c60d78ef1b9'
 EXTRACTOR_URL_LIST = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
 
@@ -130,6 +130,11 @@ class TestExtractorAPI(TestCase):
         api = ExtractorAPI()
         result = api.json(ExtractorJSONTestData.EXTRACTOR_ID)
         self.assertEqual(ExtractorJSONTestData.JSON_LEN_API, len(result))
+
+    def test_log_get(self):
+        api = ExtractorAPI()
+        result = api.log(ExtractorLogTestData.EXTRACTOR_ID)
+        self.assertEqual(ExtractorLogTestData.LENGTH, len(result))
 
     def test_query(self):
         api = ExtractorAPI()

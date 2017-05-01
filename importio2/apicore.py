@@ -254,6 +254,22 @@ def extractor_json(api_key, guid):
     return requests.request("GET", url, headers=headers, params=querystring)
 
 
+def extractor_log(api_key, guid):
+
+    url = "https://data.import.io/extractor/{0}/log/latest".format(guid)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    headers = {
+        'accept-encoding': "gzip",
+    }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
 def object_store_create(api_key, object_type, obj):
     url = "https://store.import.io/{0}".format(object_type)
 

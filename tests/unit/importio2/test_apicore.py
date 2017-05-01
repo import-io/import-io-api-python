@@ -20,6 +20,7 @@ from unittest import TestCase
 from importio2.apicore import extractor_cancel
 from importio2.apicore import extractor_csv
 from importio2.apicore import extractor_json
+from importio2.apicore import extractor_log
 from importio2.apicore import extractor_get
 
 from importio2.apicore import extractor_query
@@ -37,6 +38,7 @@ from tests.unit.importio2.test_data import ExtractorCSVTestData
 from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
 from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
+from tests.unit.importio2.test_data import ExtractorLogTestData
 from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
@@ -56,7 +58,7 @@ EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'
 EXTRACTOR_URL_LIST_GUID = '12834ceb-76d2-4072-98bb-7e41a7c032ae'
 EXTRACTOR_QUERY_URL = u'http://www.example.com/'
 EXTRACTOR_NAME = 'API_TEST-example.com'
-EXTRACTOR_RUNTIME_CONFIG = 'b8debacc-b50d-46ce-a666-a1fb20420792'
+EXTRACTOR_RUNTIME_CONFIG = 'c7c4f78b-4b21-4d85-8e07-e0dbde9e517c'
 
 API_TEST_GET_URL_LIST = '9dd8b560-70c1-43f1-902d-567ac2e2cf3f'
 API_TEST_GET_URL_LIST_GUID = '0c5ee717-b9b9-4023-811d-e6ee5cf11ce9'
@@ -164,6 +166,12 @@ http://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"""
         self.assertEqual(requests.codes.OK, response.status_code)
         results = response.text.split('\n')
         self.assertEqual(ExtractorJSONTestData.JSON_LEN_RAW, len(results))
+
+    def test_extractor_log(self):
+        response = extractor_log(self._api_key, ExtractorLogTestData.EXTRACTOR_ID)
+        self.assertEqual(requests.codes.OK, response.status_code)
+        results = response.text.split('\n')
+        self.assertEqual(ExtractorLogTestData.LENGTH, len(results[:-1]))
 
 
 class TestObjectStoreApiCore(TestCase):

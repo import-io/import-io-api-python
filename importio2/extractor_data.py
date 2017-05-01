@@ -31,3 +31,7 @@ class CSVData(ExtractorData):
 
     def __len__(self):
         return len(self._data)
+
+
+class LogData(ExtractorData):
+    pass

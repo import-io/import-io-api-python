@@ -236,5 +236,11 @@ class ExtractorRunAndWait(object):
     EXTRACTOR_ID = '6076ee74-6dbc-44fc-9d3e-53634057449b'
 
 
+class ExtractorLogTestData(object):
+
+    EXTRACTOR_ID = '9070a872-577b-4c91-9429-dce055ca10e9'
+    LENGTH = 4
+
+
 
 

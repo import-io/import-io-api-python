@@ -28,4 +28,5 @@ class TestExtractorAPI(TestCase):
     def test_start_and_wait_extractor(self):
         utils = ExtractorUtilities()
 
-        utils.extractor_run_and_wait(ExtractorRunAndWait.EXTRACTOR_ID)
+        crawl_run_id = utils.extractor_run_and_wait(ExtractorRunAndWait.EXTRACTOR_ID)
+        self.assertIsNotNone(crawl_run_id)

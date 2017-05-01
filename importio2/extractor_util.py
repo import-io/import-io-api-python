@@ -94,3 +94,4 @@ class ExtractorUtilities(object):
             sleep(self._crawl_run_active_timeout)
             crawl_run_active = self.crawl_run_active(extractor_id, crawl_run_id)
             count += 1
+        return crawl_run_id

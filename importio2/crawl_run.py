@@ -139,3 +139,8 @@ class CrawlRunAPI(object):
     def csv_attachment(self, crawl_run_id, contents):
         return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
                                 field='csv', mime='text/csv')
+
+    def log_attachment(self, crawl_run_id, contents):
+        return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
+                                field='csv', mime='text/csv')
+
