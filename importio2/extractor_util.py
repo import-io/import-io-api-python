@@ -35,7 +35,8 @@ class ExtractorUtilities(object):
         Determine if a crawl run is in progress for the given extractor id and crawl run id
         :param extractor_id:
         :param crawl_run_id:
-        :return: True if the crawl run is not found or is running. False if found and state is FINISHED
+        :return: True if the crawl run is not found or is running. False if found and state is either
+        FINISHED, CANCELLED, or FAILED
         """
         active = True
         extractor = self.api.get(extractor_id)
@@ -45,7 +46,7 @@ class ExtractorUtilities(object):
         for run in crawl_runs:
             if run['_id'] == crawl_run_id:
                 state = run['fields']['state']
-                if state == 'FINISHED':
+                if state == 'FINISHED' or 'CANCELLED' or 'FAILED':
                     logger.info("FINISHED => name: {0}, id: {1}, crawl_run_id: {2}".format(
                         name, extractor_id, crawl_run_id))
                     active = False

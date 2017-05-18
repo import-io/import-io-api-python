@@ -19,6 +19,7 @@ from importio2 import CrawlRunAPI
 from importio2 import ExtractorAPI
 import os.path as path
 import logging
+from time import sleep
 
 from tests.unit.importio2.test_data import CrawlRunCreateCrawlRun
 from tests.unit.importio2.test_data import CrawlRunCreateCrawlRunDateTime
@@ -80,6 +81,8 @@ class TestExtractorAPI(TestCase):
             stopped_at=CrawlRunCreateCrawlRunDateTime.STOPPED_AT)
 
         self.assertIsNotNone(crawl_run_id)
+        # Provide a slight delay to ensure that the crawl above is created
+        sleep(5)
 
         extractor_api = ExtractorAPI()
         crawl_run = extractor_api.get_crawl_runs(CrawlRunCreateCrawlRunDateTime.EXTRACTOR_ID)
