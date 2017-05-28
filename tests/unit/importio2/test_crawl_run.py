@@ -54,6 +54,7 @@ class TestExtractorAPI(TestCase):
         self.assertIsNotNone(crawl_run_id)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_run = extractor_api.get_crawl_runs(CrawlRunCreateCrawlRun.EXTRACTOR_ID)
         run = crawl_run[0]
         self.assertIsNotNone(run)
@@ -81,10 +82,9 @@ class TestExtractorAPI(TestCase):
             stopped_at=CrawlRunCreateCrawlRunDateTime.STOPPED_AT)
 
         self.assertIsNotNone(crawl_run_id)
-        # Provide a slight delay to ensure that the crawl above is created
-        sleep(5)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_run = extractor_api.get_crawl_runs(CrawlRunCreateCrawlRunDateTime.EXTRACTOR_ID)
         run = crawl_run[0]
         self.assertIsNotNone(run)
@@ -108,6 +108,7 @@ class TestExtractorAPI(TestCase):
             crawl_run_id=CrawlRunJsonAttachment.CRAWL_RUN_ID, contents=JSON_ATTACHMENT)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunJsonAttachment.EXTRACTOR_ID)
         run = crawl_runs[0]
         fields = run['fields']
@@ -137,6 +138,7 @@ class TestExtractorAPI(TestCase):
 
         attachment_id = crawl_run_api.json_attachment(crawl_run_id=crawl_run_id, contents=json_path)
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunJsonAttachmentNew.EXTRACTOR_ID)
         run = crawl_runs[0]
         logger.debug(run)
@@ -165,6 +167,7 @@ class TestExtractorAPI(TestCase):
         attachment_id = crawl_run_api.csv_attachment(crawl_run_id=crawl_run_id, contents=csv_path)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunCsvAttachmentNew.EXTRACTOR_ID)
         run = crawl_runs[0]
         fields = run['fields']
@@ -184,6 +187,7 @@ class TestExtractorAPI(TestCase):
             crawl_run_id=CrawlRunCsvJsonAttachment.CRAWL_RUN_ID, contents=json_path)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunCsvJsonAttachment.EXTRACTOR_ID)
         run = crawl_runs[0]
         fields = run['fields']
@@ -218,6 +222,7 @@ class TestExtractorAPI(TestCase):
             crawl_run_id=crawl_run_id, contents=json_path)
 
         extractor_api = ExtractorAPI()
+        sleep(5)
         crawl_runs = extractor_api.get_crawl_runs(CrawlRunCsvJsonAttachmentNew.EXTRACTOR_ID)
         run = crawl_runs[0]
         fields = run['fields']
