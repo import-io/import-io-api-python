@@ -15,7 +15,7 @@
 #
 
 from unittest import TestCase
-from ebayio import JsonToCrawlRun
+from importio2.commands import JsonToCrawlRun
 from importio2 import CrawlRunAPI
 from datetime import timedelta, datetime
 import os

@@ -16,8 +16,9 @@
 
 from unittest import TestCase
 from importio2 import ExtractorAPI
-from ebayio import CreateCrawlRun
+from importio2.commands import CreateCrawlRun
 from datetime import datetime
+from time import sleep
 
 EXTRACTOR_ID = '44201b13-6109-4620-b1f3-6435e5b202d8'
 STARTED = int(datetime(2017, 12, 31, 1, 15, 30).timestamp()) * 1000
@@ -49,6 +50,7 @@ class TestCreateCrawlRun(TestCase):
                                      stopped_at=STOPPED_AT,
                                      state='FINISHED')
         api = ExtractorAPI()
+        sleep(5)
         crawl_run_list = api.get_crawl_runs(EXTRACTOR_ID)
         self.assertIsNotNone(crawl_run_list)
         run = crawl_run_list[0]

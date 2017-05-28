@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from ebayio import AdDatabase
+from importio2.commands import AdDatabase
 import petl
 import pymysql
 import os

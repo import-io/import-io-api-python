@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from ebayio import AdBase
+from importio2.commands import AdBase
 import argparse
 import logging
 import petl

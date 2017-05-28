@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from ebayio import AdBase
+from importio2.commands import AdBase
 import csv
 import logging
 import json

@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-from ebayio import AdDatabase
-import mysql.connector
+from importio2.commands import AdDatabase
+import pymysql
 import os
 
 
@@ -55,10 +55,10 @@ class RunSql(AdDatabase):
         else:
             query = self._sql_input
 
-        cnx = mysql.connector.connect(user=self._db_user,
-                                      password=self._db_password,
-                                      database=self._db_database,
-                                      host=self._db_host)
+        cnx = pymysql.connect(user=self._db_user,
+                              password=self._db_password,
+                              database=self._db_database,
+                              host=self._db_host)
         cursor = cnx.cursor()
 
         cursor.execute(query)

@@ -15,7 +15,7 @@
 #
 
 from unittest import TestCase
-from ebayio import ChangeOwnership
+from importio2.commands import ChangeOwnership
 import os
 
 CONFIGURATION_PATH = os.path.join(os.path.dirname(__file__), 'olx.yml')

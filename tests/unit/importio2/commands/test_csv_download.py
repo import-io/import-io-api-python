@@ -15,7 +15,7 @@
 #
 
 from unittest import TestCase
-from ebayio import CsvDownload
+from importio2.commands import CsvDownload
 from tempfile import NamedTemporaryFile
 import os
 

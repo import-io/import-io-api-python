@@ -19,7 +19,7 @@ import os
 import filecmp
 import json
 from tempfile import NamedTemporaryFile
-from ebayio import CsvToJson
+from importio2.commands import CsvToJson
 
 CSV_FILENAME = 'csv_to_json.csv'
 JSON_FILENAME = 'csv_to_json.json'

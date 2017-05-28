@@ -15,7 +15,7 @@
 #
 
 from unittest import TestCase
-from ebayio import CsvToCrawlRun
+from importio2.commands import CsvToCrawlRun
 from importio2 import CrawlRunAPI
 from datetime import timedelta, datetime
 import os

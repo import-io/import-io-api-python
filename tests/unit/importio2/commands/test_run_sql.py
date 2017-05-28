@@ -15,7 +15,7 @@
 #
 
 from unittest import TestCase
-from ebayio import RunSql
+from importio2.commands import RunSql
 import os
 
 DB_USER = os.getenv('DB_USER')

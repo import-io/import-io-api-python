@@ -16,9 +16,9 @@
 
 from unittest import TestCase
 
-from tests.unit.ebayio.db_test_utils import *
+from tests.unit.importio2.commands.db_test_utils import *
 
-from ebayio import CsvToDatabase
+from importio2.commands import CsvToDatabase
 
 
 CSV_TO_DB_TABLE = 'test_csv_to_db'

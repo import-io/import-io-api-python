@@ -15,12 +15,13 @@
 #
 
 from unittest import TestCase
-from ebayio import SqlToCsv
+from importio2.commands import SqlToCsv
 import os
 from tempfile import NamedTemporaryFile
 import logging
 import pymysql
 
+logger = logging.getLogger(__name__)
 # logging.basicConfig(level=logging.DEBUG)
 
 DB_USER = os.getenv('DB_USER')

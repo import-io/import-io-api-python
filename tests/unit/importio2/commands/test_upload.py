@@ -17,7 +17,7 @@
 from unittest import TestCase
 import tempfile
 import os
-from ebayio import DataUpload
+from importio2.commands import DataUpload
 
 
 class TestUpload(TestCase):
@@ -25,71 +25,6 @@ class TestUpload(TestCase):
     def setUp(self):
         # Make temporary directory with sub directories
         dir = tempfile.mkdtemp()
-        os.path.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def tearDown(self):
         pass
@@ -98,6 +33,5 @@ class TestUpload(TestCase):
         upload = DataUpload()
         self.assertIsNotNone(upload)
 
-    def test
 
 
