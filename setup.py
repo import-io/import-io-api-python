@@ -30,5 +30,8 @@ setup(
         'requests >= 2.11.1',
         'six>=1.10.0',
         'python-dateutil>=2.6.0',
+        'petl>=1.1.1',
+        'pytz>=2017.2',
+
     ],
 )
