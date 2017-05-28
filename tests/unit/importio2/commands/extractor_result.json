@@ -1,0 +1,109 @@
+{
+  "url": "https://www.olx.co.za/ad/drift-ghost-s-action-camera-new-full-hd-1080p-ID16aHb0.html#f797af9baa%3Bpromoted",
+  "result": {
+    "extractorData": {
+      "url": "https://www.olx.co.za/ad/drift-ghost-s-action-camera-new-full-hd-1080p-ID16aHb0.html#f797af9baa%3Bpromoted",
+      "resourceId": "21e929efbf2fdb66ad834e36d8be983d",
+      "data": [
+        {
+          "group": [
+            {
+              "category_1": [
+                {
+                  "text": "Electronics & Computers Centurion"
+                }
+              ],
+              "category_2": [
+                {
+                  "text": "Cameras Centurion"
+                }
+              ],
+              "location_1": [
+                {
+                  "text": "Gauteng"
+                }
+              ],
+              "location_2": [
+                {
+                  "text": "Centurion"
+                }
+              ],
+              "added": [
+                {
+                  "text": "2017 January 30 17:03"
+                }
+              ],
+              "phone": [
+                {
+                  "text": "27x xxx xxxx"
+                }
+              ],
+              "ad_id": [
+                {
+                  "text": "1007340102"
+                }
+              ],
+              "views": [
+                {
+                  "text": "315"
+                }
+              ],
+              "price": [
+                {
+                  "text": "R 3,999"
+                }
+              ],
+              "user": [
+                {
+                  "text": "Johan"
+                }
+              ],
+              "added_by": [
+                {
+                  "text": "Added via phone"
+                }
+              ],
+              "user_since": [
+                {
+                  "text": "On site since Jan 2017"
+                }
+              ],
+              "description": [
+                {
+                  "text": "New Full HD 1080p, HD 960p, HD 720p and SD WVGA resolution video, as well as high-resolution 12-megapixel still image capture.\n \n Ideal for the casual user or professional, the Ghost-S is a feature-packed action camera with an easy-to-use interface.\n \n The Ghost-S improves upon its predecessor by adding 60 fps recording at 1080p, a Clone Mode for syncing and controlling up to four Ghost-S cameras from one master camera, a slow shutter mode for improved low-light performance, and an impressive 3.5 hour battery life.\n \n CONTENTS\n \n 1 x Ghost-S\n 1 x Remote Control\n 1 x Rechargeable Battery\n 1 x Connector Hatch\n 1 x Universal Clip\n 1 x Goggle Mount\n 1 x Flat Adhesive Mount\n 1 x Curved Adhesive Mount\n 1 x Waterproof Rear Hatch\n 1 x Wrist Strap\n 1 x USB Cable (Mini-B) Microphone Extension CableQuick Guides"
+                }
+              ],
+              "loc_1": [
+                {
+                  "text": ""
+                }
+              ],
+              "loc_2": [
+                {
+                  "text": "Centurion"
+                }
+              ],
+              "loc_3": [
+                {
+                  "text": "Gauteng"
+                }
+              ],
+              "title": [
+                {
+                  "text": "Drift Ghost-S Action Camera - New Full HD 1080p"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "pageData": {
+      "resourceId": "21e929efbf2fdb66ad834e36d8be983d",
+      "statusCode": 200,
+      "timestamp": 1486157646516
+    },
+    "timestamp": 1486157646835,
+    "sequenceNumber": 0
+  }
+}
