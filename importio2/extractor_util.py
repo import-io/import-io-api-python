@@ -17,6 +17,7 @@ from datetime import datetime
 from time import sleep
 import logging
 from importio2 import ExtractorAPI
+from importio2 import CrawlRunAPI
 
 logger = logging.getLogger(__name__)
 
@@ -38,19 +39,18 @@ class ExtractorUtilities(object):
         :return: True if the crawl run is not found or is running. False if found and state is either
         FINISHED, CANCELLED, or FAILED
         """
-        active = True
+        active = None
         extractor = self.api.get(extractor_id)
         name = extractor['name']
-        crawl_runs = self.api.get_crawl_runs(extractor_id)
+        api = CrawlRunAPI()
+        crawl_run = api.get(crawl_run_id)
+        state = crawl_run['state']
 
-        for run in crawl_runs:
-            if run['_id'] == crawl_run_id:
-                state = run['fields']['state']
-                if state == 'FINISHED' or 'CANCELLED' or 'FAILED':
-                    logger.info("FINISHED => name: {0}, id: {1}, crawl_run_id: {2}".format(
-                        name, extractor_id, crawl_run_id))
-                    active = False
-                    break
+        if state == 'FINISHED' or 'CANCELLED' or 'FAILED':
+            active = False
+        else:
+            active = True
+        logger.info("{0} => name: {1}, id: {2}, crawl_run_id: {3}".format(state, name, extractor_id, crawl_run_id))
         return active
 
     def report_crawl_run_stats(self, extractor_id, crawl_run_id):
@@ -58,21 +58,20 @@ class ExtractorUtilities(object):
         Outputs the some of the metrics of a crawl run
         :param extractor_id: specifices the extractor
         :param crawl_run_id: specifies the crawl run
-        :return:
+        :return: None
         """
         api = ExtractorAPI()
         extractor = self.api.get(extractor_id)
         name = extractor['name']
-        crawl_runs = self.api.get_crawl_runs(extractor_id)
-        for run in crawl_runs:
-            if run['_id'] == crawl_run_id:
-                started_at = datetime.fromtimestamp(int(run['fields']['startedAt'] / 1000))
-                total = int(run['fields']['totalUrlCount'])
-                failed = int(run['fields']['failedUrlCount'])
-                success = int(run['fields']['successUrlCount'])
-                rows = int(run['fields']['rowCount'])
-                logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
-                    name, started_at, total, success, failed, rows))
+        api = CrawlRunAPI()
+        run = api.get(crawl_run_id)
+        started_at = datetime.fromtimestamp(int(run['startedAt'] / 1000))
+        total = int(run['totalUrlCount'])
+        failed = int(run['failedUrlCount'])
+        success = int(run['successUrlCount'])
+        rows = int(run['rowCount'])
+        logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
+            name, started_at, total, success, failed, rows))
 
     def extractor_run_and_wait(self, extractor_id, report=12):
         """
