@@ -112,7 +112,7 @@ class ExtractorAPI(object):
                     break
                 else:
                     logger.error("Getting JSON attachment from: {0}, return {1}, retrying".format(
-                        guid, response.status.code))
+                        guid, response.status_code))
         except Exception as e:
             logger.exception(e)
         return results
