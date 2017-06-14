@@ -345,7 +345,6 @@ def object_store_change_ownership(api_key, object_type, object_id, owner_id):
                    }
 
     headers = {
-        'cache-control': "no-cache",
     }
 
     response = requests.request("PATCH", url, headers=headers, params=querystring)
