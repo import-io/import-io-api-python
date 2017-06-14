@@ -66,3 +66,6 @@ class ObjectStoreAPI(object):
     def create_crawl_run(self, crawl_run):
         response = object_store_create(self._api_key, 'crawlrun', crawl_run)
         return response.json()
+
+    def object_store_change_ownership(self, object, object_type):
+        pass
