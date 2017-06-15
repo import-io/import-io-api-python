@@ -109,6 +109,10 @@ class CrawlRunAPI(object):
             result = response.json()
         return result
 
+    def state(self, crawl_run_id):
+        crawl_run = self.get(crawl_run_id)
+        return crawl_run['state']
+
     def _attachment(self, crawl_run_id, object_type, contents, field, mime):
             if os.path.exists(contents):
                 with open(contents) as f:
