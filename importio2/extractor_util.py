@@ -13,20 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
 from datetime import datetime
 from time import sleep
-import logging
-from importio2 import ExtractorAPI
+
 from importio2 import CrawlRunAPI
+from importio2 import ExtractorAPI
 
 logger = logging.getLogger(__name__)
-
 
 ACTIVE_TIMEOUT = 5
 
 
 class ExtractorUtilities(object):
-
     def __init__(self):
         self.api = ExtractorAPI()
         self._crawl_run_active_timeout = ACTIVE_TIMEOUT
@@ -45,6 +44,7 @@ class ExtractorUtilities(object):
         api = CrawlRunAPI()
         crawl_run = api.get(crawl_run_id)
         state = crawl_run['state']
+        logger.info("Extractor: {0} has a state of {1}".format(name, state))
 
         if state == 'FINISHED' or 'CANCELLED' or 'FAILED':
             active = False
