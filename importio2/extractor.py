@@ -264,6 +264,7 @@ class ExtractorAPI(object):
         :param guid: Extractor identifier
         :return: Crawl run identifier
         """
+        # TODO: Check to see if the extractor is already running.
         crawl_run_id = None
         try:
             # TODO: What are the failure conditions we need to handle

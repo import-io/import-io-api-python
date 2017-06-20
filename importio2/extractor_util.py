@@ -38,7 +38,7 @@ class ExtractorUtilities(object):
         :return: True if the crawl run is not found or is running. False if found and state is either
         FINISHED, CANCELLED, or FAILED
         """
-        active = None
+        active = False
         extractor = self.api.get(extractor_id)
         name = extractor['name']
         api = CrawlRunAPI()
@@ -46,10 +46,10 @@ class ExtractorUtilities(object):
         state = crawl_run['state']
         logger.info("Extractor: {0} has a state of {1}".format(name, state))
 
-        if state == 'FINISHED' or 'CANCELLED' or 'FAILED':
-            active = False
-        else:
+        if state == 'STARTED' or state == 'PENDING':
             active = True
+        else:
+            active = False
         logger.info("{0} => name: {1}, id: {2}, crawl_run_id: {3}".format(state, name, extractor_id, crawl_run_id))
         return active
 
@@ -82,16 +82,15 @@ class ExtractorUtilities(object):
         :return: None
         """
         extractor = self.api.get(extractor_id)
+        api = CrawlRunAPI()
         name = extractor['name']
         crawl_run_id = self.api.start(extractor_id)
-        logger.info("STARTED => name: {0}, id: {1}, crawl_run_id: {2}".format(
-            name, extractor_id, crawl_run_id))
-        crawl_run_active = True
+        logger.info("{0} => name: {1}, id: {2}, crawl_run_id: {3}".format(api.state(crawl_run_id), name, extractor_id,
+                                                                          crawl_run_id))
         count = 1
-        while crawl_run_active:
+        while self.crawl_run_active(extractor_id, crawl_run_id):
             if not bool(count % report):
                 self.report_crawl_run_stats(extractor_id, crawl_run_id)
             sleep(self._crawl_run_active_timeout)
-            crawl_run_active = self.crawl_run_active(extractor_id, crawl_run_id)
             count += 1
         return crawl_run_id
