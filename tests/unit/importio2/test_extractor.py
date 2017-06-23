@@ -60,6 +60,7 @@ EXTRACTOR_FIELD_1_CAPTURE_LINK = True
 EXTRACTOR_FIELD_1_TYPE = 'TEXT'
 
 
+
 class TestExtractorAPI(TestCase):
     def test_get_extractor(self):
         api = ExtractorAPI()
@@ -190,4 +191,12 @@ class TestExtractor(TestCase):
         csv = extractor.csv()
         # Add one to account for the header which is stored separately in the CSVData instance
         self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv) + 1)
+
+    def test_extractor_json(self):
+        extractor = Extractor(guid=ExtractorJSONTestData.EXTRACTOR_ID)
+        json = extractor.json()
+        self.assertEqual(ExtractorJSONTestData.JSON_ROWS, len(json))
+        self.assertEqual('ï»¿url', json[0][0])
+        self.assertEqual('Zip Codes', json[0][1])
+        self.assertEqual('Link', json[0][2])
 

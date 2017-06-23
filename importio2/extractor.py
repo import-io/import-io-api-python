@@ -242,7 +242,7 @@ class ExtractorAPI(object):
             response = None
             success = True
             for i in range(1, 6):
-                response = apicore.extractor_query(self._api_key, guid, url)
+                response = apicore.extractor_query(api_key=self._api_key, guid=guid, target_url=url)
                 if response.status_code == requests.codes.ok:
                     result = json.loads(response.text)
                     success = True
@@ -374,7 +374,7 @@ class Extractor(object):
 
     @property
     def status(self):
-        pass
+        return None
 
     def refresh(self):
         """
@@ -409,12 +409,21 @@ class Extractor(object):
         """
         Returns the CSV output from the most recent crawl run
 
-        :return:
+        :return: List of strings
         """
         api = ExtractorAPI()
         result = api.csv(self._guid)
         csv = CSVData(header=result[0], data=result[1:])
         return csv
+
+    def json(self):
+        """
+        Returns the JSON output from the most recent crawl run
+        :return: List of dictionaries
+        """
+        api = ExtractorAPI()
+        json = api.csv(self._guid)
+        return json
 
 
 
