@@ -1,5 +1,5 @@
-export DB_USER=
-export DB_PASSWORD=
-export DB_HOST=
-export DB_DATABASE=
+export DB_USER=importio
+export DB_PASSWORD=import123
+export DB_HOST=localhost
+export DB_DATABASE=importio
 
