@@ -42,7 +42,25 @@ class CrawlRunAPI(object):
         return ts
 
     def change_ownership(self, crawl_run_id, owner_id):
-        pass
+        """
+        Changes the ownership of a crawl run
+        :param crawl_run_id: Object id of the crawl run
+        :param owner_id: User id to change ownership
+        :return: response
+        """
+        result = None
+        try:
+            response = apicore.object_store_change_ownership(
+                api_key=self._api_key, object_type='crawlrun',  object_id=crawl_run_id, owner_id=owner_id)
+            # If the HTTP result code is not 200 then throw our hands up and
+            # raise an exception
+            if response.status_code == requests.codes.ok:
+                result = response.json()
+            else:
+                raise Exception()
+        except Exception as e:
+            logger.exception(e)
+        return result
 
     def create(self,
                extractor_id,

@@ -33,8 +33,8 @@ class CsvToDatabase(AdBase):
         self._db_table = None
         self._csv_path = None
         self._table = None
-        self._create = False
-        self._append = False
+        self._create = None
+        self._append = None
 
     def cli_description(self):
         return 'Loads a CSV to specified file in a database'
@@ -56,52 +56,48 @@ class CsvToDatabase(AdBase):
         parser.add_argument('-f', '--csv-path', action='store', dest='csv_path', required=True, metavar='path',
                             help='Path to CSV file')
         group = parser.add_mutually_exclusive_group(required=False)
-        group.add_argument('-a', '--append', action='store_true', dest='append', help='Flag to append data')
-        group.add_argument('-c', '--create', action='store_true', dest='create', help='Flag to create data')
+        group.add_argument('-a', '--append', action='store_true', dest='append', default=False,
+                           help='Flag to append data')
+        group.add_argument('-c', '--create', action='store_true', dest='create', default=False,
+                           help='Flag to create data')
 
         args = parser.parse_args()
 
-        if 'db_user' in args:
-            self._db_user = args.db_user
+        self._db_user = args.db_user
+        self._db_password = args.db_password
+        self._db_database = args.db_database
+        self._db_host = args.db_host
+        self._db_table = args.db_table
+        self._csv_path = args.csv_path
 
-        if 'db_password' in args:
-            self._db_password = args.db_password
-
-        if 'db_database' in args:
-            self._db_database = args.db_database
-
-        if 'db_host' in args:
-            self._db_host = args.db_host
-
-        if 'db_table' in args:
-            self._db_table = args.db_table
-
-        if 'csv_file' in args:
-            self._csv_path = args.csv_path
-
-        if 'append' in args:
-            self._append = args.append
-
-        if 'create' in args:
-            self._create = args.create
+        self._append = args.append
+        self._create = args.create
 
     def load_data(self):
         """
         Loads data from CSV into specified database
         :return: None
         """
+        logger.info("loading csv file: {0}".format(self._csv_path))
         table = petl.fromcsv(self._csv_path)
+        logger.info("Connecting to database: {0}".format(self._db_host))
         connection = pymysql.connect(host=self._db_host,
                                      user=self._db_user,
                                      password=self._db_password,
-                                     database=self._db_database)
+                                     database=self._db_database,
+                                     charset='utf8')
         connection.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
 
         # If append option is set the add the CSV file to existing table
         if self._append:
+            logger.info("Appending data to table: {0}".format(self._db_table))
             petl.appenddb(table, connection, self._db_table)
         else:
             # Pass in flag that indicates creating the table or replacing the contents
+            if self._create:
+                logger.info("Creating and adding data to table: {0}".format(self._db_table))
+            else:
+                logger.info("Replacing data for table: {0}".format(self._db_table))
             petl.todb(table, connection, self._db_table, create=self._create)
 
     def run(self, user, password, database, host, table, csv_path, append=False, create=False):

@@ -35,7 +35,7 @@ class ExtractorAPI(object):
         result = None
         try:
             response = apicore.object_store_change_ownership(
-                api_key=self._api_key, object_type='extractor',  object_id=extractor_id)
+                api_key=self._api_key, object_type='extractor',  object_id=extractor_id, owner_id=owner_id)
             # If the HTTP result code is not 200 then throw our hands up and
             # raise an exception
             if response.status_code == requests.codes.ok:

@@ -18,8 +18,6 @@ from unittest import TestCase
 from importio2.commands import ChangeOwnership
 import os
 
-CONFIGURATION_PATH = os.path.join(os.path.dirname(__file__), 'olx.yml')
-
 
 class TestChangeOwnership(TestCase):
 
@@ -30,6 +28,6 @@ class TestChangeOwnership(TestCase):
     def test_change_extractor_ownership(self):
         pass
 
-    def change_crawl_run_ownership(self):
+    def test_change_crawl_run_ownership(self):
         pass
 
