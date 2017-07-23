@@ -27,6 +27,10 @@ class Date2Epoch(object):
         self._day = None
 
     def handle_arguments(self):
+        """
+        Parse the arguments from the command line
+        :return:
+        """
         parser = argparse.ArgumentParser(description="Display the midnight to morning in epoch milliseconds given"
                                                      "year, month, and day")
 
@@ -46,20 +50,51 @@ class Date2Epoch(object):
         if 'day' in args:
             self._day = args.day
 
+    def run(self, year, month, day):
+        """
+        Execute the method provide by this class
+        :param year:
+        :param month:
+        :param day:
+        :return:
+        """
+
+        # Assign our instance variables
+        self._year = year
+        self._month = month
+        self._day = day
+        return self.compute_epochs()
+
     def compute_epochs(self):
+        """
+        Computes the epoch times in milliseconds from input year, month, day
+        :return: begin_gmt, end_gmt
+        """
         gmt = timezone('GMT')
         begin = datetime(self._year, self._month, self._day, 0, 0, 0)
         end = datetime(self._year, self._month, self._day, 23, 59, 59)
         begin_gmt = gmt.localize(begin)
         end_gmt = gmt.localize(end)
+        return begin_gmt, end_gmt
+
+    def output_epochs(self):
+        """
+        Output the epoch times in milliseconds and human readable form
+        :return:
+        """
+        begin_gmt, end_gmt = self.compute_epochs()
         print(begin_gmt)
         print(int(begin_gmt.timestamp()*1000))
         print(end_gmt)
         print(int(end_gmt.timestamp()*1000))
 
     def execute(self):
+        """
+        Entry point for CLI
+        :return:
+        """
         self.handle_arguments()
-        self.compute_epochs()
+        self.output_epochs()
 
 
 def main():
