@@ -19,6 +19,7 @@ import requests
 import os
 import importio2.apicore as apicore
 import json
+import csv
 from importio2 import CSVData
 
 logger = logging.getLogger(__name__)
@@ -70,45 +71,54 @@ class ExtractorAPI(object):
             logger.exception(e)
             return None
 
-    def csv(self, guid):
+    def csv(self, guid, path=None):
         """
         Returns the contents of the CSV file as list of lists from the most recent crawl run.
         The header appears in the first row
 
-        :param guid:
         :param guid: Identifier of the extractor
-        :return: List of lists containing the contents of the CSV
+        :param path: Location to write the data
+        :return: List of lists containing the contents of the CSV, if path is provided, returns None
         """
         results = None
         try:
             response = apicore.extractor_csv(self._api_key, guid)
             if response.status_code == requests.codes.ok:
-                lines = response.text.split('\n')
-                results = []
-                for l in lines:
-                    results.append(l.replace('\r', '').replace('"', '').split(','))
-                results = results[:-1]
+                if path is None:
+                    lines = response.text.split('\n')
+                    results = []
+                    for l in lines:
+                        results.append(l.replace('\r', '').replace('"', '').split(','))
+                    results = results[:-1]
+                else:
+                    with open(path, mode='w') as f:
+                        f.write(response.text)
         except Exception as e:
             logger.exception(e)
         return results
 
-    def json(self, guid):
+    def json(self, guid, path=None):
         """
         Return a list of JSON documents from an Extractor by converting JSON into dictionaries
         and adding to a python list
         :param guid: Identifier of the extractor
-        :return: List of JSON documents
+        :param path: Location to write data
+        :return: List of JSON documents, or None if path is provided
         """
         results = None
         try:
             for i in range(1, 6):
                 response = apicore.extractor_json(self._api_key, guid)
                 if response.status_code == requests.codes.ok:
-                    results = []
-                    lines = response.text.split('\n')
-                    for l in lines:
-                        if len(l) > 0:
-                            results.append(json.loads(l))
+                    if path is None:
+                        results = []
+                        lines = response.text.split('\n')
+                        for l in lines:
+                            if len(l) > 0:
+                                results.append(json.loads(l))
+                    else:
+                        with open(path, 'w') as f:
+                            f.write(response.text)
                     break
                 else:
                     logger.error("Getting JSON attachment from: {0}, return {1}, retrying".format(

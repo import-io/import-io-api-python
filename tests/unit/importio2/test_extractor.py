@@ -17,8 +17,11 @@
 from __future__ import absolute_import
 
 import re
+import os
+import hashlib
 
 from unittest import TestCase
+import tempfile
 from importio2 import Extractor
 from importio2 import ExtractorAPI
 
@@ -58,7 +61,6 @@ EXTRACTOR_FIELD_1_ID = 'db8ab2f7-465f-42bd-80ed-95701e99bb98'
 EXTRACTOR_FIELD_1_NAME = 'Link'
 EXTRACTOR_FIELD_1_CAPTURE_LINK = True
 EXTRACTOR_FIELD_1_TYPE = 'TEXT'
-
 
 
 class TestExtractorAPI(TestCase):
@@ -127,10 +129,31 @@ class TestExtractorAPI(TestCase):
         csv = api.csv(ExtractorCSVTestData.EXTRACTOR_ID)
         self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(csv))
 
+    def test_csv_to_path(self):
+        api = ExtractorAPI()
+        file = tempfile.NamedTemporaryFile(delete=False)
+        api.csv(ExtractorCSVTestData.EXTRACTOR_ID, file.name)
+        self.assertTrue(os.path.exists(file.name))
+        with open(file.name) as f:
+            lines = f.readlines()
+            self.assertEqual(ExtractorCSVTestData.CSV_LEN, len(lines))
+
     def test_json(self):
         api = ExtractorAPI()
         result = api.json(ExtractorJSONTestData.EXTRACTOR_ID)
         self.assertEqual(ExtractorJSONTestData.JSON_LEN_API, len(result))
+
+    def test_json_to_path(self):
+        api = ExtractorAPI()
+        file = tempfile.NamedTemporaryFile(delete=False)
+        api.json(ExtractorJSONTestData.EXTRACTOR_ID, file.name)
+        self.assertTrue(os.path.exists(file.name))
+        with open(file.name) as f:
+            reader = f.readlines()
+            m = hashlib.md5()
+            for line in reader:
+                m.update(str.encode(line))
+            self.assertEqual(b"'\xc1TN\x07\\\x0c\xbe\xfd\xc9i\xfdr\xd9\xd5\xd7", m.digest())
 
     def test_log_get(self):
         api = ExtractorAPI()
