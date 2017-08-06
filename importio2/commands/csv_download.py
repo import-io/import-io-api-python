@@ -39,10 +39,7 @@ class CsvDownload(AdBase):
     def handle_arguments(self):
         self.add_extractor_id_arg()
         self.add_file_output_path_arg()
-
-        self._args = self._parser.parse_args()
-
-        self.get_arguments()
+        super(CsvDownload, self).handle_arguments()
 
     def run(self,
             api_key=None,

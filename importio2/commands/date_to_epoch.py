@@ -14,41 +14,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 from datetime import datetime
+
 from pytz import timezone
-import argparse
+
+from importio2.commands import AdBase
 
 
-class Date2Epoch(object):
-
+class Date2Epoch(AdBase):
     def __init__(self):
+        super(Date2Epoch, self).__init__()
         self._year = None
         self._month = None
         self._day = None
 
+    def cli_description(self):
+        """
+        Returns the description of the command
+        :return: None
+        """
+        return 'Display the midnight to morning in epoch milliseconds given year, month, and day'
+
     def handle_arguments(self):
         """
         Parse the arguments from the command line
-        :return:
+        :return: None
         """
-        parser = argparse.ArgumentParser(description="Display the midnight to morning in epoch milliseconds given"
-                                                     "year, month, and day")
+        self._parser.add_argument('-y', '--year', action='store', dest='year', metavar='year', type=int, required=True,
+                                  help='Input year')
+        self._parser.add_argument('-m', '--month', action='store', dest='month', metavar='month', type=int,
+                                  required=True,
+                                  help='Input month')
+        self._parser.add_argument('-d', '--day', action='store', dest='day', metavar='day', type=int, required=True,
+                                  help='Input day')
 
-        parser.add_argument('-y', '--year', action='store', dest='year', metavar='year', type=int, required=True,
-                            help='Input year')
-        parser.add_argument('-m', '--month', action='store', dest='month', metavar='month', type=int, required=True,
-                            help='Input month')
-        parser.add_argument('-d', '--day', action='store', dest='day', metavar='day', type=int, required=True,
-                            help='Input day')
+        super(Date2Epoch, self).handle_arguments()
 
-        args = parser.parse_args()
+    def get_arguments(self):
+        """
+        Retrieves the command line arguments required by the command.
+        :return: None
+        """
+        super(Date2Epoch, self).get_arguments()
 
-        if 'year' in args:
-            self._year = args.year
-        if 'month' in args:
-            self._month = args.month
-        if 'day' in args:
-            self._day = args.day
+        if self._args.year is not None:
+            self._year = self._args.year
+        if self._args.month is not None:
+            self._month = self._args.month
+        if self._args.day is not None:
+            self._day = self._args.day
 
     def run(self, year, month, day):
         """
@@ -84,9 +99,9 @@ class Date2Epoch(object):
         """
         begin_gmt, end_gmt = self.compute_epochs()
         print(begin_gmt)
-        print(int(begin_gmt.timestamp()*1000))
+        print(int(begin_gmt.timestamp() * 1000))
         print(end_gmt)
-        print(int(end_gmt.timestamp()*1000))
+        print(int(end_gmt.timestamp() * 1000))
 
     def execute(self):
         """
@@ -104,7 +119,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-

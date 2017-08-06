@@ -29,6 +29,10 @@ class JsonToCrawlRun(AdBase):
         self._crawl_run_id = None
 
     def cli_description(self):
+        """
+        Returns the description of this command
+        :return: str, Text describing the command
+        """
         return 'Uploads a JSON file to a crawl run'
 
     def handle_arguments(self):
@@ -38,15 +42,18 @@ class JsonToCrawlRun(AdBase):
                                   required=True, help='Specify crawl run id for replacing JSON')
 
         super(JsonToCrawlRun, self).handle_arguments()
-        self.get_arguments()
 
     def get_arguments(self):
+        """
+        Retrieves the arguments required by this command
+        :return: None
+        """
         super(JsonToCrawlRun, self).get_arguments()
 
-        if 'json_path' in self._args:
+        if self._args.json_path is not None:
             self._json_path = self._args.json_path
 
-        if 'crawl_run_id':
+        if self._args.crawl_run_id is not None:
             self._crawl_run_id = self._args.crawl_run_id
 
     def json_to_crawl_run(self):

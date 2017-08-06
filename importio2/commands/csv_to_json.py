@@ -49,8 +49,6 @@ class CsvToJson(AdBase):
 
         super(CsvToJson, self).handle_arguments()
 
-        self.get_arguments()
-
     def get_arguments(self):
         super(CsvToJson, self).get_arguments()
 

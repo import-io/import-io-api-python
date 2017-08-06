@@ -50,10 +50,6 @@ class SqlToCsv(AdDatabase):
 
         super(SqlToCsv, self).handle_arguments()
 
-        self._args = self._parser.parse_args()
-
-        self.get_arguments()
-
     def get_arguments(self):
         """
         Fetches the parsed arguments required by the CLI
@@ -61,10 +57,10 @@ class SqlToCsv(AdDatabase):
         """
         super(SqlToCsv, self).get_arguments()
 
-        if 'sql' in self._args:
+        if self._args.sql is not None:
             self._sql = self._args.sql
 
-        if 'sql_file' in self._args:
+        if self._args.sql_file is not None:
             self._sql_file = self._args.sql_file
 
     def sql_to_csv(self):

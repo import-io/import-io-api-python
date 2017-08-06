@@ -48,7 +48,6 @@ class ChangeOwnership(AdBase):
         self._parser.add_argument('-u', '--object-user-id', action='store', dest='object_user_id', metavar='user-id',
                                   required=True, help='User to change ownership to')
         super(ChangeOwnership, self).handle_arguments()
-        self.get_arguments()
 
     def get_arguments(self):
         """

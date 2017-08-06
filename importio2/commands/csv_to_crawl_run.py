@@ -38,7 +38,6 @@ class CsvToCrawlRun(AdBase):
                                   required=True, help='Specify crawl run id for replacing CSV')
 
         super(CsvToCrawlRun, self).handle_arguments()
-        self.get_arguments()
 
     def get_arguments(self):
         super(CsvToCrawlRun, self).get_arguments()

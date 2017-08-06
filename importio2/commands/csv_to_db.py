@@ -13,19 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from importio2.commands import AdBase
-import argparse
 import logging
+
 import petl
 import pymysql
 
+from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
 
 
 class CsvToDatabase(AdBase):
-
     def __init__(self):
+        super(CsvToDatabase, self).__init__()
         self._db_user = None
         self._db_password = None
         self._db_database = None
@@ -40,38 +40,39 @@ class CsvToDatabase(AdBase):
         return 'Loads a CSV to specified file in a database'
 
     def handle_arguments(self):
-
-        parser = argparse.ArgumentParser(description=self.cli_description())
-
-        parser.add_argument('-u', '--user', action='store', dest='db_user', required=True, metavar='user',
-                            help='User name to use for authentication to the database')
-        parser.add_argument('-p', '--password', action='store', dest='db_password', required=True, metavar='password',
-                            help='Password to use for authentication to the database')
-        parser.add_argument('-d', '--database', action='store', dest='db_database', required=True, metavar='hostname',
-                            help='Database to use')
-        parser.add_argument('-i', '--host', action='store', dest='db_host', required=True, metavar='hostname',
-                            help='Hostname or IP address of the database')
-        parser.add_argument('-t', '--table', action='store', dest='db_table', required=True, metavar='table_name',
-                            help='Name of the table to insert the data into')
-        parser.add_argument('-f', '--csv-path', action='store', dest='csv_path', required=True, metavar='path',
-                            help='Path to CSV file')
-        group = parser.add_mutually_exclusive_group(required=False)
+        self._parser.add_argument('-u', '--user', action='store', dest='db_user', required=True, metavar='user',
+                                  help='User name to use for authentication to the database')
+        self._parser.add_argument('-p', '--password', action='store', dest='db_password', required=True,
+                                  metavar='password',
+                                  help='Password to use for authentication to the database')
+        self._parser.add_argument('-d', '--database', action='store', dest='db_database', required=True,
+                                  metavar='hostname',
+                                  help='Database to use')
+        self._parser.add_argument('-i', '--host', action='store', dest='db_host', required=True, metavar='hostname',
+                                  help='Hostname or IP address of the database')
+        self._parser.add_argument('-t', '--table', action='store', dest='db_table', required=True, metavar='table_name',
+                                  help='Name of the table to insert the data into')
+        self._parser.add_argument('-f', '--csv-path', action='store', dest='csv_path', required=True, metavar='path',
+                                  help='Path to CSV file')
+        group = self._parser.add_mutually_exclusive_group(required=False)
         group.add_argument('-a', '--append', action='store_true', dest='append', default=False,
                            help='Flag to append data')
         group.add_argument('-c', '--create', action='store_true', dest='create', default=False,
                            help='Flag to create data')
 
-        args = parser.parse_args()
+        super(CsvToDatabase, self).handle_arguments()
 
-        self._db_user = args.db_user
-        self._db_password = args.db_password
-        self._db_database = args.db_database
-        self._db_host = args.db_host
-        self._db_table = args.db_table
-        self._csv_path = args.csv_path
+    def get_arguments(self):
+        super(CsvToDatabase, self).get_arguments()
+        self._db_user = self._args.db_user
+        self._db_password = self._args.db_password
+        self._db_database = self._args.db_database
+        self._db_host = self._args.db_host
+        self._db_table = self._args.db_table
+        self._csv_path = self._args.csv_path
 
-        self._append = args.append
-        self._create = args.create
+        self._append = self._args.append
+        self._create = self._args.create
 
     def load_data(self):
         """

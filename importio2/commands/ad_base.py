@@ -94,6 +94,7 @@ class AdBase(object):
         :return:
         """
         self._args = self._parser.parse_args()
+        self.get_arguments()
 
     def get_arguments(self):
         """

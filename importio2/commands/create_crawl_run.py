@@ -68,7 +68,6 @@ class CreateCrawlRun(AdBase):
                                   help='Sets the status of the crawl run')
 
         super(CreateCrawlRun, self).handle_arguments()
-        self.get_arguments()
 
     def get_arguments(self):
         """

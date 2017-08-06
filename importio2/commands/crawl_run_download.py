@@ -14,18 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import argparse
+import logging
 import os
 import sys
-import requests
-from importio2 import ExtractorAPI
-from collections import UserList
 from collections import UserDict
+from collections import UserList
 from datetime import datetime
-import logging
+
+import requests
+
+from importio2 import ExtractorAPI
+from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
-#logging.basicConfig(level=logging.ERROR)
 
 
 class CrawlRun(UserDict):
@@ -40,8 +41,9 @@ class CrawlRunList(UserList):
     """
 
 
-class CrawlRunDown(object):
+class CrawlRunDownload(AdBase):
     def __init__(self):
+        super(CrawlRunDownload, self).__init__()
         self._extractor_id = None
         self._output_dir = None
         self._format = None
@@ -50,35 +52,38 @@ class CrawlRunDown(object):
         self._api_key = os.environ['IMPORT_IO_API_KEY']
         self._crawl_run_list = CrawlRunList()
 
+    def cli_description(self):
+        return 'Downloads all of CSV/JSON files associated with an Extractor'
+
     def handle_arguments(self):
         """
         Process command line arguments
         :return:
         """
-        parser = argparse.ArgumentParser(description='Downloads all of CSV/JSON files associated with an Extractor')
-        parser.add_argument('-e', '--extractor-id', action='store', dest='extractor_id', metavar='id',
-                            help='Extractor id identifying which extractor to download files from')
-        parser.add_argument('-o', '--output-dir', action='store', dest='output_dir',
-                            default=os.path.abspath(os.path.curdir), metavar='path',
-                            required=False, help="Directory to download CSV/JSON files to")
-        parser.add_argument('-t', '--type', action='store', dest='type', choices=['csv', 'json'], default='csv',
-                            help='Selects the type of file to download. Default is CSV')
-        parser.add_argument('-f', '--format', action='store', dest='format', default='%Y-%m-%d_%H_%M_%S',
-                            help='Date format to use in the name of the output file.')
+        self._parser.add_argument('-e', '--extractor-id', action='store', dest='extractor_id', metavar='id',
+                                  help='Extractor id identifying which extractor to download files from')
+        self._parser.add_argument('-o', '--output-dir', action='store', dest='output_dir',
+                                  default=os.path.abspath(os.path.curdir), metavar='path',
+                                  required=False, help="Directory to download CSV/JSON files to")
+        self._parser.add_argument('-t', '--type', action='store', dest='type', choices=['csv', 'json'], default='csv',
+                                  help='Selects the type of file to download. Default is CSV')
+        self._parser.add_argument('-f', '--format', action='store', dest='format', default='%Y-%m-%d_%H_%M_%S',
+                                  help='Date format to use in the name of the output file.')
 
-        args = parser.parse_args()
+    def get_arguments(self):
+        super(CrawlRunDownload)
 
-        if 'extractor_id' in args:
-            self._extractor_id = args.extractor_id
+        if self._args.extractor_id is not None:
+            self._extractor_id = self._args.extractor_id
 
-        if 'output_dir' in args:
-            self._output_dir = args.output_dir
+        if self._args.outputdir is not None:
+            self._output_dir = self._args.output_dir
 
-        if 'type' in args:
-            self._type = args.type
+        if self._args.type is not None:
+            self._type = self._args.type
 
-        if 'format' in args:
-            self._format = args.format
+        if self._args.format is not None:
+            self._format = self._args.format
 
         if self._type == 'json':
             print("JSON download not implemented", file=sys.stderr)
