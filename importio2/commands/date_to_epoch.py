@@ -16,10 +16,11 @@
 #
 
 from datetime import datetime
-
+import logging
 from pytz import timezone
-
 from importio2.commands import AdBase
+
+logger = logging.getLogger(__name__)
 
 
 class Date2Epoch(AdBase):
@@ -71,7 +72,7 @@ class Date2Epoch(AdBase):
         :param year:
         :param month:
         :param day:
-        :return:
+        :return: begin, end date in GMT epoch seconds
         """
 
         # Assign our instance variables
@@ -90,6 +91,7 @@ class Date2Epoch(AdBase):
         end = datetime(self._year, self._month, self._day, 23, 59, 59)
         begin_gmt = gmt.localize(begin)
         end_gmt = gmt.localize(end)
+        logger.debug("begin_gmt: {0}, end_gmt: {1}".format(begin_gmt, end_gmt))
         return begin_gmt, end_gmt
 
     def output_epochs(self):

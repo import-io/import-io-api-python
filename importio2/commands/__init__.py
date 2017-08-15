@@ -24,5 +24,5 @@ from importio2.commands.csv_to_json import CsvToJson
 from importio2.commands.json_to_crawl_run import JsonToCrawlRun
 from importio2.commands.run_sql import RunSql
 from importio2.commands.sql_to_csv import SqlToCsv
-from importio2.commands.upload import DataUpload
 from importio2.commands.date_to_epoch import Date2Epoch
+from importio2.commands.upload_data import UploadData

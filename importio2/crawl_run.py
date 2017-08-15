@@ -21,7 +21,6 @@ from datetime import datetime
 from dateutil import parser
 
 logger = logging.getLogger(__name__)
-# logging.basicConfig(level=logging.DEBUG)
 
 CRAWL_RUN_OBJECT_TYPE = 'crawlrun'
 

@@ -32,7 +32,7 @@ setup(
             'io-json-to-crawl-run = importio2.commands.json_to_crawl_run:main',
             'io-run-sql = importio2.commands.run_sql:main',
             'io-sql-to-csv = importio2.commands.sql_to_csv:main',
-            'io-upload = importio2.commands.upload:main',
+            'io-upload-data = importio2.commands.upload_data:main',
         ],
     },
     description='Import.io API for Python',

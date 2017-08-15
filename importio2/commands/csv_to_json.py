@@ -30,7 +30,6 @@ class CsvToJson(AdBase):
 
     def __init__(self):
         super(CsvToJson, self).__init__()
-        logging.basicConfig(level=logging.ERROR)
         self._csv_path = None
         self._json_path = None
         self._overwrite = False

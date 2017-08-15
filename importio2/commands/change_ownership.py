@@ -65,7 +65,7 @@ class ChangeOwnership(AdBase):
         if self._args.object_user_id is not None:
             self._object_user_id = self._args.object_user_id
 
-    def run(self, api_key, object_id, object_type, object_user_id):
+    def run(self, object_id, object_type, object_user_id, api_key=None):
         """
         Assigns the input variables and then runs the method to affect to the object
         owner change

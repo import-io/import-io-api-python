@@ -76,25 +76,25 @@ class CreateCrawlRun(AdBase):
         """
         super(CreateCrawlRun, self).get_arguments()
 
-        if 'failed_url_count' in self._args:
+        if self._args.failed_url_count is not None:
             self._failed_url_count = self._args.failed_url_count
-        if 'success_url_count' in self._args:
+        if self._args.success_url_count is not None:
             self._success_url_count = self._args.success_url_count
-        if 'total_url_count' in self._args:
+        if self._args.total_url_count not in None:
             self._total_url_count = self._args.total_url_count
-        if 'row_count' in self._args:
+        if self._args.row_count is not None:
             self._row_count = self._args.row_count
-        if 'started_at' in self._args:
+        if self._args.started_at is not None:
             try:
                 self._started_at = int(self._args.started_at)
             except ValueError:
                 self._started_at = self._args.started_at
-        if 'stopped_at' in self._args:
+        if self._args.stopped_at is not None:
             try:
                 self._stopped_at = int(self._args.stopped_at)
             except ValueError:
                 self._stopped_at = self._args.stopped_at
-        if 'state' in self._args:
+        if self._args.state is not None:
             self._state = self._args.state
 
         logger.info(
@@ -108,9 +108,14 @@ class CreateCrawlRun(AdBase):
                 self._started_at,
                 self._stopped_at
             ))
-        # self._started_at, self._stopped_at = self._parse_dates(self._started_at, self._stopped_at)
 
     def _parse_dates(self, started_at, stopped_at):
+        """
+        Parse the data according ot the the data type
+        :param started_at: Starting date str, int, or datetime
+        :param stopped_at: Stopping date str, int, or datetime
+        :return: int of epoch time in GMT
+        """
         if isinstance(started_at, datetime):
             start_dt = int(started_at.strftime('%s')) * 1000
         elif isinstance(started_at, str):
