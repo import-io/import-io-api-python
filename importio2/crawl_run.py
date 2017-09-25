@@ -31,6 +31,12 @@ class CrawlRunAPI(object):
 
     @staticmethod
     def _parse_datetime(dt):
+        """
+        Uses input paramter that could be a datetime, string, or int
+        and returns timestamp as an int
+        :param dt:
+        :return: UNIX Timestamp in milliseconds
+        """
         if isinstance(dt, datetime):
             ts = int(dt.strftime('%s')) * 1000
         elif isinstance(dt, str):
@@ -127,6 +133,11 @@ class CrawlRunAPI(object):
         return result
 
     def state(self, crawl_run_id):
+        """
+        Returns a str with the current state of the crawl run
+        :param crawl_run_id:
+        :return: str with the state of the crawl run
+        """
         crawl_run = self.get(crawl_run_id)
         return crawl_run['state']
 
@@ -153,15 +164,37 @@ class CrawlRunAPI(object):
             return attachment_id
 
     def json_attachment(self, crawl_run_id, contents):
+        """
+        Adds or replaces a crawl run JSON attachment to the crawl run. The input can either be a str
+        or str to a path of a file to upload.
+        :param crawl_run_id: Crawl run to add the JSON attachment
+        :param contents: str that is either the contents of the JSON or a path to a JSON file
+        :return:
+        """
 
         return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
                                 field='json', mime='application/x-ldjson')
 
     def csv_attachment(self, crawl_run_id, contents):
+        """
+        Adds or replaces a crawl run CSV attachment to the crawl run. The input can either be a str
+        or str to a path of a file to upload.
+
+        :param crawl_run_id: Crawl run to add the CSV attachment
+        :param contents: str that is either the contents of the CSV or a path to a CSV file
+        :return:  Str of the attachment id returned from the object store
+        """
         return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
                                 field='csv', mime='text/csv')
 
     def log_attachment(self, crawl_run_id, contents):
+        """
+        Adds or replaces a crawl run log attachment to the crawl run. The input can either be a str
+        or str to a path of a file to upload.
+        :param crawl_run_id: Crawl run to add log to
+        :param contents: str that is either the contents of the Log or a path to a Log file
+        :return:  Str of the attachment id returned from the object store
+        """
         return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
                                 field='csv', mime='text/csv')
 
