@@ -15,39 +15,41 @@
 #
 from __future__ import absolute_import
 
-import os
 from unittest import TestCase
+import json
+import logging
+import os
+import tempfile
+
+import requests
+
 from importio2.apicore import extractor_cancel
 from importio2.apicore import extractor_csv
+from importio2.apicore import extractor_get
+from importio2.apicore import extractor_get_crawl_runs
 from importio2.apicore import extractor_json
 from importio2.apicore import extractor_log
-from importio2.apicore import extractor_get
-
 from importio2.apicore import extractor_query
 from importio2.apicore import extractor_start
 from importio2.apicore import extractor_url_list_get
 from importio2.apicore import extractor_url_list_put
-from importio2.apicore import extractor_get_crawl_runs
-
+from importio2.apicore import object_store_change_ownership
 from importio2.apicore import object_store_create
 from importio2.apicore import object_store_get
 from importio2.apicore import object_store_put_attachment
-from importio2.apicore import object_store_change_ownership
-
+from importio2.apicore import object_store_stream_attachment
+from tests.unit.importio2.test_data import CrawlRunFilesDownloadTestData
+from tests.unit.importio2.test_data import CrawlRunGet
 from tests.unit.importio2.test_data import ExtractorCSVTestData
-from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorCrawlRunsTestData
-from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
+from tests.unit.importio2.test_data import ExtractorJSONTestData
 from tests.unit.importio2.test_data import ExtractorLogTestData
+from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
 from tests.unit.importio2.test_data import ObjectStoreCrawlRunTestData
-from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
+from tests.unit.importio2.test_data import ObjectStoreExtractorOwnership
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutCsvAttachment
 from tests.unit.importio2.test_data import ObjectStoreExtractorPutJsonAttachment
-from tests.unit.importio2.test_data import ObjectStoreExtractorOwnership
-from tests.unit.importio2.test_data import CrawlRunGet
-import requests
-import json
-import logging
+from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachment
 
 logger = logging.getLogger(__name__)
 
@@ -267,6 +269,9 @@ class TestObjectStoreApiCore(TestCase):
         self.assertTrue('objectGuid' in result)
         self.assertEqual('json', result['field'])
 
+    def test_crawl_run_get_inputs_attachment(self):
+        response = object_store_get_attachment(self._api_key, )
+
     def test_extractor_ownership_change(self):
         response = object_store_change_ownership(api_key=self._api_key,
                                                  object_type='extractor',
@@ -275,3 +280,15 @@ class TestObjectStoreApiCore(TestCase):
 
         result = response.json()
         print(result)
+
+    def test_object_store_stream_attachement(self):
+        with tempfile.NamedTemporaryFile() as temp:
+            object_store_stream_attachment(api_key=self._api_key,
+                                           object_id=CrawlRunFilesDownloadTestData.CRAWL_RUN_ID,
+                                           object_type='crawlrun',
+                                           attachment_field='files',
+                                           attachment_id=CrawlRunFilesDownloadTestData.ATTACHMENT_ID,
+                                           attachment_type='application/zip',
+                                           path=temp.name)
+            stats = os.stat(temp.name)
+            self.assertEqual(325672, stats.st_size)

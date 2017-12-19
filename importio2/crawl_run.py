@@ -13,12 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import importio2.apicore as apicore
-import requests
 import logging
+import os
 from datetime import datetime
+
+import requests
 from dateutil import parser
+
+import importio2.apicore as apicore
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +58,7 @@ class CrawlRunAPI(object):
         result = None
         try:
             response = apicore.object_store_change_ownership(
-                api_key=self._api_key, object_type='crawlrun',  object_id=crawl_run_id, owner_id=owner_id)
+                api_key=self._api_key, object_type='crawlrun', object_id=crawl_run_id, owner_id=owner_id)
             # If the HTTP result code is not 200 then throw our hands up and
             # raise an exception
             if response.status_code == requests.codes.ok:
@@ -142,26 +144,26 @@ class CrawlRunAPI(object):
         return crawl_run['state']
 
     def _attachment(self, crawl_run_id, object_type, contents, field, mime):
-            if os.path.exists(contents):
-                with open(contents) as f:
-                    logger.info("Reading contents of: {0}".format(contents))
-                    attachment_contents = f.read()
-            else:
-                attachment_contents = contents
-            logger.info("attachment_contents: {0}".format(attachment_contents))
-            response = apicore.object_store_put_attachment(self._api_key,
-                                                           object_type,
-                                                           crawl_run_id,
-                                                           field,
-                                                           attachment_contents.encode('utf-8'),
-                                                           mime)
+        if os.path.exists(contents):
+            with open(contents) as f:
+                logger.info("Reading contents of: {0}".format(contents))
+                attachment_contents = f.read()
+        else:
+            attachment_contents = contents
+        logger.info("attachment_contents: {0}".format(attachment_contents))
+        response = apicore.object_store_put_attachment(self._api_key,
+                                                       object_type,
+                                                       crawl_run_id,
+                                                       field,
+                                                       attachment_contents.encode('utf-8'),
+                                                       mime)
 
-            attachment_id = None
-            if response.status_code == requests.codes.ok:
-                result = response.json()
-                attachment_id = result['guid']
+        attachment_id = None
+        if response.status_code == requests.codes.ok:
+            result = response.json()
+            attachment_id = result['guid']
 
-            return attachment_id
+        return attachment_id
 
     def json_attachment(self, crawl_run_id, contents):
         """
@@ -198,3 +200,19 @@ class CrawlRunAPI(object):
         return self._attachment(crawl_run_id=crawl_run_id, object_type='crawlrun', contents=contents,
                                 field='csv', mime='text/csv')
 
+    def get_files(self, crawl_run_id, file_id, path):
+        """
+        Writes the file attaches to path provide by the caller.
+        :param crawl_run_id: Crawl Run to download files from
+        :param file_id: Attachment Id of the file to download
+        :param path: Path to download the zip file
+        :return: None
+        """
+
+        apicore.object_store_stream_attachment(api_key=self._api_key,
+                                               object_id=crawl_run_id,
+                                               object_type='crawlrun',
+                                               attachment_field='files',
+                                               attachment_id=file_id,
+                                               attachment_type='application/zip',
+                                               path=path)

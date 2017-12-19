@@ -14,9 +14,10 @@
 # limitations under the License.
 #
 
-import requests
-import logging
 import json
+import logging
+
+import requests
 
 """
 Low-level REST API calls that specify the inputs and invoke a REST call. Callers
@@ -167,6 +168,45 @@ def extractor_url_list_put(api_key, guid, url_list):
     return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
 
 
+def extractor_inputs_put(api_key, guid, inputs):
+    url = "https://store.import.io/store/extractor/{0}/_attachment/inputs".format(guid)
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    payload = inputs
+    headers = {
+        'content-type': "text/plain",
+    }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
+
+    return requests.request("PUT", url, data=payload, headers=headers, params=querystring)
+
+
+def extractor_inputs_get(api_key, guid, inputs_guid):
+    """
+    Gets the inputs associated with an extractor
+
+    :param api_key: Import.io user API key
+    :param guid: Extractor identifier
+    :param inputs_guid: URL List identifier
+    :return: Requests response object
+    """
+
+    url = "https://store.import.io/store/extractor/{0}/_attachment/inputs/{1}".format(guid, inputs_guid)
+
+    querystring = {"_apikey": api_key}
+
+    headers = {
+        'accept-encoding': "gzip",
+        'cache-control': "no-cache",
+    }
+    logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
 def extractor_cancel(api_key, guid):
     """
     Cancels a crawl run of an extractor
@@ -255,7 +295,6 @@ def extractor_json(api_key, guid):
 
 
 def extractor_log(api_key, guid):
-
     url = "https://data.import.io/extractor/{0}/log/latest".format(guid)
 
     querystring = {
@@ -308,13 +347,36 @@ def object_store_get(api_key, object_type, object_id):
     return response
 
 
-def object_store_put_attachment(api_key, object_type, object_id, attachment_field, attachment_contents,
+def object_store_get_attachment(api_key, object_id, object_type, attachment_field, attachment_id,
                                 attachment_type):
-    url = "https://store.import.io/{0}/{1}/_attachment/{2}".format(object_type, object_id, attachment_field)
+    """
+    Generic function for downloading attachments from Crawl Runs/Extractors.
+
+    :param api_key: Import.io API key
+    :param object_id: CrawlRun or Extractor Id
+    :param attachment_field: One of the following: csv, example, files, inputs, json, log, xlsx
+    :param attachment_id: Id of the attachment
+    :param attachment_type: Mime type
+    :return: response
+    """
+    url = "https://store.import.io/{0}/{1}/_attachment/{2}/{3}".format(
+        object_type, object_id, attachment_field, attachment_id)
+
+    headers = {
+        'accept': attachment_type,
+    }
 
     querystring = {
         "_apikey": api_key
     }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
+
+
+def object_store_put_attachment(api_key, object_type, object_id, attachment_field, attachment_contents,
+                                attachment_type):
+    url = "https://store.import.io/{0}/{1}/_attachment/{2}".format(object_type, object_id, attachment_field)
+
     payload = attachment_contents
     headers = {
         'accept': "application/json",
@@ -349,3 +411,35 @@ def object_store_change_ownership(api_key, object_type, object_id, owner_id):
     response = requests.request("PATCH", url, headers=headers, params=querystring)
 
     return response
+
+
+def object_store_stream_attachment(api_key, object_id, object_type, attachment_field, attachment_id,
+                                   attachment_type, path):
+    """
+    Generic function for streaming data from attachments from Crawl Runs/Extractors.
+
+    :param api_key: Import.io API key
+    :param object_id: CrawlRun or Extractor Id
+    :param attachment_field: One of the following: csv, example, files, inputs, json, log, xlsx
+    :param attachment_id: Id of the attachment
+    :param attachment_type: Mime type
+    :param path: Location to write the zip file
+    :return: response
+    """
+    url = "https://store.import.io/{0}/{1}/_attachment/{2}/{3}".format(
+        object_type, object_id, attachment_field, attachment_id)
+
+    headers = {
+        'accept': attachment_type,
+    }
+
+    querystring = {
+        "_apikey": api_key
+    }
+
+    r = requests.get(url, headers=headers, params=querystring, stream=True)
+    with open(path, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
+                f.flush()

@@ -244,5 +244,11 @@ class ExtractorLogTestData(object):
     LENGTH = 4
 
 
+class CrawlRunFilesDownloadTestData(object):
+
+    CRAWL_RUN_ID = 'bd0343ed-12e1-489c-8b93-28df2193aa80'
+    ATTACHMENT_ID = 'd7dc24ec-9464-47e4-86b9-9fffd55e1549'
+
+
 
 

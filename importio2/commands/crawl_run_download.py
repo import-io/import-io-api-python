@@ -70,6 +70,8 @@ class CrawlRunDownload(AdBase):
         self._parser.add_argument('-f', '--format', action='store', dest='format', default='%Y-%m-%d_%H_%M_%S',
                                   help='Date format to use in the name of the output file.')
 
+        super(CrawlRunDownload, self).handle_argument
+
     def get_arguments(self):
         super(CrawlRunDownload)
 
@@ -177,7 +179,7 @@ class CrawlRunDownload(AdBase):
 
 
 def main():
-    cli = CrawlRunDown()
+    cli = CrawlRunDownload()
     cli.execute()
 
 
