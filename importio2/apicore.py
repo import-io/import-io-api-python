@@ -377,6 +377,10 @@ def object_store_put_attachment(api_key, object_type, object_id, attachment_fiel
                                 attachment_type):
     url = "https://store.import.io/{0}/{1}/_attachment/{2}".format(object_type, object_id, attachment_field)
 
+    querystring = {
+        "_apikey": api_key
+    }
+
     payload = attachment_contents
     headers = {
         'accept': "application/json",
