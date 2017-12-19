@@ -18,6 +18,12 @@ if len(sys.argv) != 2:
 else:
     extractor_id = sys.argv[1]
 
+
+def crawlrun_state(extractor, crawlrun):
+    state = crawlrun_api.state(crawlrun)
+    print("Extractor: {0}, Crawlrun: {1}, state: {2}".format(extractor, crawlrun, state))
+
+
 #
 # The environment variable IMPORT_IO_API_KEY needs to be set with your
 # Import.io API key.
@@ -37,18 +43,14 @@ crawlrun_id = extractor_api.start(extractor_id)
 # to get the current state of the call run
 # started above
 #
-crawlrun_state = crawlrun_api.state(crawlrun_id)
-print("Extractor Id: {0}, Crawlrun Id: {1}, state: {2}".format(extractor_id, crawlrun_id, crawlrun_state))
 
 sleep(5)
 
-crawlrun_state = crawlrun_api.state(crawlrun_id)
-print("Extractor Id: {0}, Crawlrun Id: {1}, state: {2}".format(extractor_id, crawlrun_id, crawlrun_state))
+crawlrun_state(extractor_id, crawlrun_id)
 
 sleep(30)
 
-crawlrun_state = crawlrun_api.state(crawlrun_id)
-print("Extractor Id: {0}, Crawlrun Id: {1}, state: {2}".format(extractor_id, crawlrun_id, crawlrun_state))
+crawlrun_state(extractor_id, crawlrun_id)
 
 #
 # This is a utility method for starting and blocking
@@ -59,8 +61,7 @@ print("Extractor Id: {0}, Crawlrun Id: {1}, state: {2}".format(extractor_id, cra
 #
 
 crawlrun_id = extractor_utils.extractor_run_and_wait(extractor_id)
-crawlrun_state = crawlrun_api.state(crawlrun_id)
-print("Extractor Id: {0}, Crawlrun Id: {1}, state: {2}".format(extractor_id, crawlrun_id, crawlrun_state))
+crawlrun_state(extractor_id, crawlrun_id)
 
 
 
