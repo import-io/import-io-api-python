@@ -305,7 +305,6 @@ def object_store_get(api_key, object_type, object_id):
         'cache-control': "no-cache",
     }
     response = requests.request("GET", url, headers=headers, params=querystring)
-    print(response.text)
     return response
 
 

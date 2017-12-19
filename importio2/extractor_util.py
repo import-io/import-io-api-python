@@ -60,18 +60,21 @@ class ExtractorUtilities(object):
         :param crawl_run_id: specifies the crawl run
         :return: None
         """
-        api = ExtractorAPI()
-        extractor = self.api.get(extractor_id)
-        name = extractor['name']
-        api = CrawlRunAPI()
-        run = api.get(crawl_run_id)
-        started_at = datetime.fromtimestamp(int(run['startedAt'] / 1000))
-        total = int(run['totalUrlCount'])
-        failed = int(run['failedUrlCount'])
-        success = int(run['successUrlCount'])
-        rows = int(run['rowCount'])
-        logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
-            name, started_at, total, success, failed, rows))
+        try:
+            api = ExtractorAPI()
+            extractor = self.api.get(extractor_id)
+            name = extractor['name']
+            api = CrawlRunAPI()
+            run = api.get(crawl_run_id)
+            started_at = datetime.fromtimestamp(int(run['startedAt'] / 1000))
+            total = int(run['totalUrlCount'])
+            failed = int(run['failedUrlCount'])
+            success = int(run['successUrlCount'])
+            rows = int(run['rowCount'])
+            logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
+                name, started_at, total, success, failed, rows))
+        except Exception as e:
+            logger.exception(e)
 
     def extractor_run_and_wait(self, extractor_id, report=12):
         """
