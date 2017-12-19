@@ -17,7 +17,7 @@
 from unittest import TestCase
 import tempfile
 import os
-from importio2.commands import DataUpload
+from importio2.commands import UploadData
 
 
 class TestUpload(TestCase):
@@ -30,7 +30,7 @@ class TestUpload(TestCase):
         pass
 
     def test_constructor(self):
-        upload = DataUpload()
+        upload = UploadData()
         self.assertIsNotNone(upload)
 
 

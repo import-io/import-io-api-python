@@ -238,6 +238,41 @@ class ExtractorAPI(object):
             logger.exception(e)
         return url_list_id
 
+    def put_inputs(self, guid, inputs):
+        """
+        Replaces the input list on an Extractor
+        :param guid: Identifier of the extractor
+        :param inputs: List of string containing inputs
+        :return: None
+        """
+        inputs_id = None
+        try:
+            input_list = '\n'.join(inputs)
+            print(input_list)
+            response = apicore.extractor_inputs_put(self._api_key, guid, input_list)
+            if response.status_code == requests.codes.ok:
+                result = json.loads(response.text)
+                inputs_id = result['guid']
+            else:
+                logger.error("Unable set input list for extractor: {0}".format(guid))
+                raise Exception()
+        except Exception as e:
+            logger.exception(e)
+        return inputs_id
+
+    def get_inputs(self, guid):
+        """
+        Returns the URLs associated with an Extractor
+
+        :param guid: Identifier of the extractor
+        :return: List of URL strings
+        """
+        extractor = self.get(guid)
+        inputs_guid = extractor['inputs']
+        response = apicore.extractor_inputs_get(self._api_key, guid, inputs_guid)
+        inputs = response.text.split('\n')
+        return inputs
+
     def query(self, guid, url):
         """
         Runs a live query with the Extractor
@@ -434,6 +469,13 @@ class Extractor(object):
         api = ExtractorAPI()
         json = api.csv(self._guid)
         return json
+
+    def query(self, url):
+        """
+        Uses the live query API to return data
+        :param url:
+        :return: Data returned from the Extractor
+        """
 
 
 

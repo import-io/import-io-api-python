@@ -58,6 +58,7 @@ class CsvDownload(AdBase):
         """
         Executes the CLIs operation which is to down load a CSV file from an extractor
         :param crawl_run_id: Identifies which of the crawls to extract from the Extractors crawl runs
+        :param csv_id: CSV file attachment id
         :param output_path: Path to write the CSV file in the local file system
         :param api_key: Import.io API Key from the account that has the extractor to download from
         :return: None
