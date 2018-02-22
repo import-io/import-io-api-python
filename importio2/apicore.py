@@ -65,9 +65,10 @@ def extractor_list(api_key, page):
 
     querystring = {"_sort": "_meta.creationTimestamp",
                    "_mine": "true",
-                   "q": "_missing_%3Aarchived%20OR%20archived%3Afalse",
+                   "q": "_missing_:archived OR archived:false",
                    "_page": page,
-                   "_apikey": api_key
+                   "_apikey": api_key,
+                   "_perpage": 1000
                    }
 
     headers = {
@@ -92,7 +93,7 @@ def extractor_get_crawl_runs(api_key, guid, page, per_page):
 
     querystring = {"_sort": "_meta.creationTimestamp",
                    "_page": page,
-                   "_perPage": per_page,
+                   "_perpage": per_page,
                    "extractorId": guid,
                    "_apikey": api_key
                    }
@@ -100,7 +101,6 @@ def extractor_get_crawl_runs(api_key, guid, page, per_page):
         'cache-control': "no-cache",
     }
     logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
-
     return requests.request("GET", url, headers=headers, params=querystring)
 
 

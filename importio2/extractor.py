@@ -158,7 +158,7 @@ class ExtractorAPI(object):
         """
         crawl_runs = []
         try:
-            response = apicore.extractor_get_crawl_runs(self._api_key, guid, 1, 30)
+            response = apicore.extractor_get_crawl_runs(self._api_key, guid, 1, 1000)
             # If the HTTP result code is not 200 then throw our hands up and
             # raise an exception
             if response.status_code == requests.codes.ok:
@@ -215,7 +215,13 @@ class ExtractorAPI(object):
 
         :return: List of GUIDs
         """
-        return []
+        response = apicore.extractor_list(self._api_key, page=1)
+        extractor_doc = response.json()
+        extractor_list = []
+        for extractor in extractor_doc['hits']['hits']:
+            extractor_list.append(extractor)
+
+        return extractor_list
 
     def put_url_list(self, guid, urls):
         """
