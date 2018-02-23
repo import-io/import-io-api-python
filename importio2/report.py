@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Import.io
+# Copyright 2017-2018 Import.io
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from unittest import TestCase
-import json
-import logging
-import os
-import tempfile
 
-import requests
-
-from importio2.core.reports_api import reports_list
+from importio2.report_api_core import report_get
 
 
-class TestReportsAPI(TestCase):
-    pass
+class ReportAPI (object):
 
-    def test_api_reports_list(self):
-        reports_list()
+    def __init__(self):
+        pass
+
+    def get(self, guid):
+        """
+        Fetches the report associated with the input guid
+        :param guid: Unique identifier of the report
+        :return: contents of the report as object
+        """
+        result = report_get()
+        return
+
+    def list(self):
+        pass

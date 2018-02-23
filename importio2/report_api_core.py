@@ -14,10 +14,12 @@
 # limitations under the License.
 #
 
-import json
 import logging
-
+import os
 import requests
+
+
+logger = logging.getLogger(__name__)
 
 """
 Low-level REST API calls that specify the inputs and invoke a REST call. Callers
@@ -26,20 +28,32 @@ have the responsibility of handling the Requests libraries response object which
 """
 
 
-def reports_list(api_key):
+def report_get(api_key):
+    pass
 
-    url = "https://store.import.io/store/reportrun/_search"
 
-    querystring = {"_sort": "_meta.creationTimestamp", "_page": "2", "_perpage": "30",
+def report_list(api_key, page, per_page=30):
+
+    url = "https://store.import.io/store/report/_search"
+
+    querystring = {"_sort": "_meta.creationTimestamp",
+                   "_page": page,
+                   "_perpage": per_page,
                    "_apikey": api_key
                    }
-
     headers = {
         'accept': "*/*",
         'Cache-Control': "no-cache"
     }
-
     response = requests.request("GET", url, headers=headers, params=querystring)
+    return response.json()
 
-    print(response.text)
+
+def report_list_runs(api_key, guid, page, per_page=30):
+    pass
+
+
+def report_get_run(api_key, guid):
+    pass
+
 
