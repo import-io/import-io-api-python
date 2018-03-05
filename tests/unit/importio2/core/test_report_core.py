@@ -14,16 +14,23 @@
 # limitations under the License.
 #
 from unittest import TestCase
-import json
-import logging
 import os
-import tempfile
-import requests
 
-from importio2.core.reports_api import reports_list
+from importio2.report_api_core import report_get
+from importio2.report_api_core import report_list
+
+DEFAULT_GUID=''
 
 
 class TestReportsAPI(TestCase):
 
+    def setUp(self):
+        self._api_key = os.environ['IMPORT_IO_API_KEY']
+
+    def test_api_report_get(self):
+        report = report_get(self._api_key, DEFAULT_GUID, 1)
+        self.assertIsNotNone(report)
+
     def test_api_reports_list(self):
-        reports_list()
+        result = report_list(self._api_key, 1)
+        print(result)
