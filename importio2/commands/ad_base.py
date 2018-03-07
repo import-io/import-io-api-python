@@ -52,7 +52,7 @@ class AdBase(object):
         Adds a command line argument to handle processing of extractor Id
         :return: None
         """
-        self._parser.add_argument('-e', '-extractor-id', action='store', dest='extractor_id', metavar='extractor_id',
+        self._parser.add_argument('-e', '--extractor-id', action='store', dest='extractor_id', metavar='extractor_id',
                                   required=required, help='Identifies the extractor to be accessed')
 
     def add_crawl_run_id_arg(self, required=True):
@@ -60,7 +60,7 @@ class AdBase(object):
         Adds a command line argument to handle processing of crawl run Id
         :return: None
         """
-        self._parser.add_argument('-r', '-crawl-run-id', action='store', dest='extractor_id', metavar='extractor_id',
+        self._parser.add_argument('-r', '--crawl-run-id', action='store', dest='crawl_run_id', metavar='crawl_run_id',
                                   required=required, help='Identifies the crawl run to be accessed')
 
     def add_output_directory_arg(self, required=False):
