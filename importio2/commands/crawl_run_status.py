@@ -54,13 +54,13 @@ class CrawlRunStatus(AdBase):
     def get_arguments(self):
         super(CrawlRunStatus, self).get_arguments()
 
-        if 'list' in self._args:
+        if self._args.list:
             self._list = self._args.list
 
-        if 'state' in self._args:
+        if self._args.state is not None:
             self._state = self._args.state
 
-        if 'all' in self._args:
+        if self._args.all:
             self._all = self._args.all
 
     def run(self, extractor_id, list=True, state=None):
