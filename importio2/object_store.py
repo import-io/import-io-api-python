@@ -22,11 +22,12 @@ import os
 @unique
 class CrawlRunState(Enum):
     CANCELLED = 1
-    FINISHED = 2
-    PENDING = 3
-    STARTED = 4
+    FAILED = 2
+    FINISHED = 3
+    PENDING = 4
+    STARTED = 5
 
-    names = ["CANCELLED", "FINISHED", "PENDING", "STARTED"]
+    names = ["CANCELLED", "FAILED", "FINISHED", "PENDING", "STARTED"]
 
     def describe(self):
         return self.name, self.value
