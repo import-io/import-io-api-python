@@ -22,8 +22,6 @@ import sys
 from importio2 import ExtractorAPI
 from importio2.commands import AdBase
 
-logging.basicConfig(level=logging.ERROR)
-
 FIELD_NAMES = [
     "extractor_id",
     "extractor_name",
