@@ -45,6 +45,7 @@ class DownloadCrawlRunData(AdBase):
                                   help='List the extractors in an account')
 
     def do_list_extractors(self):
+        pass
 
     def run(self, api_key=None):
         """
