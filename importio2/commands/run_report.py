@@ -21,12 +21,9 @@ import requests
 
 from importio2 import CrawlRunAPI
 from importio2 import ExtractorAPI
-
-()
 from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.NOTSET)
 
 
 class RunReport(AdBase):
@@ -43,7 +40,6 @@ class RunReport(AdBase):
         return 'Generate a data or diff report'
 
     def handle_arguments(self):
-        self.add_crawl_run_id_arg()
         self._parser.add_argument('--base-crawl-run', action='store', dest='base_crawl_run_id',
                                   metavar='crawl_run_id', help='Base crawl run for the diff report')
         self._parser.add_argument('--compare-crawl-run', action='store', dest='compare_crawl_run_id',
@@ -117,12 +113,12 @@ class RunReport(AdBase):
             self.set_crawl_run_state(crawl_run_id, 'CANCELLED')
 
     def create_data_report(self):
-#        self.disable_crawl_runs()
         url = "https://api.import.io/report/{0}/run".format(self._report_id)
         querystring = {
             "_apikey": self._api_key
         }
         response = requests.request("POST", url, params=querystring)
+        print(response.text)
         return response
 
     def create_diff_report(self):
