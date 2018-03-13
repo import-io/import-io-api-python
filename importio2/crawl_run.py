@@ -208,11 +208,26 @@ class CrawlRunAPI(object):
         :param path: Path to download the zip file
         :return: None
         """
-
         apicore.object_store_stream_attachment(api_key=self._api_key,
                                                object_id=crawl_run_id,
                                                object_type='crawlrun',
                                                attachment_field='files',
                                                attachment_id=file_id,
                                                attachment_type='application/zip',
+                                               path=path)
+
+    def get_csv(self, crawl_run_id, file_id, path):
+        """
+        Writes the file attaches to path provide by the caller.
+        :param crawl_run_id: Crawl Run to download files from
+        :param csv_id: Attachment Id of the csv file to download
+        :param path: Path to download the csv file
+        :return: None
+        """
+        apicore.object_store_stream_attachment(api_key=self._api_key,
+                                               object_id=crawl_run_id,
+                                               object_type='crawlrun',
+                                               attachment_field='csv',
+                                               attachment_id=file_id,
+                                               attachment_type='application/csv',
                                                path=path)
