@@ -21,7 +21,6 @@ import os
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 class SqlToCsv(AdDatabase):
@@ -29,7 +28,7 @@ class SqlToCsv(AdDatabase):
         super(AdDatabase, self).__init__()
         self._connection = None
         self._sql = None
-        self._sql_file = None
+        self._sql_path = None
         self._db_user = None
         self._db_password = None
         self._db_database = None
@@ -69,15 +68,17 @@ class SqlToCsv(AdDatabase):
         :return: None
         """
 
-        logger.info("user: {0}, password: {1}, host: {2}, database: {3}".format(
-                    self._db_user, self._db_password, self._db_host, self._db_database))
+        logger.info("sql: {0}".format(self._sql))
+        #connection = pymysql.connect(user=self._db_user,
+        #                             password=self._db_password,
+        #                             host=self._db_host,
+        #                             database=self._db_database)
+        # table = petl.fromdb(connection, self._sql)
+        # print(petl.look(table))
+        # petl.tocsv(table, self._output_path)
 
-        connection = pymysql.connect(user=self._db_user,
-                                     password=self._db_password,
-                                     host=self._db_host,
-                                     database=self._db_database)
-        table = petl.fromdb(connection, self._sql)
-        petl.tocsv(table, self._output_path)
+    def get_sql(self):
+        pass
 
     def run(self, user, password, database, host, sql_input, output_path):
         """
@@ -109,12 +110,20 @@ class SqlToCsv(AdDatabase):
 
         self.sql_to_csv()
 
+    def initialize(self):
+        if self._sql_path is not None:
+            with open(self._sql_path) as f:
+                self._sql = f.read()
+        else:
+            self._sql = self._sql
+
     def execute(self):
         """
         Entry point for CLI
         :return: None
         """
         self.handle_arguments()
+        self.initialize()
         self.sql_to_csv()
 
 

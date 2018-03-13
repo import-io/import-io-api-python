@@ -21,9 +21,6 @@ from importio2 import ExtractorAPI
 from importio2 import CrawlRunAPI
 from jinja2 import Template, FileSystemLoader, Environment
 
-
-logging.basicConfig(level=logging.NOTSET)
-
 logger = logging.getLogger(__name__)
 
 

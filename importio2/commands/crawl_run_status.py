@@ -16,14 +16,13 @@
 
 import json
 import logging
-
+from datetime import datetime
 import requests
 
 from importio2 import ExtractorAPI
 from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.NOTSET)
 
 
 class CrawlRunStatus(AdBase):
@@ -38,7 +37,7 @@ class CrawlRunStatus(AdBase):
         return 'Gets or sets the state of crawl runs'
 
     def handle_arguments(self):
-        self.add_extractor_id_arg(required=True)
+        self.add_extractor_id_arg(required=False)
         self.add_crawl_run_id_arg(required=False)
         self._parser.add_argument('-a', '--all', action='store_true', dest='all', default=False,
                                   help='Sets the state on ALL of the crawlruns')
@@ -94,7 +93,10 @@ class CrawlRunStatus(AdBase):
         crawl_runs = api.get_crawl_runs(self._extractor_id)
         for cr in crawl_runs:
             fields = cr['fields']
-            print("crawl_run_id: {0}, state: {1}".format(fields['guid'], fields['state']))
+            meta = fields['_meta']
+            created_ts = meta['creationTimestamp']
+            created_dt = datetime.fromtimestamp(created_ts/1000)
+            print("crawl_run_id: {0}, state: {1}, created: {2}".format(fields['guid'], fields['state'], created_dt))
 
     def set_crawl_run_state(self):
         url = "https://store.import.io/{0}/{1}".format('crawlrun', self._crawl_run_id)
