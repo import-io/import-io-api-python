@@ -19,6 +19,7 @@ import requests
 import os
 import importio2.apicore as apicore
 import json
+import math
 import csv
 from importio2 import CSVData
 
@@ -215,11 +216,18 @@ class ExtractorAPI(object):
 
         :return: List of GUIDs
         """
-        response = apicore.extractor_list(self._api_key, page=1)
+        per_page = 1000
+        response = apicore.extractor_list(self._api_key, page=1, per_page=per_page)
         extractor_doc = response.json()
+        extractor_count = int(extractor_doc['hits']['total'])
+        no_pages = math.ceil(extractor_count/per_page)
         extractor_list = []
-        for extractor in extractor_doc['hits']['hits']:
-            extractor_list.append(extractor)
+        for page in range(1, int(no_pages) + 1):
+            response = apicore.extractor_list(self._api_key, page=page, per_page=per_page)
+            extractor_doc = response.json()
+            rows = extractor_doc['hits']['hits']
+            for r in rows:
+                extractor_list.append(r)
 
         return extractor_list
 

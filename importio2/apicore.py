@@ -51,12 +51,13 @@ def extractor_get(api_key, guid):
     return requests.request("GET", url, headers=headers, params=querystring)
 
 
-def extractor_list(api_key, page):
+def extractor_list(api_key, page=1, per_page=1000):
     """
     Fetches the list of Extractors associated to an account
 
     :param api_key: Import.io user API key
-    :param page: which page of the list to display
+    :param page: which page of the list to display.
+    :param per_page: Number of extractors per page.
     :return: returns response object from requests library
 
     """
@@ -68,11 +69,10 @@ def extractor_list(api_key, page):
                    "q": "_missing_:archived OR archived:false",
                    "_page": page,
                    "_apikey": api_key,
-                   "_perpage": 1000
+                   "_perpage": per_page
                    }
 
     headers = {
-        'cache-control': "no-cache",
     }
     logger.debug("url: {0}, headers: {1}, querystring: {2}".format(url, headers, querystring))
 
