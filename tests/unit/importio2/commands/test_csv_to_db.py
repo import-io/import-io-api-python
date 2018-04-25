@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from tests.unit.importio2.commands.db_test_utils import *
 
@@ -25,6 +25,7 @@ CSV_TO_DB_TABLE = 'test_csv_to_db'
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'test_csv_to_db.csv')
 
 
+@skip
 class TestCsvToDatabase(TestCase):
 
     def setUp(self):
