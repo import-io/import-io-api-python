@@ -48,7 +48,7 @@ setup(
         'python-dateutil>=2.6.0',
         'petl>=1.1.1',
         'pytz>=2017.2',
-        'PyMySQL>=0.7.11',
+        'PyMySQL>=0.8.0',
 
     ],
 )
