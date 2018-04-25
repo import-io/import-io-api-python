@@ -68,8 +68,8 @@ class ExtractorQueryTestData(object):
 
     EXTRACTOR_ID = 'fdc32e96-78b4-41a0-97a8-60af0febeba5'
 
-    PAGE_QUERY_URL = 'http://www.ikea.com/us/en/search/?query=Towels'
-    PAGE_2_QUERY_URL = 'http://www.ikea.com/us/en/search/?query=Towels&pageNumber=2'
+    PAGE_QUERY_URL = 'https://www.ikea.com/us/en/search/?query=Towels'
+    PAGE_2_QUERY_URL = 'https://www.ikea.com/us/en/search/?query=Towels&pageNumber=2'
 
 
 class ExtractorUrlListPutTestData(object):
