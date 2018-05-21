@@ -24,6 +24,7 @@ from datetime import datetime
 import requests
 
 from importio2 import ExtractorAPI
+from importio2 import CrawlRunAPI
 from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
@@ -61,6 +62,7 @@ class CrawlRunDownload(AdBase):
         :return:
         """
         self._parser.add_argument('-e', '--extractor-id', action='store', dest='extractor_id', metavar='id',
+                                  required=True,
                                   help='Extractor id identifying which extractor to download files from')
         self._parser.add_argument('-o', '--output-dir', action='store', dest='output_dir',
                                   default=os.path.abspath(os.path.curdir), metavar='path',
@@ -70,7 +72,7 @@ class CrawlRunDownload(AdBase):
         self._parser.add_argument('-f', '--format', action='store', dest='format', default='%Y-%m-%d_%H_%M_%S',
                                   help='Date format to use in the name of the output file.')
 
-        super(CrawlRunDownload, self).handle_arguments
+        super(CrawlRunDownload, self).handle_arguments()
 
     def get_arguments(self):
         super(CrawlRunDownload)
@@ -78,7 +80,7 @@ class CrawlRunDownload(AdBase):
         if self._args.extractor_id is not None:
             self._extractor_id = self._args.extractor_id
 
-        if self._args.outputdir is not None:
+        if self._args.output_dir is not None:
             self._output_dir = self._args.output_dir
 
         if self._args.type is not None:
@@ -95,77 +97,37 @@ class CrawlRunDownload(AdBase):
         """
         Calls the appropriate api to create a list of the crawl run ids associated with
         an Extractor
-        :return:
+        :return: List of crawl run objects
         """
-
-        url = "https://store.import.io/store/crawlrun/_search"
-
-        querystring = {"_sort": "_meta.creationTimestamp",
-                       "_page": "1",
-                       "_perPage": "30",
-                       "extractorId": self._extractor_id,
-                       "_apikey": self._api_key,
-                       }
-
-        headers = {
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-
-        d = response.json()
-
-        data = d['hits']['hits']
-        for r in data:
-            crawl_run = CrawlRun(r)
-            self._crawl_run_list.append(crawl_run)
-
-    def generate_filename(self, crawl_run):
         api = ExtractorAPI()
-        extractor = api.get(crawl_run['fields']['extractorId'])
-        ts = datetime.fromtimestamp(int(crawl_run['fields']['stoppedAt']) / 1000).strftime(self._format)
-        filename = "{filename}_{timestamp}.csv".format(filename=extractor['name'], timestamp=ts)
+        return api.get_crawl_runs(self._extractor_id)
 
-        return filename
-
-    def download_csv(self, crawl_run):
-        """
-        Calls the API to download the CSV file from a crawl run
-        :param crawl_run:
-        :return: None
-        """
-        url = "https://store.import.io/store/crawlRun/{0}/_attachment/csv/{1}".format(crawl_run['_id'],
-                                                                                      crawl_run['fields']['csv'])
-        querystring = {
-            "_apikey": self._api_key
-        }
-
-        headers = {
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-
-        filename = self.generate_filename(crawl_run)
-
-        path = os.path.join(self._output_dir, filename)
-        logger.info("path: {0}".format(path))
-        with open(path, 'wt') as f:
-            # NOTE: Strip of the byte ordering by slicing
-            f.write(response.text[3:])
-
-    def download_json(self, crawl_run):
+    def download_json(self, crawl_run_id):
         pass
+
+    def download_csv(self, crawl_run_id):
+        api = CrawlRunAPI()
+        crawl_run = api.get(crawl_run_id)
+        attachment_id = crawl_run['csv']
+
+        timestamp = datetime.fromtimestamp(int(crawl_run['startedAt']) / 1000)
+
+        path = os.path.join(self._output_dir, timestamp.strftime(self._format) + '.csv')
+        logger.info(path)
+        api.get_csv(crawl_run_id=crawl_run_id, file_id=attachment_id, path=path)
 
     def download_files(self):
         """
         Handles the downloading of files
         :return:
         """
-        self.get_crawl_runs()
+        crawl_run_list = self.get_crawl_runs()
 
-        for crawl_run in self._crawl_run_list:
+        for crawl_run in crawl_run_list:
             if crawl_run['fields']['state'] == 'FINISHED':
+                crawl_run_id = crawl_run['_id']
                 if self._type == 'csv':
-                    self.download_csv(crawl_run)
+                    self.download_csv(crawl_run_id)
                 else:
                     self.download_json(crawl_run)
 
