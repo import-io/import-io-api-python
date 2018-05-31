@@ -21,13 +21,12 @@ from collections import UserDict
 from collections import UserList
 from datetime import datetime
 
-import requests
-
 from importio2 import ExtractorAPI
 from importio2 import CrawlRunAPI
 from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class CrawlRun(UserDict):
@@ -59,7 +58,7 @@ class CrawlRunDownload(AdBase):
     def handle_arguments(self):
         """
         Process command line arguments
-        :return:
+        :return: None
         """
         self._parser.add_argument('-e', '--extractor-id', action='store', dest='extractor_id', metavar='id',
                                   required=True,
@@ -103,6 +102,12 @@ class CrawlRunDownload(AdBase):
         return api.get_crawl_runs(self._extractor_id)
 
     def download_json(self, crawl_run_id):
+        """
+        Download the crawl in NDJSON.
+
+        :param crawl_run_id:
+        :return:
+        """
         pass
 
     def download_csv(self, crawl_run_id):
