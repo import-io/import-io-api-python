@@ -75,7 +75,7 @@ class CsvDownload(AdBase):
         Returns the contents of the crawl run from an extractor.
         :return:
         """
-        url = "https://data.import.io/crawlrun/{0}/_attachment/csv/{0}".format(self._extractor_id, self._csv_id)
+        url = "https://store.import.io/store/crawlrun/{0}/_attachment/csv/{1}".format(self._crawl_run_id, self._csv_id)
 
         querystring = {
             "_apikey": self._api_key
