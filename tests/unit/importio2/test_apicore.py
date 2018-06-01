@@ -53,7 +53,6 @@ from tests.unit.importio2.test_data import ObjectStoreExtractorPutUrlListAttachm
 
 logger = logging.getLogger(__name__)
 
-# logging.basicConfig(level=logging.DEBUG)
 
 # Todo: Refactor standard location for test data
 EXTRACTOR_GUID = 'a3fcec06-08b4-4b96-8fa8-a942f99cd1aa'

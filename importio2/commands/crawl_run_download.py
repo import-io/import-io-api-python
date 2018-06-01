@@ -26,7 +26,6 @@ from importio2 import CrawlRunAPI
 from importio2.commands import AdBase
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 class CrawlRun(UserDict):

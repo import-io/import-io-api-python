@@ -22,7 +22,6 @@ import logging
 import sys
 import os
 
-logging.basicConfig(level=logging.NOTSET)
 
 # Check to see if the extractor id was
 # passed on the command line

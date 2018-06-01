@@ -30,7 +30,6 @@ from tests.unit.importio2.test_data import CrawlRunCsvJsonAttachment
 from tests.unit.importio2.test_data import CrawlRunCsvJsonAttachmentNew
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 JSON_ATTACHMENT = """{"url":"http://www.example.com","result":{"extractorData":{"url":"http://www.example.com","resourceId":"f28ffcf17e9135b5fcd0913651304216","data":[{"group":[{"Description":[{"text":"This domain is established to be used for illustrative examples in documents. You may use this domain in examples without prior coordination or asking for permission."}]},{"Description":[{"text":"More information..."}],"Link":[{"text":"More information...","href":"http://www.iana.org/domains/example"}]}]}]},"pageData":{"resourceId":"f28ffcf17e9135b5fcd0913651304216","statusCode":200,"timestamp":1488760472551},"timestamp":1488761151967,"sequenceNumber":0}}"""
 

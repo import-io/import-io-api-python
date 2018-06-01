@@ -62,7 +62,6 @@ class DownloadCrawlRunData(AdBase):
         :return: None
         """
         super(DownloadCrawlRunData, self).execute()
-        logging.basicConfig(level=logging.ERROR)
 
         if self._list:
             self.do_list_extractors()

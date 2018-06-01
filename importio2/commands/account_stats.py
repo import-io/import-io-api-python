@@ -104,13 +104,11 @@ class AccountStats(AdBase):
 
     def do_count_extractors(self):
         api = ExtractorAPI()
-        logging.basicConfig(level=logging.ERROR)
         extractor_list = api.list()
         print("Total Extractor: {0}".format(len(extractor_list)))
 
     def do_list_extractors(self):
         api = ExtractorAPI()
-        logging.basicConfig(level=logging.ERROR)
         extractor_list = api.list()
         count = 0
 
@@ -136,7 +134,6 @@ class AccountStats(AdBase):
             parent_extractor_id = extractor['parentExtractorGuid']
         else:
             parent_extractor_id = None
-        logging.basicConfig(level=logging.ERROR)
         crawl_run_list = api.get_crawl_runs(guid)
         for crawl_run in crawl_run_list:
             crawl_run_id = crawl_run['_id']
@@ -223,7 +220,6 @@ class AccountStats(AdBase):
         :return: None
         """
         super(AccountStats, self).execute()
-        logging.basicConfig(level=logging.ERROR)
 
         if self._count:
             self.do_count_extractors()

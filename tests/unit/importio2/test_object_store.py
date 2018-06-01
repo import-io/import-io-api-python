@@ -19,8 +19,6 @@ from unittest import TestCase
 from importio2 import ObjectStoreAPI
 from importio2 import CrawlRun
 
-#logging.basicConfig(level=logging.DEBUG)
-
 
 class TestObjectStore(TestCase):
 

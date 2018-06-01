@@ -22,7 +22,6 @@ from tests.unit.importio2.test_data import ExtractorRunAndWait
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 class TestExtractorAPI(TestCase):
