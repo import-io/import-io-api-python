@@ -14,11 +14,10 @@
 # limitations under the License.
 #
 
-from __future__ import absolute_import
-
 import re
 import os
 import hashlib
+import json
 
 from unittest import TestCase
 import tempfile
@@ -32,6 +31,7 @@ from tests.unit.importio2.test_data import ExtractorCrawlRunStartTestData
 from tests.unit.importio2.test_data import ExtractorQueryTestData
 from tests.unit.importio2.test_data import ExtractorUrlListPutTestData
 from tests.unit.importio2.test_data import ExtractorLogTestData
+from tests.unit.importio2.test_data import ExtractorInteractiveTestData
 import logging
 
 logger = logging.getLogger(__name__)

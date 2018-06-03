@@ -79,6 +79,17 @@ class ExtractorUrlListPutTestData(object):
     URL_LIST = "http://www.ikea.com/us/en/search/?query=chairs&pageNumber=1\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=2\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=3\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=4\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=5\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=6\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=7\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=8\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=9\nhttp://www.ikea.com/us/en/search/?query=chairs&pageNumber=10"
 
 
+class ExtractorInteractiveTestData(object):
+
+    EXTRACTOR_ID = '59bf4b11-c796-4d77-94bd-25205f8994c0'
+
+    INPUT_LIST = [
+        {"_url": "http://www.example.com", "a": "foo1", "b": "bar1"},
+        {"_url": "http://www.example.com", "a": "foo2", "b": "bar2"},
+        {"_url": "http://www.example.com", "a": "foo3", "b": "bar3"}
+    ]
+
+
 class ObjectStoreCrawlRunTestData(object):
 
     EXTRACTOR_ID = '8fd833ca-6b6b-4ecb-abf4-a7223251a97e'
