@@ -22,13 +22,10 @@ from importio2 import ExtractorAPI
 
 logger = logging.getLogger(__name__)
 
-ACTIVE_TIMEOUT = 5
-
 
 class ExtractorUtilities(object):
     def __init__(self):
         self.api = ExtractorAPI()
-        self._crawl_run_active_timeout = ACTIVE_TIMEOUT
 
     def crawl_run_active(self, extractor_id, crawl_run_id):
         """
@@ -76,7 +73,7 @@ class ExtractorUtilities(object):
         except Exception as e:
             logger.exception(e)
 
-    def extractor_run_and_wait(self, extractor_id, report=12):
+    def extractor_run_and_wait(self, extractor_id, report=5):
         """
         Executes a Crawl Run and waits for it to complete
 
@@ -92,8 +89,6 @@ class ExtractorUtilities(object):
                                                                           crawl_run_id))
         count = 1
         while self.crawl_run_active(extractor_id, crawl_run_id):
-            if not bool(count % report):
-                self.report_crawl_run_stats(extractor_id, crawl_run_id)
-            sleep(self._crawl_run_active_timeout)
-            count += 1
+            sleep(report)
+            self.report_crawl_run_stats(extractor_id, crawl_run_id)
         return crawl_run_id

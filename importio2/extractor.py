@@ -231,6 +231,14 @@ class ExtractorAPI(object):
 
         return extractor_list
 
+    def put_input_list(self, guid, inputs):
+        """
+        Sets an input list on an Extractor
+
+        :param guid: Identifier of the extractor
+        :return:
+        """
+
     def put_url_list(self, guid, urls):
         """
         Replaces the URL list on an Extractor
