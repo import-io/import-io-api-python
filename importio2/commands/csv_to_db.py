@@ -81,6 +81,12 @@ class CsvToDatabase(AdBase):
         """
         logger.info("loading csv file: {0}".format(self._csv_path))
         table = petl.fromcsv(self._csv_path)
+        # Preappend the file path
+        rows = len(table)
+        values = []
+        for i in range(0, rows - 1):
+            values.append(self._csv_path)
+        table2 = petl.addcolumn(table, 'filename', values, index=0)
         logger.info("Connecting to database: {0}".format(self._db_host))
         connection = pymysql.connect(host=self._db_host,
                                      user=self._db_user,
@@ -92,14 +98,14 @@ class CsvToDatabase(AdBase):
         # If append option is set the add the CSV file to existing table
         if self._append:
             logger.info("Appending data to table: {0}".format(self._db_table))
-            petl.appenddb(table, connection, self._db_table)
+            petl.appenddb(table2, connection, self._db_table)
         else:
             # Pass in flag that indicates creating the table or replacing the contents
             if self._create:
                 logger.info("Creating and adding data to table: {0}".format(self._db_table))
             else:
                 logger.info("Replacing data for table: {0}".format(self._db_table))
-            petl.todb(table, connection, self._db_table, create=self._create)
+            petl.todb(table2, connection, self._db_table, create=self._create)
 
     def run(self, user, password, database, host, table, csv_path, append=False, create=False):
         """

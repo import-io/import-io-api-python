@@ -24,25 +24,8 @@ from importio2.commands import CsvToDatabase
 CSV_TO_DB_TABLE = 'test_csv_to_db'
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'test_csv_to_db.csv')
 
-
-@skip
+@skipif
 class TestCsvToDatabase(TestCase):
-
-    def setUp(self):
-        DbTestUtils.execute_sql("""
-            DROP TABLE IF EXISTS test_csv_to_db;
-            CREATE TABLE test_csv_to_db (
-                id BIGINT NOT NULL AUTO_INCREMENT,
-                name CHAR(30) NOT NULL,
-                dt DATETIME NOT NULL,
-                PRIMARY KEY (id));
-        """)
-
-    def tearDown(self):
-        pass
-#        DbTestUtils.execute_sql("""
-#            DROP TABLE IF EXISTS test_csv_to_db;
-#        """)
 
     def test_constructor(self):
         csv_to_db = CsvToDatabase()
