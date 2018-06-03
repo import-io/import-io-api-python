@@ -24,7 +24,8 @@ from importio2.commands import CsvToDatabase
 CSV_TO_DB_TABLE = 'test_csv_to_db'
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'test_csv_to_db.csv')
 
-@skipif
+
+@skip
 class TestCsvToDatabase(TestCase):
 
     def test_constructor(self):

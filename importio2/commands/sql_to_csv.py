@@ -14,11 +14,13 @@
 # limitations under the License.
 #
 
-from importio2.commands import AdDatabase
+import logging
+import os
+
 import petl
 import pymysql
-import os
-import logging
+
+from importio2.commands import AdDatabase
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +62,7 @@ class SqlToCsv(AdDatabase):
             self._sql = self._args.sql
 
         if self._args.sql_file is not None:
-            self._sql_file = self._args.sql_file
+            self._sql_path = self._args.sql_file
 
     def sql_to_csv(self):
         """
@@ -69,13 +71,12 @@ class SqlToCsv(AdDatabase):
         """
 
         logger.info("sql: {0}".format(self._sql))
-        #connection = pymysql.connect(user=self._db_user,
-        #                             password=self._db_password,
-        #                             host=self._db_host,
-        #                             database=self._db_database)
-        # table = petl.fromdb(connection, self._sql)
-        # print(petl.look(table))
-        # petl.tocsv(table, self._output_path)
+        connection = pymysql.connect(user=self._db_user,
+                                     password=self._db_password,
+                                     host=self._db_host,
+                                     database=self._db_database)
+        table = petl.fromdb(connection, self._sql)
+        petl.tocsv(table, self._output_path)
 
     def get_sql(self):
         pass
