@@ -100,7 +100,7 @@ class CsvDownload(AdBase):
         response = self.extractor_get_csv()
         with open(self._output_path, 'wt') as f:
             # Remove the magic byte
-            f.write(response.text[1:])
+            f.write(response.text[3:])
 
     def execute(self):
         """
