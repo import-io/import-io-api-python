@@ -63,6 +63,12 @@ EXTRACTOR_FIELD_1_TYPE = 'TEXT'
 
 
 class TestExtractorAPI(TestCase):
+
+    def test_get_name(self):
+        api = ExtractorAPI()
+        name = api.get_name(EXTRACTOR_GUID)
+        self.assertEqual(EXTRACTOR_NAME, name)
+
     def test_get_extractor(self):
         api = ExtractorAPI()
         extractor = api.get(EXTRACTOR_GUID)

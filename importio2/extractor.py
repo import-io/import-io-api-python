@@ -150,6 +150,16 @@ class ExtractorAPI(object):
         except Exception as e:
             logger.exception(e)
 
+    def get_name(self, guid):
+        """
+        Get the name of the Extractor
+        :param guid: Identifier of the extractor to get
+
+        :return: str with name of the extractor
+        """
+        extractor = self.get(guid)
+        return extractor['name']
+
     def get_crawl_runs(self, guid):
         """
         Returns a list of crawl runs associated with an extractor
