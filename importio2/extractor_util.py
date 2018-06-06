@@ -39,8 +39,13 @@ class ExtractorUtilities(object):
         extractor = self.api.get(extractor_id)
         name = extractor['name']
         api = CrawlRunAPI()
-        crawl_run = api.get(crawl_run_id)
-        state = crawl_run['state']
+        for i in range(0, 11):
+            crawl_run = api.get(crawl_run_id)
+            if crawl_run is not None:
+                state = crawl_run['state']
+                break
+            else:
+                sleep(1.0)
         logger.info("Extractor: {0} has a state of {1}".format(name, state))
 
         if state == 'STARTED' or state == 'PENDING':
@@ -62,14 +67,19 @@ class ExtractorUtilities(object):
             extractor = self.api.get(extractor_id)
             name = extractor['name']
             api = CrawlRunAPI()
-            run = api.get(crawl_run_id)
-            started_at = datetime.fromtimestamp(int(run['startedAt'] / 1000))
-            total = int(run['totalUrlCount'])
-            failed = int(run['failedUrlCount'])
-            success = int(run['successUrlCount'])
-            rows = int(run['rowCount'])
-            logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
-                name, started_at, total, success, failed, rows))
+            for i in range(0, 11):
+                run = api.get(crawl_run_id)
+                if run is not None:
+                    started_at = datetime.fromtimestamp(int(run['startedAt'] / 1000))
+                    total = int(run['totalUrlCount'])
+                    failed = int(run['failedUrlCount'])
+                    success = int(run['successUrlCount'])
+                    rows = int(run['rowCount'])
+                    logger.info("name: {0}, started: {1}, total: {2}, success: {3}, failed: {4}, rows: {5}".format(
+                        name, started_at, total, success, failed, rows))
+                    break
+                else:
+                    sleep(1.0)
         except Exception as e:
             logger.exception(e)
 
