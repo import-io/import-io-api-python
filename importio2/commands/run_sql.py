@@ -13,10 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+import logging
 from importio2.commands import AdDatabase
 import pymysql
 import os
+
+logger = logging.getLogger(__name__)
 
 
 class RunSql(AdDatabase):
@@ -80,10 +82,10 @@ class RunSql(AdDatabase):
                               database=self._db_database,
                               host=self._db_host)
         cursor = cnx.cursor()
-
+        logger.info("Run query with sql: {0}".format(query))
         cursor.execute(query)
         for row in cursor:
-            print(row)
+            logger.info(row)
         cursor.close()
 
         cnx.close()

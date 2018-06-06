@@ -33,7 +33,7 @@ END
 """
 
 
-class TestRunSql(TestCase):
+class TestCallProc(TestCase):
 
     def setUp(self):
         run_sql = RunSql()
