@@ -16,6 +16,7 @@
 
 import os
 from unittest import TestCase
+import logging
 
 from importio2.commands import CallProc
 from importio2.commands import RunSql
@@ -31,6 +32,8 @@ BEGIN
     SELECT dt;
 END
 """
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestCallProc(TestCase):

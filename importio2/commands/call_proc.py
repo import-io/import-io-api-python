@@ -39,7 +39,7 @@ class CallProc(object):
                               database=database,
                               host=host)
         cursor = cnx.cursor()
-        logger.info("Call procedure: {0} query with args: {0}".format(proc, args))
+        logger.info("Call procedure: {0} query with args: {1}".format(proc, args))
         cursor.callproc(proc, args)
         for row in cursor:
             logger.info(row)
