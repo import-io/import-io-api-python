@@ -39,6 +39,7 @@ class ExtractorUtilities(object):
         extractor = self.api.get(extractor_id)
         name = extractor['name']
         api = CrawlRunAPI()
+        state = None
         for i in range(0, 11):
             crawl_run = api.get(crawl_run_id)
             if crawl_run is not None:
