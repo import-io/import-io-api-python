@@ -116,7 +116,7 @@ class CrawlRunAPI(object):
         crawl_run_id = None
         if response.status_code == requests.codes.created:
             result = response.json()
-            logger.info(result)
+            logger.debug(result)
             crawl_run_id = result['guid']
 
         return crawl_run_id
@@ -146,11 +146,11 @@ class CrawlRunAPI(object):
     def _attachment(self, crawl_run_id, object_type, contents, field, mime):
         if os.path.exists(contents):
             with open(contents) as f:
-                logger.info("Reading contents of: {0}".format(contents))
+                logger.debug("Reading contents of: {0}".format(contents))
                 attachment_contents = f.read()
         else:
             attachment_contents = contents
-        logger.info("attachment_contents: {0}".format(attachment_contents))
+        logger.debug("attachment_contents: {0}".format(attachment_contents))
         response = apicore.object_store_put_attachment(self._api_key,
                                                        object_type,
                                                        crawl_run_id,
