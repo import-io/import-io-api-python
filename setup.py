@@ -49,6 +49,6 @@ setup(
         'petl>=1.1.1',
         'pytz>=2017.2',
         'PyMySQL>=0.8.0',
-
+        'SQLAlchemy>=1.1.11',
     ],
 )
